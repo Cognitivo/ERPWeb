@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'dashboardcontroller@index');
+Route::get('facturaspordia', 'kpicontroller@facturaspordia');
+Route::get('top10productperbranch','kpicontroller@top10products');
+Route::get('porcentajeprodvendidopordia','kpicontroller@porcentajeprodvendidopordia');
+Route::get('totalsales','kpicontroller@totalsales');
+Route::get('getconfig','kpicontroller@getconfig');
