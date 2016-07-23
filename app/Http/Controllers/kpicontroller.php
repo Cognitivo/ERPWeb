@@ -14,7 +14,7 @@ class kpicontroller extends Controller
   public function facturaspordia(){
       $cantidadfactura = array();
       $fecha = array();
-      $date6monago = date("Y-m-d", strtotime("-6 months"));
+      $date1monago = date("Y-m-d", strtotime("-1 months"));
       $query = "select
 	               count(id_sales_invoice) as cantidad,
                  date(trans_date) as fecha,
@@ -23,7 +23,7 @@ class kpicontroller extends Controller
                 left join app_branch as b
                 on si.id_branch = b.id_branch
                 where si.id_company = 1
-                and si.trans_date between '" . $date6monago . "' and now()
+                and si.trans_date between '" . $date1monago . "' and now()
                 and si.id_branch = 1
               group by date(trans_date)
               order by date(trans_date)";
@@ -39,14 +39,14 @@ class kpicontroller extends Controller
   public function top10products(){
     $cantidad = array();
     $producto = array();
-    $date6monago = date("Y-m-d", strtotime("-6 months"));
+    $date1monago = date("Y-m-d", strtotime("-1 months"));
     $query = "select i.name,sum(quantity) as cantidad
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on si.id_sales_invoice = sid.id_sales_invoice
               left join items as i
               on i.id_item = sid.id_item
-              where si.trans_date between '" . $date6monago . "' and now()
+              where si.trans_date between '" . $date1monago . "' and now()
               and si.id_company = 1
               group by sid.id_item
               order by sum(quantity) desc limit 10";
@@ -59,7 +59,7 @@ class kpicontroller extends Controller
     return Response::json($response);
   }
   public function porcentajetag(){
-    $date6monago = date("Y-m-d", strtotime("-6 months"));
+    $date1monago = date("Y-m-d", strtotime("-1 months"));
     $tags = array();
     $percentages = array();
     $query = "select
@@ -80,7 +80,7 @@ class kpicontroller extends Controller
               on itd.id_item = i.id_item
               left join item_tag as it
               on it.id_tag = itd.id_tag
-              where si.trans_date between '".$date6monago."' and now()
+              where si.trans_date between '".$date1monago."' and now()
               and si.id_company = 1
               group by it.id_tag
               order by it.id_tag";

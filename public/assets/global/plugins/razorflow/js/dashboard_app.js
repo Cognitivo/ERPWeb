@@ -17,7 +17,7 @@ function facturaspordia(){
 	$.get('./facturaspordia',function(data){
 		var response = JSON.parse(JSON.stringify(data));
 		facturaspordia.setDimensions(6,6);
-		facturaspordia.setCaption("Facturas por dia");
+		facturaspordia.setCaption("Facturas Por Dia");
 		facturaspordia.setLabels (response.fecha);
 		facturaspordia.addSeries ("cantidadfactura", "Total Facturas", response.cantidadfactura);
 		facturaspordia.unlock();
@@ -30,7 +30,7 @@ function top10products(){
 	$.get('./top10productperbranch',function(data){
 		var response = JSON.parse(JSON.stringify(data));
 		top10productperbranch.setDimensions(6,6);
-		top10productperbranch.setCaption("top 10 productos en 6 meses");
+		top10productperbranch.setCaption("Top 10 Productos en Ultimo Mes");
 		top10productperbranch.setLabels(response.producto);
 		top10productperbranch.addSeries("cantidad","cantidad",response.cantidad);
 		top10productperbranch.unlock();
@@ -65,7 +65,7 @@ function totalsales(){
 function salesperfootfall(){
 	var salesperfootfall = new KPIComponent();
 	salesperfootfall.setDimensions(3,3);
-	salesperfootfall.setCaption("Sales Per Footfall");
+	salesperfootfall.setCaption("Sales Per Foot Traffic");
 
 	salesperfootfall.lock();
 	db.addComponent(salesperfootfall);
