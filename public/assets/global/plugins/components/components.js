@@ -7,18 +7,23 @@ $(document).ready(function(){
 });
 
 function showcomponents(components){
-  console.log(components[1].KPIS);
   divComponents = document.getElementById("components");
   var compCount = 0;
   var divRow;
   var li;
+  var ul;
   components.KPIS.forEach(function(kpi){
     if(compCount % 11 == 0){
       divRow = document.createElement("div");
-      divRow.addClass("col-md-4");
+      ul = document.createElement("ul");
+      $(ul).addClass = "mega-menu-submenu";
+      $(divRow).addClass("col-md-4");
+      $(divRow).append(ul);
       $(divComponents).append(divRow);
     }
-    li = "<li><a href='kpi.function'>" + kpi.name +" </a></li>"
+    li = "<li><a href='javascript:" + kpi.function + "();'>" + kpi.name +" </a></li>"
+    $(ul).append(li);
+    compCount++;
   });
   //components.components.forEach(function(comp){});
 }

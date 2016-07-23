@@ -3,8 +3,11 @@ $(document).ready(function(){
 	db = new EmbeddedDashboard ();
 	facturaspordia();
 	top10products();
-	porcentajeprodvendidopordia();
+	porcentajetag();
 	totalsales();
+	salesperfootfall();
+	averagequantityperinv();
+	averagesalesperinv();
 	db.embedTo("dashboard");
 });
 function facturaspordia(){
@@ -33,52 +36,66 @@ function top10products(){
 		top10productperbranch.unlock();
 	});
 }
-function porcentajeprodvendidopordia(){
-	var porcentajeprodvendidopordia = new TableComponent ();
-	porcentajeprodvendidopordia.lock();
-	porcentajeprodvendidopordia.addColumn("name","Producto");
-	porcentajeprodvendidopordia.addColumn("fecha","Fecha");
-	porcentajeprodvendidopordia.addColumn("porcentaje","Porcentaje");
-	db.addComponent(porcentajeprodvendidopordia);
-	$.get("./porcentajeprodvendidopordia",function(data){
+function porcentajetag(){
+	var porcentajetag = new ChartComponent ();
+	porcentajetag.lock();
+	db.addComponent(porcentajetag);
+	$.get("./porcentajetag",function(data){
 		var response = JSON.parse(JSON.stringify(data));
-		porcentajeprodvendidopordia.addMultipleRows(response);
-		porcentajeprodvendidopordia.unlock();
+		porcentajetag.setDimensions(6,6);
+		porcentajetag.setCaption("Porcentaje de Categoria Vendido");
+		porcentajetag.setLabels(response.tags);
+		porcentajetag.setPieValues(response.percentage);
+		porcentajetag.unlock();
 	});
 }
 function totalsales(){
-	var totalsales = new GaugeComponent();
-	totalsales.setDimensions(4,4);
+	var totalsales = new KPIComponent();
+	totalsales.setDimensions(6,3);
 	totalsales.setCaption("Total Ventas");
-	totalsales.setLimits(0, 100000);
 
 	totalsales.lock();
 	db.addComponent(totalsales);
 	$.get("./totalsales",function(data){
 		response = JSON.parse(JSON.stringify(data));
-		totalsales.setValue(response[0].totalsales, {numberPrefix: 'Gs.'});
+		totalsales.setValue(response[0].totalsales);
 		totalsales.unlock();
 	});
 }
-// var db = new EmbeddedDashboard ();
-//
-// var chart = new ChartComponent();
-// chart.setDimensions (6, 6);
-// chart.setCaption("First Chart");
-// chart.setLabels (["Jan", "Feb", "Mar"]);
-// chart.addSeries ("beverages", "Beverages", [1355, 1916, 1150]);
-// chart.addSeries ("packaged_foods", "Packaged Foods", [1513, 976, 1321]);
-// db.addComponent (chart);
-//
-// var chart2 = new ChartComponent();
-// chart2.setDimensions (6, 6);
-// chart2.setCaption("Second Chart");
-// chart2.setLabels (["A", "B", "C"]);
-// chart2.addSeries("series_1", "Series 1", [1, 2, 3]);
-// db.addComponent (chart2);
-//
-// chart.onItemClick (function (params) {
-//     chart2.updateSeries ("series_1", [3, 5, 2]);
-// });
-//
-// db.embedTo("dashboard");
+function salesperfootfall(){
+	var salesperfootfall = new KPIComponent();
+	salesperfootfall.setDimensions(3,3);
+	salesperfootfall.setCaption("Sales Per Footfall");
+
+	salesperfootfall.lock();
+	db.addComponent(salesperfootfall);
+	$.get("./salesperfootfall",function(data){
+		console.log(data);
+		salesperfootfall.setValue(data);
+		salesperfootfall.unlock();
+	});
+}
+function averagequantityperinv(){
+	var averagequantityperinv = new KPIComponent();
+	averagequantityperinv.setDimensions(3,3);
+	averagequantityperinv.setCaption("Average Quantity Per Invoice");
+	averagequantityperinv.lock();
+	db.addComponent(averagequantityperinv);
+	$.get("./averagequantityperinv",function(data){
+		response = JSON.parse(JSON.stringify(data));
+		averagequantityperinv.setValue(response[0].averagequantityperinv);
+		averagequantityperinv.unlock();
+	});
+}
+function averagesalesperinv(){
+	var averagesalesperinv = new KPIComponent();
+	averagesalesperinv.setDimensions(3,3);
+	averagesalesperinv.setCaption("Average Sales Per Invoice");
+	averagesalesperinv.lock();
+	db.addComponent(averagesalesperinv);
+	$.get("./averagesalesperinv",function(data){
+		response = JSON.parse(JSON.stringify(data));
+		averagesalesperinv.setValue(response[0].averagesalesperinv);
+		averagesalesperinv.unlock();
+	});
+}

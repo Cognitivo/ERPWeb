@@ -14,6 +14,10 @@
 Route::get('/', 'dashboardcontroller@index');
 Route::get('facturaspordia', 'kpicontroller@facturaspordia');
 Route::get('top10productperbranch','kpicontroller@top10products');
-Route::get('porcentajeprodvendidopordia','kpicontroller@porcentajeprodvendidopordia');
+Route::get('porcentajetag','kpicontroller@porcentajetag');
 Route::get('totalsales','kpicontroller@totalsales');
 Route::get('getconfig','kpicontroller@getconfig');
+Route::get('salesperfootfall','kpicontroller@salesperfootfall');
+Route::get('averagequantityperinv','kpicontroller@averagequantityperinv');
+Route::get('averagesalesperinv','kpicontroller@averagesalesperinv');
+Route::get('/login','dashboardcontroller@login');

@@ -462,108 +462,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <li>
                                                     <div class="mega-menu-content">
                                                         <div class="row" id="components">
-                                                            <div class="col-md-4">
-                                                                <ul class="mega-menu-submenu">
-                                                                    <li>
-                                                                        <a href="ui_colors.html"> Color Library </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_general.html"> General Components </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_buttons.html"> Buttons </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_buttons_spinner.html"> Spinner Buttons </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_confirmations.html"> Popover Confirmations </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_icons.html"> Font Icons </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_socicons.html"> Social Icons </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_typography.html"> Typography </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_tabs_accordions_navs.html"> Tabs, Accordions & Navs </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_tree.html"> Tree View </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="maps_google.html"> Google Maps </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <ul class="mega-menu-submenu">
-                                                                    <li>
-                                                                        <a href="maps_vector.html"> Vector Maps </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_timeline.html"> Timeline 1 </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_timeline_2.html"> Timeline 2 </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_timeline_horizontal.html"> Horizontal Timeline </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_page_progress_style_1.html"> Page Progress Bar - Flash </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_page_progress_style_2.html"> Page Progress Bar - Big Counter </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_blockui.html"> Block UI </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_bootstrap_growl.html"> Bootstrap Growl Notifications </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_notific8.html"> Notific8 Notifications </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_toastr.html"> Toastr Notifications </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_bootbox.html"> Bootbox Dialogs </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <ul class="mega-menu-submenu">
-                                                                    <li>
-                                                                        <a href="ui_alerts_api.html"> Metronic Alerts API </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_session_timeout.html"> Session Timeout </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_idle_timeout.html"> User Idle Timeout </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_modals.html"> Modals </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_extended_modals.html"> Extended Modals </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_tiles.html"> Tiles </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_datepaginator.html"> Date Paginator </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="ui_nestable.html"> Nestable List </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </li>
@@ -1857,70 +1756,11 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="page-wrapper-row">
                 <div class="page-wrapper-bottom">
                     <!-- BEGIN FOOTER -->
-                    <!-- BEGIN PRE-FOOTER -->
-                    <div class="page-prefooter">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                                    <h2>About</h2>
-                                    <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam dolore. </p>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-xs12 footer-block">
-                                    <h2>Subscribe Email</h2>
-                                    <div class="subscribe-form">
-                                        <form action="javascript:;">
-                                            <div class="input-group">
-                                                <input type="text" placeholder="mail@email.com" class="form-control">
-                                                <span class="input-group-btn">
-                                                    <button class="btn" type="submit">Submit</button>
-                                                </span>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                                    <h2>Follow Us On</h2>
-                                    <ul class="social-icons">
-                                        <li>
-                                            <a href="javascript:;" data-original-title="rss" class="rss"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="facebook" class="facebook"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="twitter" class="twitter"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="googleplus" class="googleplus"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="linkedin" class="linkedin"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="youtube" class="youtube"></a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;" data-original-title="vimeo" class="vimeo"></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3 col-sm-6 col-xs-12 footer-block">
-                                    <h2>Contacts</h2>
-                                    <address class="margin-bottom-40"> Phone: 800 123 3456
-                                        <br> Email:
-                                        <a href="mailto:info@metronic.com">info@metronic.com</a>
-                                    </address>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <!-- END PRE-FOOTER -->
                     <!-- BEGIN INNER FOOTER -->
                     <div class="page-footer">
-                        <div class="container"> 2016 &copy; Metronic Theme By
-                            <a target="_blank" href="http://keenthemes.com">Keenthemes</a> &nbsp;|&nbsp;
-                            <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
-                        </div>
+                        <div class="container"> 2016 &copy; Cognitivo</div>
                     </div>
                     <div class="scroll-to-top">
                         <i class="icon-arrow-up"></i>
@@ -1964,7 +1804,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN CONFIG COMPONENTS-->
-        <!--<script src="{{url()}}//assets/global/plugins/components/components.js" type="text/javascript"></script>-->
+        <script src="{{url()}}//assets/global/plugins/components/components.js" type="text/javascript"></script>
         <!-- END CONFIG COMPONENTS-->
         <!-- BEGIN RAZORFLOW STATIC LINKS-->
         <link rel="stylesheet" href="{{url()}}//assets/global/plugins/razorflow/css/razorflow.min.css"/>
