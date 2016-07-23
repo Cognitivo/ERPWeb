@@ -92,7 +92,7 @@ class kpicontroller extends Controller
     return Response::json(array("tags"=>$tags,"percentage"=>$percentages));
   }
   public function totalsales(){
-    $startdate = date("Y") . "-01-01";
+    $date1monago = date("Y-m-d", strtotime("-1 months"));
     $query = "select sum(quantity*unit_price*vatco.coef) as totalsales
               from sales_invoice as si
               left join sales_invoice_detail as sd
@@ -106,7 +106,7 @@ class kpicontroller extends Controller
                   on app_vat_group_details.id_vat = app_vat.id_vat
                   group by app_vat_group.id_vat_group) as vatco
               on sd.id_vat_group = vatco.id_vat_group
-              where si.trans_date > '" . $startdate . "'";
+              where si.trans_date between '".$date1monago."' and now()";
     $data = DB::select(DB::raw($query));
     return Response::json($data);
   }
