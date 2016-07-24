@@ -11,23 +11,23 @@ use View;
 
 class kpicontroller extends Controller
 {
-  public function facturaspordia(){
+  public function SalesXDay($StartDate, $EndDate){
       $cantidadfactura = array();
       $fecha = array();
-      $date1monago = date("Y-m-d", strtotime("-1 months"));
-      $query = "select
-	               count(id_sales_invoice) as cantidad,
+      //$date1monago = date("Y-m-d", strtotime("-1 months"));
+      $query = " select
+	             (sid.unit_price * sid.quantity) as cantidad,
                  date(trans_date) as fecha,
-                b.name as sucursal
-                from sales_invoice as si
-                left join app_branch as b
-                on si.id_branch = b.id_branch
-                where si.id_company = 1
-                and si.trans_date between '" . $date1monago . "' and now()
-                and si.id_branch = 1
-              group by date(trans_date)
-              order by date(trans_date)";
-      $data =   DB::select(DB::raw($query));
+                 b.name as sucursal
+                 from sales_invoice as si
+                 left join app_branch as b
+                 on si.id_branch = b.id_branch
+                 where si.id_company = 1
+                 and si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
+                 and si.id_branch = 1
+                 group by date(trans_date)
+                 order by date(trans_date)";
+      $data = DB::select(DB::raw($query));
       foreach($data as $entry){
         $cantidadfactura[] = $entry->cantidad;
         $fecha[] = $entry->fecha;
@@ -36,20 +36,21 @@ class kpicontroller extends Controller
       $response = array("cantidadfactura"=>$cantidadfactura,"fecha"=>$fecha);
       return Response::json($response);
   }
-  public function top10products(){
+
+  public function Top10Sales($StartDate, $EndDate){
     $cantidad = array();
     $producto = array();
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
-    $query = "select i.name,sum(quantity) as cantidad
+    //$date1monago = date("Y-m-d", strtotime("-1 months"));
+    $query = "select i.name, sum(sid.quantity * (sid.unit_price - sid.unit_cost)) as cantidad
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on si.id_sales_invoice = sid.id_sales_invoice
               left join items as i
               on i.id_item = sid.id_item
-              where si.trans_date between '" . $date1monago . "' and now()
+              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
               and si.id_company = 1
               group by sid.id_item
-              order by sum(quantity) desc limit 10";
+              order by sum(sid.quantity * (sid.unit_price - sid.unit_cost)) desc limit 10";
     $data = DB::select(DB::raw($query));
     foreach($data as $entry){
       $cantidad[] = $entry->cantidad;
@@ -58,14 +59,15 @@ class kpicontroller extends Controller
     $response = array("cantidad"=>$cantidad,"producto"=>$producto);
     return Response::json($response);
   }
+
   public function porcentajetag(){
     $date1monago = date("Y-m-d", strtotime("-1 months"));
     $tags = array();
     $percentages = array();
     $query = "select
 	             it.name,
-              round((sum(quantity)/(select
-          							sum(quantity)
+              round((sum(quantity * unit_price)/(select
+          							sum(quantity * unit_price)
                                       from sales_invoice as si1
                                       left join sales_invoice_detail as sid1
                                       on si1.id_sales_invoice = sid1.id_sales_invoice
