@@ -11,15 +11,20 @@ use View;
 
 class kpicontroller extends Controller
 {
+    public function Execute_KPI($Key, $StartDate, $EndDate){
+        //search for JsonKey
+        $Key = __NAMESPACE__. '\kpicontroller::' . $Key;
+        return call_user_func_array($Key, array($StartDate , $EndDate));
+    }
+
   public function SalesXDay($StartDate, $EndDate){
-      $cantidadfactura = array();
       $fecha = array();
-      //$date1monago = date("Y-m-d", strtotime("-1 months"));
       $query = " select
-	             (sid.unit_price * sid.quantity) as cantidad,
-                 date(trans_date) as fecha,
-                 b.name as sucursal
+	             (sid.unit_price * sid.quantity) as Sales,
+                 date(trans_date) as Date,
+                 b.name as Branch
                  from sales_invoice as si
+                 inner join sales_invoice_detail as sid on si.id_sales_invoice = sid.id_sales_invoice
                  left join app_branch as b
                  on si.id_branch = b.id_branch
                  where si.id_company = 1
@@ -29,50 +34,50 @@ class kpicontroller extends Controller
                  order by date(trans_date)";
       $data = DB::select(DB::raw($query));
       foreach($data as $entry){
-        $cantidadfactura[] = $entry->cantidad;
-        $fecha[] = $entry->fecha;
-        $sucursal[] = $entry->sucursal;
+        $Sales[] = $entry->Sales;
+        $Date[] = $entry->Date;
+        $Branch[] = $entry->Branch;
       }
-      $response = array("cantidadfactura"=>$cantidadfactura,"fecha"=>$fecha);
+      $response = array("Sales"=>$Sales, "Date"=>$Date);
       return Response::json($response);
   }
 
+  //sum(sid.quantity * sid.unit_price) as Sales,
+  //sum(sid.quantity * sid.unit_cost) as Costs
+
   public function Top10Sales($StartDate, $EndDate){
-    $cantidad = array();
-    $producto = array();
-    //$date1monago = date("Y-m-d", strtotime("-1 months"));
-    $query = "select i.name, sum(sid.quantity * (sid.unit_price - sid.unit_cost)) as cantidad
-              from sales_invoice as si
-              left join sales_invoice_detail as sid
-              on si.id_sales_invoice = sid.id_sales_invoice
-              left join items as i
-              on i.id_item = sid.id_item
-              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
-              and si.id_company = 1
+    $query = "select
+              i.name as Item,
+              sum(sid.quantity * sid.unit_price) as Sales,
+              sum(sid.quantity * sid.unit_cost) as Costs
+              from
+              sales_invoice as si
+              left join sales_invoice_detail as sid on si.id_sales_invoice = sid.id_sales_invoice
+              left join items as i on i.id_item = sid.id_item
+              where
+              si.trans_date between '" . $StartDate . "' and '" . $EndDate . "' and si.id_company = 1
               group by sid.id_item
-              order by sum(sid.quantity * (sid.unit_price - sid.unit_cost)) desc limit 10";
+              order by sum(sid.quantity) desc limit 10";
     $data = DB::select(DB::raw($query));
     foreach($data as $entry){
-      $cantidad[] = $entry->cantidad;
-      $producto[] = $entry->name;
+      $Sales[] = $entry->Sales;
+      $Costs[] = $entry->Costs;
+      $Item[] = $entry->Item;
     }
-    $response = array("cantidad"=>$cantidad,"producto"=>$producto);
+    $response = array("Sales"=>$Sales, "Costs"=>$Costs,"Item"=>$Item);
     return Response::json($response);
   }
 
-  public function porcentajetag(){
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
-    $tags = array();
-    $percentages = array();
+  public function SalesByTag_Percent($StartDate, $EndDate){
     $query = "select
-	             it.name,
-              round((sum(quantity * unit_price)/(select
-          							sum(quantity * unit_price)
-                                      from sales_invoice as si1
-                                      left join sales_invoice_detail as sid1
-                                      on si1.id_sales_invoice = sid1.id_sales_invoice
-                                      where si1.trans_date
-                                      between '2016-05-01' and now())*100),2) as porcentaje
+	          it.name as Tag,
+              round((sum(quantity * unit_price)/(
+                                select sum(quantity * unit_price)
+                                       from sales_invoice as si1
+                                       left join sales_invoice_detail as sid1
+                                       on si1.id_sales_invoice = sid1.id_sales_invoice
+                                       where si1.trans_date
+                                       between '" . $StardDate . "' and '" . $EndDate . "')*100),2) as Percentage
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on sid.id_sales_invoice = si.id_sales_invoice
@@ -82,40 +87,42 @@ class kpicontroller extends Controller
               on itd.id_item = i.id_item
               left join item_tag as it
               on it.id_tag = itd.id_tag
-              where si.trans_date between '".$date1monago."' and now()
+              where si.trans_date between '".$StardDate."' and '".$EndDate."'
               and si.id_company = 1
               group by it.id_tag
               order by it.id_tag";
     $data = DB::select(DB::raw($query));
     foreach($data as $entry){
-      $tags[] = $entry->name;
-      $percentages[] = $entry->porcentaje;
+      $Tag[] = $entry->Tag;
+      $Percentage[] = $entry->Percentage;
     }
-    return Response::json(array("tags"=>$tags,"percentage"=>$percentages));
+    return Response::json(array("Tag"=>$Tag,"Percentage"=>$Percentage));
   }
-  public function totalsales(){
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
-    $query = "select sum(quantity*unit_price*vatco.coef) as totalsales
+
+  public function TotalSales($StartDate, $EndDate){
+    $query = "select sum(quantity * unit_price * vatco.coef) as Sales
               from sales_invoice as si
               left join sales_invoice_detail as sd
               on si.id_sales_invoice = sd.id_sales_invoice
               left join
-              	(select app_vat_group.id_vat_group,sum(app_vat.coefficient) + 1 as coef
-                  from app_vat_group
-              	left join app_vat_group_details
-                  on app_vat_group.id_vat_group = app_vat_group_details.id_vat_group
-              	left join app_vat
-                  on app_vat_group_details.id_vat = app_vat.id_vat
-                  group by app_vat_group.id_vat_group) as vatco
+              (select app_vat_group.id_vat_group,sum(app_vat.coefficient) + 1 as coef
+              from app_vat_group
+              left join app_vat_group_details
+              on app_vat_group.id_vat_group = app_vat_group_details.id_vat_group
+              left join app_vat
+              on app_vat_group_details.id_vat = app_vat.id_vat
+              group by app_vat_group.id_vat_group) as vatco
               on sd.id_vat_group = vatco.id_vat_group
-              where si.trans_date between '".$date1monago."' and now()";
+              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'";
     $data = DB::select(DB::raw($query));
     return Response::json($data);
   }
+
   public function getconfig(){
     $json_file = file_get_contents(storage_path() . "/app/config/components.json");
     return $json_file;
   }
+
   public function averagesalesperinv(){
     $date1monago = date("Y-m-d", strtotime("-1 months"));
     $query = "select ifnull(avg(salesperinvoice),0) as averagesalesperinv
@@ -128,6 +135,7 @@ class kpicontroller extends Controller
     $data = DB::select(DB::raw($query));
     return Response::json($data);
   }
+
   public function averagequantityperinv(){
     $date1monago = date("Y-m-d", strtotime("-1 months"));
     $query = "select ifnull(avg(qtyperinvoice),0) as averagequantityperinv
@@ -135,37 +143,43 @@ class kpicontroller extends Controller
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on si.id_sales_invoice = sid.id_sales_invoice
-              where si.trans_date between '" . $date1monago . "' and now()
+              where si.trans_date timestamp between '" . $StartDate . "' and '" . $EndDate . "'
               group by si.id_sales_invoice) as QuantityPerInvoice";
     $data = DB::select(DB::raw($query));
     return Response::json($data);
   }
-  public function salesperfootfall(){
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
-    $sales = 0;
-    $footfall = 0;
-    $queryfootfall = "select ifnull(sum(quantity),0) as footfall
+
+  public function Sales_ByFootTraffic($StartDate, $EndDate){
+    $Sales = 0;
+    $FootTraffic = 0;
+
+    $queryfootfall = "select ifnull(sum(quantity),0) as FootTraffic
                       from app_branch_walkins
-                      where timestamp between '" . $date1monago . "' and now()";
-    $querytotalsales = "select sum(sid.quantity * sid.unit_price) as sales
+                      where (start_date >= '" . $StartDate . "' and start_date <= '" . $EndDate . "' ) and
+                            (end_date >= '" . $StartDate . "' and end_date <= '" . $EndDate . "' )";
+
+    $querytotalsales = "select sum(sid.quantity * sid.unit_price) as Sales
                         from sales_invoice as si
                         left join sales_invoice_detail as sid
                         on si.id_sales_invoice = sid.id_sales_invoice
-                        where si.trans_date between '" . $date1monago . "' and now()";
+                        where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'";
+
     $footfalldata = DB::select(DB::raw($queryfootfall));
     $salesdata = DB::select(DB::raw($querytotalsales));
+
     foreach ($footfalldata as $ff) {
-      $footfall = $ff->footfall;
-    }
-    foreach ($salesdata as $s) {
-      $sales = $s->sales;
-    }
-    if($footfall == 0)
-      $response = 0;
-    else {
-      $response = $sales/$footfall;
+      $FootTraffic = $ff->FootTraffic;
     }
 
-    return $response;
+    foreach ($salesdata as $s) {
+      $Sales = $s->Sales;
+    }
+
+    if($FootTraffic == 0) {
+        return 0;
+    }
+    else {
+        return $Sales/$FootTraffic;
+    }
   }
 }

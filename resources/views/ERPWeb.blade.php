@@ -1031,7 +1031,7 @@
                                     <!-- BEGIN PAGE TITLE -->
                                     <div class="page-title">
                                         <h1>Dashboard
-                                            <small>Dashboard & Statistics</small>
+                                            <small>Data & Statistics</small>
                                         </h1>
                                     </div>
                                     <!-- END PAGE TITLE -->
@@ -1058,7 +1058,8 @@
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
                                     <!-- BEGIN PAGE CONTENT INNER -->
-                                    <div id="dashboard"></div>
+                                    <div id="dashboard">
+                                    </div>
                                     <!-- END PAGE CONTENT INNER -->
                                 </div>
                             </div>

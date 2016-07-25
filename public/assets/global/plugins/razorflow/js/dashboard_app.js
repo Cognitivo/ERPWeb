@@ -1,98 +1,132 @@
-var db;
+var DashBoard;
+
 $(document).ready(function(){
-	db = new EmbeddedDashboard ();
-	facturaspordia();
-	top10products();
-	porcentajetag();
-	totalsales();
-	salesperfootfall();
+	DashBoard = new EmbeddedDashboard ();
+	//api call. person json read.
+	//foreach{
+	//function
+	//}
+	SalesXDay();
+	Top10Sales();
+	SalesByTag_Percent();
+	TotalSales();
+	Sales_ByFootTraffic();
 	averagequantityperinv();
 	averagesalesperinv();
-	db.embedTo("dashboard");
+	DashBoard.embedTo("dashboard");
 });
-function facturaspordia(){
-	var facturaspordia = new ChartComponent();
-	facturaspordia.lock();
-	db.addComponent(facturaspordia);
-	$.get('./facturaspordia',function(data){
-		var response = JSON.parse(JSON.stringify(data));
-		facturaspordia.setDimensions(6,6);
-		facturaspordia.setCaption("Facturas Por Dia");
-		facturaspordia.setLabels (response.fecha);
-		facturaspordia.addSeries ("cantidadfactura", "Total Facturas", response.cantidadfactura);
-		facturaspordia.unlock();
-	});
-}
-function top10products(){
-	var top10productperbranch = new ChartComponent();
-	top10productperbranch.lock();
-	db.addComponent(top10productperbranch);
-	$.get('./top10productperbranch',function(data){
-		var response = JSON.parse(JSON.stringify(data));
-		top10productperbranch.setDimensions(6,6);
-		top10productperbranch.setCaption("Top 10 Productos en Ultimo Mes");
-		top10productperbranch.setLabels(response.producto);
-		top10productperbranch.addSeries("cantidad","cantidad",response.cantidad);
-		top10productperbranch.unlock();
-	});
-}
-function porcentajetag(){
-	var porcentajetag = new ChartComponent ();
-	porcentajetag.lock();
-	db.addComponent(porcentajetag);
-	$.get("./porcentajetag",function(data){
-		var response = JSON.parse(JSON.stringify(data));
-		porcentajetag.setDimensions(6,6);
-		porcentajetag.setCaption("Porcentaje de Categoria Vendido");
-		porcentajetag.setLabels(response.tags);
-		porcentajetag.setPieValues(response.percentage);
-		porcentajetag.unlock();
-	});
-}
-function totalsales(){
-	var totalsales = new KPIComponent();
-	totalsales.setDimensions(6,3);
-	totalsales.setCaption("Total Ventas");
 
-	totalsales.lock();
-	db.addComponent(totalsales);
-	$.get("./totalsales",function(data){
+// function StartChart(){
+// 	var Chart = new ChartComponent();
+// 	Chart.lock();
+// 	DashBoard.addComponent(Chart);
+// 	$.get('./kpi/' +  + '', function(data){
+// 		var response = JSON.parse(JSON.stringify(data));
+// 		Chart.setDimensions(response.D1,response.D2);
+// 		Chart.setCaption(response.Title);
+// 		Chart.setLabels(response.Label[0]);
+// 		foreach (response.Series in response.SEries[]) {
+// 			Chart.addSeries(response.Series[0]);
+// 		}
+//
+// 		Chart.unlock();
+// 	});
+// }
+
+function SalesXDay(){
+	var Report = new ChartComponent();
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get('./kpi/SalesXDay' + '/2016-07-01/2017-01-01' ,function(data){
+		var response = JSON.parse(JSON.stringify(data));
+		Report.setDimensions(3,3);
+		Report.setCaption("Sales per Day");
+		Report.setLabels (response.Date);
+		Report.addSeries ("Sales", "Total Sales", response.Sales);
+		Report.unlock();
+	});
+}
+
+function Top10Sales(){
+	var Report = new ChartComponent();
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get('./kpi/Top10Sales' + '/2016-07-01/2017-01-01' ,function(data){
+		var response = JSON.parse(JSON.stringify(data));
+		Report.setDimensions(6,6);
+		Report.setCaption("Top 10 Items");
+		Report.setLabels(response.Item);
+		Report.addSeries("Sales","Total Sales",response.Sales,{
+			numberPrefix: "$ "
+		});
+		Report.addSeries("Costs", "Total Costs", response.Costs, {
+			numberPrefix: "$ ",
+			seriesColor: 'a4c9f3'
+		});
+		Report.setOption ('stackedTotalDisplay', true);
+		Report.unlock();
+	});
+}
+
+function SalesByTag_Percent(){
+	var Report = new ChartComponent();
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get('./kpi/SalesByTag_Percent' + '/2016-07-01/2017-01-01' ,function(data){
+		var response = JSON.parse(JSON.stringify(data));
+		Report.setDimensions(6,6);
+		Report.setCaption("Tags as Percentage of Sales");
+		Report.setLabels(response.Tag);
+		Report.setPieValues(response.Percentage);
+		Report.unlock();
+	});
+}
+
+function TotalSales(){
+	var Report = new KPIComponent();
+	Report.setDimensions(6,3);
+	Report.setCaption("Total Sales");
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get('./kpi/TotalSales' + '/2016-07-01/2017-01-01' ,function(data){
 		response = JSON.parse(JSON.stringify(data));
-		totalsales.setValue(response[0].totalsales);
-		totalsales.unlock();
+		Report.setValue(response[0].Sales);
+		Report.unlock();
 	});
 }
-function salesperfootfall(){
-	var salesperfootfall = new KPIComponent();
-	salesperfootfall.setDimensions(3,3);
-	salesperfootfall.setCaption("Sales Per Foot Traffic");
 
-	salesperfootfall.lock();
-	db.addComponent(salesperfootfall);
-	$.get("./salesperfootfall",function(data){
-		console.log(data);
-		salesperfootfall.setValue(data);
-		salesperfootfall.unlock();
+function Sales_ByFootTraffic(){
+	var Report = new KPIComponent();
+	Report.setDimensions(3,3);
+	Report.setCaption("Sales Per Foot Traffic");
+
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get('./kpi/Sales_ByFootTraffic' + '/2016-07-01/2017-01-01' , function(data){
+		Report.setValue(data);
+		Report.unlock();
 	});
 }
+
 function averagequantityperinv(){
-	var averagequantityperinv = new KPIComponent();
-	averagequantityperinv.setDimensions(3,3);
-	averagequantityperinv.setCaption("Average Quantity Per Invoice");
-	averagequantityperinv.lock();
-	db.addComponent(averagequantityperinv);
+	var Report = new KPIComponent();
+	Report.setDimensions(3,3);
+	Report.setCaption("Average Quantity Per Invoice");
+	Report.lock();
+	DashBoard.addComponent(Report);
 	$.get("./averagequantityperinv",function(data){
 		response = JSON.parse(JSON.stringify(data));
-		averagequantityperinv.setValue(response[0].averagequantityperinv);
-		averagequantityperinv.unlock();
+		Report.setValue(response[0].averagequantityperinv);
+		Report.unlock();
 	});
 }
+
 function averagesalesperinv(){
 	var averagesalesperinv = new KPIComponent();
 	averagesalesperinv.setDimensions(3,3);
 	averagesalesperinv.setCaption("Average Sales Per Invoice");
 	averagesalesperinv.lock();
-	db.addComponent(averagesalesperinv);
+	DashBoard.addComponent(averagesalesperinv);
 	$.get("./averagesalesperinv",function(data){
 		response = JSON.parse(JSON.stringify(data));
 		averagesalesperinv.setValue(response[0].averagesalesperinv);
