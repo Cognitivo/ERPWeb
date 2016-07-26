@@ -11,18 +11,8 @@ use View;
 
 class dashboardcontroller extends Controller
 {
-  public function index(){
-      return view('ERPWeb',compact('json_file'));
-  }
-  public function login(){
-    return view('login');
-  }
-  public function authenticate(Request $request){
-    $username = trim($request["username"]);
-    $password = trim($request["password"]);
-    if($username != "" and $password != ""){
-      $query = "select id_user from security_user where email_username = '" + $username +"' and email_password='"
-                + $password + "'";
-    }
+  public function index(Request $request){
+      $username = $request->session()->get('username');
+      return view('ERPWeb',compact('username'));
   }
 }

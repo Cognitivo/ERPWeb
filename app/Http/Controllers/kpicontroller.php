@@ -18,7 +18,8 @@ class kpicontroller extends Controller
     }
 
   public function SalesXDay($StartDate, $EndDate){
-      $fecha = array();
+      $Date = array();
+      $Sales = array();
       $query = " select
 	             (sid.unit_price * sid.quantity) as Sales,
                  date(trans_date) as Date,
@@ -46,6 +47,9 @@ class kpicontroller extends Controller
   //sum(sid.quantity * sid.unit_cost) as Costs
 
   public function Top10Sales($StartDate, $EndDate){
+    $Sales = array();
+    $Costs = array();
+    $Item = array();
     $query = "select
               i.name as Item,
               sum(sid.quantity * sid.unit_price) as Sales,
@@ -69,6 +73,8 @@ class kpicontroller extends Controller
   }
 
   public function SalesByTag_Percent($StartDate, $EndDate){
+    $Tag = array();
+    $Percentage = array();
     $query = "select
 	          it.name as Tag,
               round((sum(quantity * unit_price)/(
@@ -77,7 +83,7 @@ class kpicontroller extends Controller
                                        left join sales_invoice_detail as sid1
                                        on si1.id_sales_invoice = sid1.id_sales_invoice
                                        where si1.trans_date
-                                       between '" . $StardDate . "' and '" . $EndDate . "')*100),2) as Percentage
+                                       between '" . $StartDate . "' and '" . $EndDate . "')*100),2) as Percentage
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on sid.id_sales_invoice = si.id_sales_invoice
@@ -87,7 +93,7 @@ class kpicontroller extends Controller
               on itd.id_item = i.id_item
               left join item_tag as it
               on it.id_tag = itd.id_tag
-              where si.trans_date between '".$StardDate."' and '".$EndDate."'
+              where si.trans_date between '".$StartDate."' and '".$EndDate."'
               and si.id_company = 1
               group by it.id_tag
               order by it.id_tag";
@@ -100,7 +106,7 @@ class kpicontroller extends Controller
   }
 
   public function TotalSales($StartDate, $EndDate){
-    $query = "select sum(quantity * unit_price * vatco.coef) as Sales
+    $query = "select ifnull(sum(quantity * unit_price * vatco.coef),0) as Sales
               from sales_invoice as si
               left join sales_invoice_detail as sd
               on si.id_sales_invoice = sd.id_sales_invoice
@@ -123,27 +129,25 @@ class kpicontroller extends Controller
     return $json_file;
   }
 
-  public function averagesalesperinv(){
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
+  public function AvgSalesPerInv($StartDate,$EndDate){
     $query = "select ifnull(avg(salesperinvoice),0) as averagesalesperinv
               from (select sum(sid.quantity*sid.unit_price)as salesperinvoice , si.id_sales_invoice
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on si.id_sales_invoice = sid.id_sales_invoice
-              where si.trans_date between '" . $date1monago . "' and now()
+              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
               group by si.id_sales_invoice) as QuantityPerInvoice";
     $data = DB::select(DB::raw($query));
     return Response::json($data);
   }
 
-  public function averagequantityperinv(){
-    $date1monago = date("Y-m-d", strtotime("-1 months"));
+  public function AvgQuantityPerInv($StartDate,$EndDate){
     $query = "select ifnull(avg(qtyperinvoice),0) as averagequantityperinv
               from (select sum(sid.quantity)as qtyperinvoice , si.id_sales_invoice
               from sales_invoice as si
               left join sales_invoice_detail as sid
               on si.id_sales_invoice = sid.id_sales_invoice
-              where si.trans_date timestamp between '" . $StartDate . "' and '" . $EndDate . "'
+              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
               group by si.id_sales_invoice) as QuantityPerInvoice";
     $data = DB::select(DB::raw($query));
     return Response::json($data);

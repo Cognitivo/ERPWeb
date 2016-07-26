@@ -67,7 +67,15 @@ class AuthController extends Controller
 
 
     public function postLogin(Request $request){
-           $users=\DB::table('security_user')->select('name','password')->where('email',$request->email)->where('password',$request->password)->get();
-           dd($users);
+           $users=\DB::table('security_user')->select('name','password')->where('name',$request->email)->where('password',$request->password)->get();
+           if(count($users) == 1){
+              $request->session()->put('username', $users[0]->name);
+           }
+           return redirect('/');
+    }
+    public function getLogout(Request $request)
+    {
+        $request->session()->forget('username');
+        return redirect('auth/login');
     }
 }

@@ -11,8 +11,8 @@ $(document).ready(function(){
 	SalesByTag_Percent();
 	TotalSales();
 	Sales_ByFootTraffic();
-	averagequantityperinv();
-	averagesalesperinv();
+	AvgQuantityPerInv();
+	AvgSalesPerInv();
 	DashBoard.embedTo("dashboard");
 });
 
@@ -108,28 +108,28 @@ function Sales_ByFootTraffic(){
 	});
 }
 
-function averagequantityperinv(){
+function AvgQuantityPerInv(){
 	var Report = new KPIComponent();
 	Report.setDimensions(3,3);
 	Report.setCaption("Average Quantity Per Invoice");
 	Report.lock();
 	DashBoard.addComponent(Report);
-	$.get("./averagequantityperinv",function(data){
+	$.get("./kpi/AvgQuantityPerInv" + "/2016-07-01/2017-01-01",function(data){
 		response = JSON.parse(JSON.stringify(data));
 		Report.setValue(response[0].averagequantityperinv);
 		Report.unlock();
 	});
 }
 
-function averagesalesperinv(){
-	var averagesalesperinv = new KPIComponent();
-	averagesalesperinv.setDimensions(3,3);
-	averagesalesperinv.setCaption("Average Sales Per Invoice");
-	averagesalesperinv.lock();
-	DashBoard.addComponent(averagesalesperinv);
-	$.get("./averagesalesperinv",function(data){
+function AvgSalesPerInv(){
+	var Report = new KPIComponent();``
+	Report.setDimensions(3,3);
+	Report.setCaption("Average Sales Per Invoice");
+	Report.lock();
+	DashBoard.addComponent(Report);
+	$.get("./kpi/AvgSalesPerInv" + "/2016-07-01/2017-01-01",function(data){
 		response = JSON.parse(JSON.stringify(data));
-		averagesalesperinv.setValue(response[0].averagesalesperinv);
-		averagesalesperinv.unlock();
+		Report.setValue(response[0].averagesalesperinv);
+		Report.unlock();
 	});
 }

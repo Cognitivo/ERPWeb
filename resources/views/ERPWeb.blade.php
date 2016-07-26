@@ -350,7 +350,7 @@
                                         <li class="dropdown dropdown-user dropdown-dark">
                                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                                 <img alt="" class="img-circle" src="{{url()}}/assets/layouts/layout3/img/avatar9.jpg">
-                                                <span class="username username-hide-mobile">Nick</span>
+                                                <span class="username username-hide-mobile">{{$username}}</span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-default">
                                                 <li>
@@ -379,7 +379,7 @@
                                                         <i class="icon-lock"></i> Lock Screen </a>
                                                 </li>
                                                 <li>
-                                                    <a href="page_user_login_1.html">
+                                                    <a href="{{url('auth/logout')}}">
                                                         <i class="icon-key"></i> Log Out </a>
                                                 </li>
                                             </ul>
