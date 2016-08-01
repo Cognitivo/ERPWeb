@@ -1052,8 +1052,21 @@
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
                                     <!-- BEGIN PAGE CONTENT INNER -->
-                                    <div id="dashboard">
-                                    </div>
+            
+                                    <
+        <div class="portlet light ">
+            <div class="portlet-title">
+                 <div class="caption font-dark">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject bold uppercase">Dashboard</span>
+                </div>
+            </div>
+
+              <div class="portlet-body">          
+                  <div class="tiles" id="dashboard"></div>
+            </div>
+        </div>
+        
                                     <!-- END PAGE CONTENT INNER -->
                                 </div>
                             </div>
@@ -1107,13 +1120,16 @@
         <script src="{{url()}}/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+        {{-- <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script> --}}
+         {{-- chart js --}}
+         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
 
 
