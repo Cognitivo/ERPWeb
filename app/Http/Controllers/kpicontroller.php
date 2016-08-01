@@ -43,9 +43,6 @@ class kpicontroller extends Controller
       return Response::json($response);
   }
 
-  //sum(sid.quantity * sid.unit_price) as Sales,
-  //sum(sid.quantity * sid.unit_cost) as Costs
-
   public function Top10Sales($StartDate, $EndDate){
     $Sales = array();
     $Costs = array();
@@ -124,21 +121,33 @@ class kpicontroller extends Controller
     return Response::json($data);
   }
 
-  public function getconfig(){
-    $json_file = file_get_contents(storage_path() . "/app/config/components.json");
-    return $json_file;
+  public function GetComponents(){
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
+                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
+    $Iterator = new \RecursiveIteratorIterator($Directory);
+    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
+                                                                    \RegexIterator::USE_KEY);
+    $Components = array();
+    foreach($ComponentJsonFiles as $File){
+      $Json = json_decode(file_get_contents($File),true);
+      $FileInfo = pathinfo($File);
+      $Components[$Json["Caption"]] = $FileInfo["filename"];
+    }
+    return json_encode($Components);
   }
 
   public function AvgSalesPerInv($StartDate,$EndDate){
-    $query = "select ifnull(avg(salesperinvoice),0) as averagesalesperinv
-              from (select sum(sid.quantity*sid.unit_price)as salesperinvoice , si.id_sales_invoice
-              from sales_invoice as si
-              left join sales_invoice_detail as sid
-              on si.id_sales_invoice = sid.id_sales_invoice
-              where si.trans_date between '" . $StartDate . "' and '" . $EndDate . "'
-              group by si.id_sales_invoice) as QuantityPerInvoice";
+    $ComponentConfigJson = file_get_contents(storage_path() . "/app/config/Components/AvgSalesPerInv.json");
+    $Response = array();
+    $ComponentConfig = json_decode($ComponentConfigJson,true);
+    $query = $ComponentConfig["Query"];
     $data = DB::select(DB::raw($query));
-    return Response::json($data);
+    $Response["data"] = $data;
+    $Response["type"] = $ComponentConfig["Type"];
+    $Response["dimensions"] = $ComponentConfig["Dimensions"];
+    $Response["caption"] = $ComponentConfig["Caption"];
+    return Response::json($Response);
   }
 
   public function AvgQuantityPerInv($StartDate,$EndDate){

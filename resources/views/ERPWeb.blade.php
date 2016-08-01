@@ -440,18 +440,12 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="menu-dropdown mega-menu-dropdown  ">
+                                        <li class="menu-dropdown classic-menu-dropdown  ">
                                             <a href="javascript:;"> Estadisticas
                                                 <span class="arrow"></span>
                                             </a>
-                                            <ul class="dropdown-menu" style="min-width: 710px">
-                                                <li>
-                                                    <div class="mega-menu-content">
-                                                        <div class="row" id="components">
+                                            <ul class="dropdown-menu pull-left" style="min-width: 710px" id="components">
 
-                                                        </div>
-                                                    </div>
-                                                </li>
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
@@ -1121,20 +1115,15 @@
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN CONFIG COMPONENTS-->
-        <script src="{{url()}}//assets/global/plugins/components/components.js" type="text/javascript"></script>
-        <!-- END CONFIG COMPONENTS-->
-        <!-- BEGIN RAZORFLOW STATIC LINKS-->
-        <link rel="stylesheet" href="{{url()}}//assets/global/plugins/razorflow/css/razorflow.min.css"/>
-        <script src="{{url()}}//assets/global/plugins/razorflow/js/razorflow.min.js" type="text/javascript"></script>
-        <script src="{{url()}}//assets/global/plugins/razorflow/js/razorflow.devtools.min.js" type="text/javascript"></script>
-        <script src="{{url()}}//assets/global/plugins/razorflow/js/dashboard_app.js" type="text/javascript"></script>
-        <!-- END RAZORFLOW STATIC LINKS-->
+
+
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{url()}}/assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/pages/scripts/dashboard_app.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="{{url()}}/assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
