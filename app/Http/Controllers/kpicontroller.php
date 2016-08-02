@@ -9,7 +9,7 @@ use Input;
 use Response;
 use View;
 
-class kpicontroller extends Controller
+class kpiController extends Controller
 {
     public function Execute_KPI($Key, $StartDate, $EndDate){
         //search for JsonKey
@@ -18,7 +18,7 @@ class kpicontroller extends Controller
     }
 
   public function SalesXDay($StartDate, $EndDate){
-      $Date = array();
+   /*   $Date = array();
       $Sales = array();
       $query = " select
 	             (sid.unit_price * sid.quantity) as Sales,
@@ -40,11 +40,25 @@ class kpicontroller extends Controller
         $Branch[] = $entry->Branch;
       }
       $response = array("Sales"=>$Sales, "Date"=>$Date);
-      return Response::json($response);
+      return Response::json($response);*/
+
+      $ComponentConfigJson = file_get_contents(storage_path() . "/app/config/Components/SalesXDay.json");
+    $Response = array();
+    $ComponentConfig = json_decode($ComponentConfigJson,true);
+    //dd($ComponentConfig["Query"]);
+    $query = $ComponentConfig["Query"];
+    $data = DB::select(DB::raw($query));
+    $Response["data"] = $data;
+    $Response["type"] = $ComponentConfig["Type"];
+    $Response["dimensions"] = $ComponentConfig["Dimension"];
+    $Response["caption"] = $ComponentConfig["Caption"];
+    $Response['name']= $ComponentConfig["Series"];
+    return Response::json($Response);
   }
 
   public function Top10Sales($StartDate, $EndDate){
-    $Sales = array();
+    //dd("ok");
+   /* $Sales = array();
     $Costs = array();
     $Item = array();
     $query = "select
@@ -60,17 +74,26 @@ class kpicontroller extends Controller
               group by sid.id_item
               order by sum(sid.quantity) desc limit 10";
     $data = DB::select(DB::raw($query));
-    foreach($data as $entry){
+    $Response["data"] = $data;
+    $Response["type"] = $ComponentConfig["Type"];
+    $Response["dimensions"] = $ComponentConfig["Dimension"];
+    $Response["caption"] = $ComponentConfig["Caption"];
+    $Response['name']= $ComponentConfig["Series"];
+    return Response::json($Response);
+
+
+ /*   foreach($data as $entry){
       $Sales[] = $entry->Sales;
       $Costs[] = $entry->Costs;
       $Item[] = $entry->Item;
     }
     $response = array("Sales"=>$Sales, "Costs"=>$Costs,"Item"=>$Item);
-    return Response::json($response);
+    //dd($response);
+    return Response::json($response);*/
   }
 
   public function SalesByTag_Percent($StartDate, $EndDate){
-    $Tag = array();
+/*    $Tag = array();
     $Percentage = array();
     $query = "select
 	          it.name as Tag,
@@ -99,7 +122,21 @@ class kpicontroller extends Controller
       $Tag[] = $entry->Tag;
       $Percentage[] = $entry->Percentage;
     }
-    return Response::json(array("Tag"=>$Tag,"Percentage"=>$Percentage));
+    return Response::json(array("Tag"=>$Tag,"Percentage"=>$Percentage));*/
+
+    $ComponentConfigJson = file_get_contents(storage_path() . "/app/config/Components/SalesByTag_Percent.json");
+    $Response = array();
+    $ComponentConfig = json_decode($ComponentConfigJson,true);
+    //dd($ComponentConfig["Query"]);
+    $query = $ComponentConfig["Query"];
+    $data = DB::select(DB::raw($query));
+
+    $Response["data"] = $data;
+    $Response["type"] = $ComponentConfig["Type"];
+    $Response["dimensions"] = $ComponentConfig["Dimension"];
+    $Response["caption"] = $ComponentConfig["Caption"];
+    $Response['name']= $ComponentConfig["Series"];
+    return Response::json($Response);
   }
 
   public function TotalSales($StartDate, $EndDate){
