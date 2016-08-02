@@ -73,6 +73,13 @@ class kpiController extends Controller
               si.trans_date between '" . $StartDate . "' and '" . $EndDate . "' and si.id_company = 1
               group by sid.id_item
               order by sum(sid.quantity) desc limit 10";
+    $data = DB::select(DB::raw($query));*/
+
+    $ComponentConfigJson = file_get_contents(storage_path() . "/app/config/Components/Top10Sales.json");
+    $Response = array();
+    $ComponentConfig = json_decode($ComponentConfigJson,true);
+    //dd($ComponentConfig["Query"]);
+    $query = $ComponentConfig["Query"];
     $data = DB::select(DB::raw($query));
     $Response["data"] = $data;
     $Response["type"] = $ComponentConfig["Type"];
