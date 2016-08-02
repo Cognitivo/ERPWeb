@@ -53,6 +53,7 @@ class kpiController extends Controller
     $Response["dimensions"] = $ComponentConfig["Dimension"];
     $Response["caption"] = $ComponentConfig["Caption"];
     $Response['name']= $ComponentConfig["Series"];
+     $Response['label']=$ComponentConfig['Label'];
     return Response::json($Response);
   }
 
@@ -86,6 +87,7 @@ class kpiController extends Controller
     $Response["dimensions"] = $ComponentConfig["Dimension"];
     $Response["caption"] = $ComponentConfig["Caption"];
     $Response['name']= $ComponentConfig["Series"];
+    $Response['label']=$ComponentConfig['Label'];
     return Response::json($Response);
 
 

@@ -37,6 +37,7 @@ function handleKPI (Response){
 
 function handleBarChart(Response){
   console.log(Response.data)
+  console.log(Response.label)
 var id=Response.caption.replace(/ /g,'')
   var divBar= '<div class="col-md-6"> <canvas id='+id+' class="canvas" styde="width:50%; height:50%"></canvas> </div>'
   //console.log($('#'+id).parent())
@@ -55,12 +56,8 @@ var id=Response.caption.replace(/ /g,'')
     cont++
   }) 
   var data_value=[] 
-  $.each(Response.data,function(v,k){
-
-    var arr = $.map(k, function(el) {  
-      return el });
-  // console.log(arr[0])  
-      data_label.push(arr[0])
+  $.each(Response.data,function(v,k){   
+      data_label.push(k[Response.label])
     for (var i = 0; i < cont; i++) {  
       data_value.push(data_name[i]+"\t"+k[data_name[i]]) 
   }
