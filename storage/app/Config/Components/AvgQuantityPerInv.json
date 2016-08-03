@@ -1,7 +1,7 @@
 {
     "SqlFile": "AvgQuantityPerInv.sql",
     "Type": "Kpi",
-    "Dimension": "3,3",
+    "Dimensions": "3,3",
     "Caption": "Average Quantity Per Invoice",
     "Value": "AvgQuantity",
     "Parameters":"StartDate,EndDate",

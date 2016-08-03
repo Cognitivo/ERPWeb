@@ -1,7 +1,7 @@
 {
     "SqlFile": "TotalSales.sql",
     "Type": "Kpi",
-    "Dimension": "6,3",
+    "Dimensions": "6,3",
     "Caption": "Total Sales",
     "Value": "Sales",
     "Parameters":"StartDate,EndDate",

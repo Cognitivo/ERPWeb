@@ -1,7 +1,7 @@
 {
     "SqlFile": "Top10Sales.sql",
     "Type": "Barchart",
-    "Dimension": "6,6",
+    "Dimensions": "6,6",
     "Caption": "Top 10 Items",
     "Label": "Item",
     "Series": [{

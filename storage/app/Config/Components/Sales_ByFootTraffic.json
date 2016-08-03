@@ -1,7 +1,7 @@
 {
     "SqlFile": "Sales_ByFootTraffic.sql",
     "Type": "Kpi",
-    "Dimension": "3,3",
+    "Dimensions": "3,3",
     "Caption": "Sales Per Foot Traffic",
     "Value": "foottraffic",
     "Parameters":"StartDate,EndDate",

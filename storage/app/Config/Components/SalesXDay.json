@@ -1,7 +1,7 @@
 {
     "SqlFile": "SaleXDay.sq;",
     "Type": "Barchart",
-    "Dimension": "3,3",
+    "Dimensions": "3,3",
     "Caption": "Sales per Day",
     "Label": "Date",
     "Series": [{

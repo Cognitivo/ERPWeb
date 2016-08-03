@@ -18,12 +18,17 @@ class kpiController extends Controller
         $ComponentConfig = json_decode($ComponentConfigJson,true);
         switch($ComponentConfig["Type"]){
           case "Kpi":
-            ExecuteKpi($Key,$StartDate,$EndDate);
+            self::ExecuteKpi($Key,$StartDate,$EndDate);
+            break;
           case "Pie":
-            ExecutePie($Key,$StartDate,$EndDate);
+            self::ExecutePie($Key,$StartDate,$EndDate);
+            break;
           case "Bar":
-            ExecuteBar($Key,$StartDate,$EndDate);
+            self::ExecuteBar($Key,$StartDate,$EndDate);
+            break;
         }
+        // $Key = __NAMESPACE__. '\kpicontroller::' . $Key;
+        // return call_user_func_array($Key, array($StartDate , $EndDate));
     }
   public function ExecuteKpi($Key,$StartDate,$EndDate){
     $ComponentConfigJson = file_get_contents(Config::get("Paths.Components") . $Key . ".json");
@@ -35,12 +40,12 @@ class kpiController extends Controller
       $Query = str_replace("@" . $Parameter,"'" . ${$Parameter} . "'", $Query);
     }
     $Data = DB::select(DB::raw($Query));
-    $Response["Data"] = $Data;
+    $Response[$ComponentConfig["Value"]] = $Data[0];
     $Response["Type"] = $ComponentConfig["Type"];
     $Response["Dimensions"] = $ComponentConfig["Dimensions"];
     $Response["Caption"] = $ComponentConfig["Caption"];
     $Response["Value"] = $ComponentConfig["Value"];
-    return Response::json($Response);
+    return json_encode($Response);
   }
   public function ExecutePie($Key,$StartDate,$EndDate){
     $ComponentConfigJson = file_get_contents(Config::get("Paths.Components") . $Key . ".json");
@@ -78,5 +83,21 @@ class kpiController extends Controller
     $Response["Label"] = $ComponentConfig["Label"];
     $Response["Series"] = $ComponentConfig["Series"];
     return Response::json($Response);
+  }
+
+  public function GetComponents(){
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
+                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
+    $Iterator = new \RecursiveIteratorIterator($Directory);
+    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
+                                                                    \RegexIterator::USE_KEY);
+    $Components = array();
+    foreach($ComponentJsonFiles as $File){
+      $Json = json_decode(file_get_contents($File),true);
+      $FileInfo = pathinfo($File);
+      $Components[$Json["Caption"]] = $FileInfo["filename"];
+    }
+    return json_encode($Components);
   }
 }

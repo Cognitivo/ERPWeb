@@ -12,11 +12,11 @@ function handleComponents (){
   $("body").on("click","#components li a",function(e){
     var url = $(this).attr("data-key");
     $.get("./kpi/" + url + "/2016-07-01/2017-01-01",function(data){
-      
-      
+
+
       //var Response = JSON.parse(data);
       var Response = data;
-      console.log(Response)
+      console.log(Response.data);
       if(Response.type == "kpi"){
         handleKPI(Response);
       }
@@ -42,30 +42,30 @@ var id=Response.caption.replace(/ /g,'')
   var divBar= '<div class="col-md-6"> <canvas id='+id+' class="canvas" styde="width:50%; height:50%"></canvas> </div>'
   //console.log($('#'+id).parent())
   if($('#'+id).parent().attr('class')=='col-md-6'){
-      $('#'+id).html("")    
+      $('#'+id).html("")
   }else{
      $("#dashboard").append(divBar);
   }
- 
+
   var ctx = $("#"+id);
  var data_label=[]
  var data_name=[]
  var cont=0
-  $.each(Response.name,function(v,k){    
+  $.each(Response.name,function(v,k){
     data_name.push(k.Id)
     cont++
-  }) 
-  var data_value=[] 
-  $.each(Response.data,function(v,k){   
+  })
+  var data_value=[]
+  $.each(Response.data,function(v,k){
       data_label.push(k[Response.label])
-    for (var i = 0; i < cont; i++) {  
-      data_value.push(data_name[i]+"\t"+k[data_name[i]]) 
+    for (var i = 0; i < cont; i++) {
+      data_value.push(data_name[i]+"\t"+k[data_name[i]])
   }
   })
   console.log(data_label)
 console.log( chunkify(data_value.sort(),cont,true))
 var data_value_aux=[]
-$.each(data_value.sort(),function(index, el) { 
+$.each(data_value.sort(),function(index, el) {
   data_value_aux.push(el.split("\t")[1])
 });
 
@@ -77,13 +77,13 @@ datasets.push({
   label: data_name[v],
             backgroundColor:   randomColor(),
             data: new_data_value[v],
-            borderColor: randomColor(),            
+            borderColor: randomColor(),
             borderWidth: 1
 })
 })
 
  console.log(datasets)
-  
+
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -91,7 +91,7 @@ datasets.push({
         datasets: datasets
     },
     options: {
-  
+
                     responsive: true,
                     legend: {
                         position: 'top',
@@ -110,14 +110,14 @@ datasets.push({
         }
     }
 });
- 
+
 }
 
 function handlePie(Response){
 var id=Response.caption.replace(/ /g,'')
 var divBar= '<div class="col-md-6"> <canvas id='+id+' class="canvas" styde="width:50%; height:50%"></canvas> </div>'
   if($('#'+id).parent().attr('class')=='col-md-6'){
-      $('#'+id).html("")    
+      $('#'+id).html("")
   }else{
      $("#dashboard").append(divBar);
   }
@@ -125,7 +125,7 @@ var divBar= '<div class="col-md-6"> <canvas id='+id+' class="canvas" styde="widt
   var data_value = []
   var array_color=[]
 
-$.each(Response.data,function(v,k){  
+$.each(Response.data,function(v,k){
     data_label.push(k.Tag)
   data_value.push(k.Percentage)
    array_color.push(randomColor())
@@ -137,16 +137,16 @@ $.each(Response.data,function(v,k){
     datasets: [
         {
             data: data_value,
-            backgroundColor: array_color,               
+            backgroundColor: array_color,
             hoverBackgroundColor: array_color,
-            
+
         }]
 };
    var myPieChart = new Chart(ctx,{
     type: 'pie',
     data: data,
     options:  {
-  
+
                     responsive: true,
                     legend: {
                         position: 'top',
@@ -172,7 +172,7 @@ var randomColorFactor = function() {
 
 
     function chunkify(a, n, balanced) {
-    
+
     if (n < 2)
         return [a];
 
