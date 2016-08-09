@@ -15,4 +15,7 @@ class dashboardController extends Controller
       $username = $request->session()->get('username');
       return view('ERPWeb',compact('username'));
   }
+  public function Save($DashboardComponents){
+    dd($DashboardComponents);
+  }
 }

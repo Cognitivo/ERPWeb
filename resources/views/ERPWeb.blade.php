@@ -19,7 +19,7 @@
         <link href="{{url()}}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->``
         <link href="{{url()}}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
@@ -33,6 +33,7 @@
         <link href="{{url()}}/assets/layouts/layout3/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/layouts/layout3/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="{{url()}}/assets/layouts/layout3/css/custom.min.css" rel="stylesheet" type="text/css" />
+
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
     <!-- END HEAD -->
@@ -436,6 +437,11 @@
                                                     <a href="dashboard_3.html" class="nav-link  ">
                                                         <i class="icon-graph"></i> Dashboard 3
                                                         <span class="badge badge-danger">3</span>
+                                                    </a>
+                                                </li>
+                                                <li class=" ">
+                                                    <a class="nav-link  " id="SaveDashboard">
+                                                        <i class="icon-cloud"></i> Save Dashboard
                                                     </a>
                                                 </li>
                                             </ul>
@@ -1052,21 +1058,12 @@
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
                                     <!-- BEGIN PAGE CONTENT INNER -->
-            
-                                    <
-        <div class="portlet light ">
-            <div class="portlet-title">
-                 <div class="caption font-dark">
-                    <i class="icon-settings font-dark"></i>
-                    <span class="caption-subject bold uppercase">Dashboard</span>
-                </div>
-            </div>
 
-              <div class="portlet-body">          
-                  <div class="tiles" id="dashboard"></div>
-            </div>
-        </div>
-        
+                                    <div class="page-content-inner">
+
+
+                                    </div>
+
                                     <!-- END PAGE CONTENT INNER -->
                                 </div>
                             </div>

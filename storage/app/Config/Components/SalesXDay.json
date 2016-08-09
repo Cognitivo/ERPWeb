@@ -1,5 +1,5 @@
 {
-    "SqlFile": "SaleXDay.sq;",
+    "SqlFile": "SalesXDay.sql",
     "Type": "Barchart",
     "Dimensions": "3,3",
     "Caption": "Sales per Day",
@@ -9,7 +9,7 @@
         "Name": "Total Sales",
         "Column": "Sales",
         "NumberPrefix": "$",
-        "Color": ""
+        "Color": "#1E90FF"
     }],
     "Parameters":"StartDate,EndDate",
     "Module": "sales"

@@ -4,6 +4,7 @@
     "Dimensions": "3,3",
     "Caption": "Average Sales Per Invoice",
     "Value": "AvgSales",
+    "Unit":"Usd",
     "Module": "Sales",
     "Parameters":"StartDate,EndDate"
 }

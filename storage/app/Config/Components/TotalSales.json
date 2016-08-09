@@ -4,6 +4,7 @@
     "Dimensions": "6,3",
     "Caption": "Total Sales",
     "Value": "Sales",
+    "Unit":"Usd",
     "Parameters":"StartDate,EndDate",
     "Module": "Sales"
 }

@@ -4,6 +4,7 @@
     "Dimensions": "3,3",
     "Caption": "Sales Per Foot Traffic",
     "Value": "foottraffic",
+    "Unit":"Usd",
     "Parameters":"StartDate,EndDate",
     "Module": "Sales"
 }
