@@ -1,8 +1,8 @@
 
 
-@extends('../../ERPWeb')
-@section('title', 'contacts | DebeHaber')
-@section('Title', 'contacts')
+@extends('../../master')
+@section('title', 'Contacts | CognitivoERP')
+@section('Title', 'Contacts')
 
 @section('content')
     <div class="portlet light ">
