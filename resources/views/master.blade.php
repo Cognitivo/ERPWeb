@@ -101,7 +101,7 @@
                                                     <a href="{{url()}}/suppliers" class="nav-link">Suppliers</a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="{{url()}}/contacts" class="nav-link">Contacts</a>
+                                                    <a href="{{ route('contacts.index') }}" class="nav-link">Contacts</a>
                                                 </li>
                                             </ul>
                                         </li>

@@ -24,10 +24,10 @@ class contactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        $username = $request->session()->get('username');
+        
+        $username = Session::get('username');
 
         $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
 
@@ -122,7 +122,7 @@ class contactsController extends Controller
 
       $contacts= Contact::findOrFail($id);      
       $contacts->fill($request->all());
-    
+
       $contacts->save();
 
       return redirect('contacts');

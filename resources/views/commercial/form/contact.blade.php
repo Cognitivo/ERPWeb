@@ -1,4 +1,4 @@
-@extends('master')
+@extends('../../master')
 
 @section('title', $contacts->name.'| CognitivoERP')
 @section('Title', $contacts->name)
