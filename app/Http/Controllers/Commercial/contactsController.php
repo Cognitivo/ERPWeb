@@ -91,8 +91,6 @@ class contactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $contacts=  $contacts = Contact::where('id_contact', $id)->first();
-      $contacts.save();
         //
     }
 
