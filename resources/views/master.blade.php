@@ -30,9 +30,9 @@
         <link href="{{url()}}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
-        <link href="{{url()}}/assets/layouts/layout3/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="{{url()}}/assets/layouts/layout3/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="{{url()}}/assets/layouts/layout3/css/custom.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{url()}}/assets/layouts/normal/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{url()}}/assets/layouts/normal/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="{{url()}}/assets/layouts/normal/css/custom.min.css" rel="stylesheet" type="text/css" />
 
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" /> </head>
@@ -290,7 +290,7 @@
                                                         <li>
                                                             <a href="#">
                                                                 <span class="photo">
-                                                                    <img src="{{url()}}/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt=""> </span>
+                                                                    <img src="{{url()}}/assets/layouts/normal/img/avatar2.jpg" class="img-circle" alt=""> </span>
                                                                 <span class="subject">
                                                                     <span class="from"> Lisa Wong </span>
                                                                     <span class="time">Just Now </span>
@@ -301,7 +301,7 @@
                                                         <li>
                                                             <a href="#">
                                                                 <span class="photo">
-                                                                    <img src="{{url()}}/assets/layouts/layout3/img/avatar3.jpg" class="img-circle" alt=""> </span>
+                                                                    <img src="{{url()}}/assets/layouts/normal/img/avatar3.jpg" class="img-circle" alt=""> </span>
                                                                 <span class="subject">
                                                                     <span class="from"> Richard Doe </span>
                                                                     <span class="time">16 mins </span>
@@ -312,7 +312,7 @@
                                                         <li>
                                                             <a href="#">
                                                                 <span class="photo">
-                                                                    <img src="{{url()}}/assets/layouts/layout3/img/avatar1.jpg" class="img-circle" alt=""> </span>
+                                                                    <img src="{{url()}}/assets/layouts/normal/img/avatar1.jpg" class="img-circle" alt=""> </span>
                                                                 <span class="subject">
                                                                     <span class="from"> Bob Nilson </span>
                                                                     <span class="time">2 hrs </span>
@@ -323,7 +323,7 @@
                                                         <li>
                                                             <a href="#">
                                                                 <span class="photo">
-                                                                    <img src="{{url()}}/assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt=""> </span>
+                                                                    <img src="{{url()}}/assets/layouts/normal/img/avatar2.jpg" class="img-circle" alt=""> </span>
                                                                 <span class="subject">
                                                                     <span class="from"> Lisa Wong </span>
                                                                     <span class="time">40 mins </span>
@@ -334,7 +334,7 @@
                                                         <li>
                                                             <a href="#">
                                                                 <span class="photo">
-                                                                    <img src="{{url()}}/assets/layouts/layout3/img/avatar3.jpg" class="img-circle" alt=""> </span>
+                                                                    <img src="{{url()}}/assets/layouts/normal/img/avatar3.jpg" class="img-circle" alt=""> </span>
                                                                 <span class="subject">
                                                                     <span class="from"> Richard Doe </span>
                                                                     <span class="time">46 mins </span>
@@ -350,7 +350,7 @@
                                         <!-- BEGIN USER LOGIN DROPDOWN -->
                                         <li class="dropdown dropdown-user dropdown-dark">
                                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                                <img alt="" class="img-circle" src="{{url()}}/assets/layouts/layout3/img/avatar9.jpg">
+                                                <img alt="" class="img-circle" src="{{url()}}/assets/layouts/normal/img/avatar9.jpg">
                                                 <span class="username username-hide-mobile">{{$username}}</span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-default">
@@ -1139,8 +1139,8 @@
         <script src="{{url()}}/assets/pages/scripts/dashboard_app.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
-        <script src="{{url()}}/assets/layouts/layout3/scripts/layout.min.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/layouts/layout3/scripts/demo.min.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/layouts/normal/scripts/layout.min.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/layouts/normal/scripts/demo.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
     <!-- Google Tag Manager -->
