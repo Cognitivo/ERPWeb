@@ -7,10 +7,18 @@ $(document).ready(function() {
         ListComponents(Data);
     });
     $("body").on("click", "#SaveDashboard", function(e) {
+			var JsonString = JSON.stringify(DashboardComponents);
         if (typeof DashboardComponents !== 'undefined' && DashboardComponents.length > 0) {
-            $.get("./savedashboard/" + JSON.stringify(DashboardComponents),function(Response){
-							console.log(Response);
-						});
+            $.ajax({
+                type: "POST",
+                url: "./savedashboard",
+                data: {components:JsonString},
+                cache: false,
+
+                success: function(Response) {
+                    console.log(Response);
+                }
+            });
         }
     });
 });

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Security_User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use Auth;
+use Input;
 
 
 class AuthController extends Controller
@@ -24,7 +26,7 @@ class AuthController extends Controller
     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
+    protected $redirectPath = '/';
     /**
      * Create a new authentication controller instance.
      *
@@ -67,15 +69,20 @@ class AuthController extends Controller
 
 
     public function postLogin(Request $request){
-           $users=\DB::table('security_user')->select('name','password')->where('name',$request->email)->where('password',$request->password)->get();
-           if(count($users) == 1){
-              $request->session()->put('username', $users[0]->name);
-           }
-           return redirect('/');
+          $this->validate($request, [
+        'name' => 'required',
+        'password' => 'required',
+    ]);
+    if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceOf Security_User) {
+             Auth::login($user);
+             return redirect()->intended('/');
+        }
+        $errors = ["message"=>"The Credentials are Incorrect"];
+        return redirect()->back()->withErrors($errors)->withInput(Input::except('password'));
     }
     public function getLogout(Request $request)
     {
-        $request->session()->forget('username');
+        Auth::logout();
         return redirect('auth/login');
     }
 }

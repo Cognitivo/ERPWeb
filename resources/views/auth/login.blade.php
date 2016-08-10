@@ -57,6 +57,13 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- END LOGO -->
         <!-- BEGIN LOGIN -->
         <div class="content">
+          @if (count($errors))
+  <ul>
+      @foreach($errors->all() as $error)
+          <li>{{ $error }}</li>
+      @endforeach
+  </ul>
+@endif
             <!-- BEGIN LOGIN FORM -->
             <form class="login-form" action="{{url('auth/login')}}" method="post">
                    {!! csrf_field() !!}
@@ -70,7 +77,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <label class="control-label visible-ie8 visible-ie9">Username</label>
                     <div class="input-icon">
                         <i class="fa fa-user"></i>
-                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="email" /> </div>
+                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="name" /> </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">Password</label>
