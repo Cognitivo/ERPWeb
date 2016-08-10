@@ -79,6 +79,7 @@ class contactsController extends Controller
      */
     public function edit($id)
     {
+
         //
     }
 
@@ -92,12 +93,13 @@ class contactsController extends Controller
     public function update(Request $request, $id)
     {
 
-      // $contacts= Contacts::findOrFail($id);
-      //
-      // $contacts->fill($request->all());
-      // $contacts->save();
-      // 
-      // return redirect('contacts');
+
+      $contacts= Contacts::findOrFail($id);
+
+      $contacts->fill($request->all());
+      $contacts->save();
+
+      return redirect('contacts');
 
     }
 
