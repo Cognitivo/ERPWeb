@@ -455,12 +455,12 @@
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
-                                            <a href="javascript:;"> Layouts
+                                            <a href="javascript:;"> Commercial
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                                 <li class=" ">
-                                                    <a href="layout_mega_menu_light.html" class="nav-link  "> Light Mega Menu </a>
+                                                    <a href="contacts" class="nav-link  "> Customer </a>
                                                 </li>
                                                 <li class=" ">
                                                     <a href="layout_top_bar_light.html" class="nav-link  "> Light Top Bar Dropdowns </a>
@@ -1060,7 +1060,7 @@
                                     <!-- BEGIN PAGE CONTENT INNER -->
 
                                     <div class="page-content-inner">
-
+                                       @yield('content')
 
                                     </div>
 

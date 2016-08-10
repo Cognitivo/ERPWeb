@@ -18,5 +18,5 @@ class Security_User extends Model implements AuthenticatableContract,
   public $timestamps = false;
   protected $primaryKey = 'id_user';
   protected $table = 'security_user';
-  protected $fillable = ['name', 'password'];
+  protected $fillable = ['name', 'password', 'id_company'];
 }
