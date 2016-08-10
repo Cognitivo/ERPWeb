@@ -34,6 +34,26 @@ class contactsController extends Controller
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
     }
 
+    public function indexCustomers(Request $request)
+    {
+        $username = $request->session()->get('username');
+
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
+
+        //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
+        return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
+    }
+
+    public function indexSuppliers(Request $request)
+    {
+        $username = $request->session()->get('username');
+
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
+
+        //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
+        return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

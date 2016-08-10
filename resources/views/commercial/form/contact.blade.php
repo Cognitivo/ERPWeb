@@ -1,6 +1,6 @@
 @extends('../../master')
 
-@section('title', '{{$contacts->name}} | ERPWeb')
+@section('title', '{{$contacts->name}} | CognitivoERP')
 @section('Title', '{{$contacts->name}}')
 
 @section('content')

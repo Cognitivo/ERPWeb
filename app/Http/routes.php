@@ -16,6 +16,8 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('contacts','Commercial\contactsController@index');
+Route::get('customers','Commercial\contactsController@indexCustomers');
+Route::get('suppliers','Commercial\contactsController@indexSuppliers');
 Route::get('contacts/{id}','Commercial\contactsController@show');
 Route::post('savecontacts', 'Commercial\contactsController@update');
 
