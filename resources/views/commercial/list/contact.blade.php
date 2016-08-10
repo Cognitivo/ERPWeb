@@ -32,7 +32,7 @@
   </td>
 
 <td>
-  <a href="contacts/{{$item->id_contact}}">{{$item->name}}</a>
+  <a href="{{route('contacts.edit',$item->id_contact)}}">{{$item->name}}</a>
 
 </td>
 <td>

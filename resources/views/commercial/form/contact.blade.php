@@ -7,7 +7,7 @@
 {!! Form::model($contacts, ['route' => ['contacts.update', $contacts->id ], 'method'=>'PUT']) !!}
 
 
-
+  {!! csrf_field() !!}
 <div class="col-md-8">
 
       <div class="portlet-body">
@@ -88,6 +88,6 @@
     </div>
 
 
-
+{!!Form::close()!!}
 
 @endsection

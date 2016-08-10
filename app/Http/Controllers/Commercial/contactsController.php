@@ -26,6 +26,7 @@ class contactsController extends Controller
      */
     public function index(Request $request)
     {
+
         $username = $request->session()->get('username');
 
         $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
@@ -100,6 +101,12 @@ class contactsController extends Controller
     public function edit($id)
     {
 
+      $username = Session::get('username');
+      dd($username);
+      $contacts = Contact::where('id_contact', $id)->first();
+
+      //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
+      return view('commercial/form/contact')->with('contacts',$contacts)->with('username',$username);
         //
     }
 
@@ -112,7 +119,7 @@ class contactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+dd($id);
 
       $contacts= Contacts::findOrFail($id);
 
