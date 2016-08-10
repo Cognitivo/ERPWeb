@@ -1,11 +1,10 @@
-@extends('../../master')
+@extends('master')
 
-@section('title', '{{$contacts->name}} | CognitivoERP')
-@section('Title', '{{$contacts->name}}')
+@section('title', $contacts->name.'| CognitivoERP')
+@section('Title', $contacts->name)
 
 @section('content')
-{!! Form::model($contacts, ['route' => ['contacts.update', $contacts->id ], 'method'=>'PUT']) !!}
-
+{!! Form::model($contacts,['route' => ['contacts.update',$contacts->id_contact], 'method'=>'put']) !!}
 
   {!! csrf_field() !!}
 <div class="col-md-8">
@@ -30,8 +29,7 @@
                     <div class="col-md-4">
                       <div class="form-group">
                           <label class="col-md-3 control-label">Name</label>
-                           <div class="col-md-9">
-                             {!! Form::label('title', 'Name :') !!}
+                           <div class="col-md-9">                            
                {!! Form::text('name', null, ['class'=>'form-horizontal', 'placeholder'=>'Enter Name']) !!}
                             </div>
                       </div>
@@ -59,7 +57,7 @@
 
             <label for="name" class="col-sm-3 control-label">Cliente:</label>
             <div class="col-sm-8">
-                <input type="text" name="name" class="form-control" value="" />
+               
                 <div class="panel-heading clearfix">
 {!! Form::submit( 'Update', ['class'=>'btn btn-toolbar']) !!}
                 </div>
@@ -70,20 +68,6 @@
 
 
 
-
-    </div>
-
-    <div class="col-md-4">
-        <div class="form-group">
-            <div class="col-sm-8">
-                <button class="btn btn-default">Cargar Retención</button>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-8">
-           <button type="submit" class="btn btn-success">Guardar</button>
-            </div>
-        </div>
 
     </div>
 

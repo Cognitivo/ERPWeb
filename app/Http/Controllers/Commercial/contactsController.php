@@ -100,13 +100,12 @@ class contactsController extends Controller
      */
     public function edit($id)
     {
-
-      $username = Session::get('username');
-      dd($username);
-      $contacts = Contact::where('id_contact', $id)->first();
-
+      
+      $username = Session::get('username');     
+      $contacts = Contact::where('id_contact', $id)->get();
+      //dd($contacts);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-      return view('commercial/form/contact')->with('contacts',$contacts)->with('username',$username);
+      return view('commercial/form/contact')->with('contacts',$contacts[0])->with('username',$username);
         //
     }
 
@@ -119,11 +118,11 @@ class contactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-dd($id);
+        // dd($id);
 
-      $contacts= Contacts::findOrFail($id);
-
+      $contacts= Contact::findOrFail($id);      
       $contacts->fill($request->all());
+    
       $contacts->save();
 
       return redirect('contacts');
