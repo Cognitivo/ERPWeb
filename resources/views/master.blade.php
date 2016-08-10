@@ -64,7 +64,7 @@
                                             <img height="38px" src="{{url()}}/assets/global/img/CognitivoLogo.png"
                                                  alt="logo" class="logo-default" style="vertical-align:center; margin-top:5px;" >
                                         </li>
-                                        <li class="menu-dropdown classic-menu-dropdown active">
+                                        <li class="menu-dropdown classic-menu-dropdown active mainmenu-text">
                                             <a href="javascript:;"> Dashboard
                                                 <span class="arrow"></span>
                                             </a>
