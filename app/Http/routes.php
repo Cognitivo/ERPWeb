@@ -17,6 +17,7 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('contacts','Commercial\contactsController@index');
 Route::get('contacts/{id}','Commercial\contactsController@show');
+Route::post('savecontacts', 'Commercial\contactsController@update');
 
 Route::group(['middleware' => 'auth'], function () {
 Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');

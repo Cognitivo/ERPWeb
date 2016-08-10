@@ -4,11 +4,12 @@
 @section('Title', '{{$contacts->name}}')
 
 @section('content')
+{!! Form::model($contacts, ['route' => ['contacts.update', $contacts->id ], 'method'=>'PUT']) !!}
 
-<form class="form-horizontal">
 
 
 <div class="col-md-8">
+
       <div class="portlet-body">
           <ul class="nav nav-tabs">
               <li class="active">
@@ -30,34 +31,12 @@
                       <div class="form-group">
                           <label class="col-md-3 control-label">Name</label>
                            <div class="col-md-9">
-                              <input type="text" name="txtname" class="form-control" placeholder="Name" value="{{$contacts->name}}">
+                             {!! Form::label('title', 'Name :') !!}
+               {!! Form::text('name', null, ['class'=>'form-horizontal', 'placeholder'=>'Enter Name']) !!}
                             </div>
                       </div>
                     </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                          <label class="col-md-3 control-label">Alias</label>
-                           <div class="col-md-9">
-                              <input type="text" name="txtalias" class="form-control" placeholder="Alias" value="{{$contacts->alias}}">
-                            </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                          <label class="col-md-3 control-label">GovenmentID</label>
-                           <div class="col-md-9">
-                              <input type="text" name="txtGovenmentID" class="form-control" placeholder="GovenmentID" value="{{$contacts->gov_code}}">
-                            </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                          <label class="col-md-3 control-label">Code</label>
-                           <div class="col-md-9">
-                              <input type="text" name="txtCode"  class="form-control" placeholder="Code" value="{{$contacts->code}}">
-                            </div>
-                      </div>
-                    </div>
+
               </div>
                   <div class="col-md-4">
                   </div>
@@ -82,7 +61,7 @@
             <div class="col-sm-8">
                 <input type="text" name="name" class="form-control" value="" />
                 <div class="panel-heading clearfix">
-
+{!! Form::submit( 'Update', ['class'=>'btn btn-toolbar']) !!}
                 </div>
                 <i class="icon-plus col-md-2"></i><i class="icon-pencil col-md-2" ></i><i class="icon-settings col-md-2" ></i>
 
@@ -102,13 +81,13 @@
         </div>
         <div class="form-group">
             <div class="col-sm-8">
-                <button type="submit" class="btn btn-success">Guardar</button>
+           <button type="submit" class="btn btn-success">Guardar</button>
             </div>
         </div>
 
     </div>
 
 
-</form>
+
 
 @endsection

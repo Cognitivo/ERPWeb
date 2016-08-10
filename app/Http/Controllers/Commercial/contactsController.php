@@ -52,7 +52,7 @@ class contactsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -91,7 +91,14 @@ class contactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+      // $contacts= Contacts::findOrFail($id);
+      //
+      // $contacts->fill($request->all());
+      // $contacts->save();
+      // 
+      // return redirect('contacts');
+
     }
 
     /**
