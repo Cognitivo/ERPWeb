@@ -31,7 +31,7 @@ class contactsController extends Controller
         $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-        return view('commercial/list/contactlist')->with('contacts',$contacts)->with('username',$username);
+        return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
     }
 
     /**

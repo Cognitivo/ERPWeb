@@ -12,6 +12,7 @@ use Auth;
 use Input;
 
 
+
 class AuthController extends Controller
 {
     /*
