@@ -13,9 +13,11 @@ use Config;
 class kpiController extends Controller
 {
     public function Execute_KPI($Key, $StartDate, $EndDate){
+
         //search for JsonKey
         $ComponentConfigJson = file_get_contents(Config::get("Paths.Components") . $Key . ".json");
         $ComponentConfig = json_decode($ComponentConfigJson,true);
+       
         switch($ComponentConfig["Type"]){
           case "Kpi":
             self::ExecuteKpi($Key,$StartDate,$EndDate);
@@ -31,9 +33,11 @@ class kpiController extends Controller
         // return call_user_func_array($Key, array($StartDate , $EndDate));
     }
   public function ExecuteKpi($Key,$StartDate,$EndDate){
+
     $ComponentConfigJson = file_get_contents(Config::get("Paths.Components") . $Key . ".json");
     $Response = array();
     $ComponentConfig = json_decode($ComponentConfigJson,true);
+
     $Query = file_get_contents(Config::get("Paths.SQLs") . $ComponentConfig["SqlFile"]);
     $Parameters = explode(",",$ComponentConfig["Parameters"]);
     foreach ($Parameters as $Parameter) {
@@ -45,6 +49,7 @@ class kpiController extends Controller
     $Response["Dimensions"] = $ComponentConfig["Dimensions"];
     $Response["Caption"] = $ComponentConfig["Caption"];
     $Response["Value"] = $ComponentConfig["Value"];
+
     return json_encode($Response);
   }
   public function ExecutePie($Key,$StartDate,$EndDate){

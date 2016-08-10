@@ -18,7 +18,7 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-Route::group(['middleware' => 'isloggedin'], function () {
+  Route::group(['middleware' => 'isloggedin'], function () {
   Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
   Route::get('getcomponents', 'kpiController@GetComponents');
   Route::get('/', 'dashboardController@index');

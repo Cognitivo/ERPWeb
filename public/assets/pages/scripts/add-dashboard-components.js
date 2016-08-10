@@ -16,7 +16,7 @@ function handleComponents (){
 
       //var Response = JSON.parse(data);
       var Response = data;
-      console.log(Response.data);
+      console.log(Response);
       if(Response.type == "kpi"){
         handleKPI(Response);
       }
