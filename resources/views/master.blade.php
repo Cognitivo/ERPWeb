@@ -19,7 +19,7 @@
         <link href="{{url()}}/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->``
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
         <link href="{{url()}}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
@@ -31,13 +31,12 @@
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="{{url()}}/assets/layouts/normal/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="{{url()}}/assets/layouts/normal/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="{{url()}}/assets/layouts/normal/css/themes/light2.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="{{url()}}/assets/layouts/normal/css/custom.min.css" rel="stylesheet" type="text/css" />
-
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link rel="shortcut icon" href="favicon.ico" />
+    </head>
     <!-- END HEAD -->
-
     <body class="page-container-bg-solid">
         <div class="page-wrapper">
             <div class="page-wrapper-row">
@@ -62,7 +61,8 @@
                                 <div class="hor-menu  ">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <img style="padding-bottom:10px" height="50px" src="{{url()}}/assets/global/img/CognitivoLogo.png" alt="logo" class="logo-default">
+                                            <img height="38px" src="{{url()}}/assets/global/img/CognitivoLogo.png"
+                                                 alt="logo" class="logo-default" style="vertical-align:center; margin-top:5px;" >
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown active">
                                             <a href="javascript:;"> Dashboard
@@ -71,7 +71,7 @@
                                             <ul class="dropdown-menu pull-left">
                                                 <li class=" active">
                                                     <a href="index.html" class="nav-link  active">
-                                                        <i class="icon-bar-chart"></i> Show
+                                                        <i class="icon-bar-chart"></i> Launch
                                                         <span class="badge badge-success">1</span>
                                                     </a>
                                                 </li>
@@ -82,7 +82,7 @@
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown  ">
-                                            <a href="javascript:;"> Estadisticas
+                                            <a href="javascript:;"> Statistics
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left" style="min-width: 710px" id="components">
@@ -100,6 +100,9 @@
                                                 <li class="">
                                                     <a href="{{url()}}/suppliers" class="nav-link">Suppliers</a>
                                                 </li>
+
+                                                <hr/>
+
                                                 <li class="">
                                                     <a href="{{ route('contacts.index') }}" class="nav-link">Contacts</a>
                                                 </li>
@@ -148,7 +151,7 @@
                                             <i class="fa fa-circle"></i>
                                         </li>
                                         <li>
-                                            <span>Dashboard</span>
+                                            <span>@yield('title')</span>
                                         </li>
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
