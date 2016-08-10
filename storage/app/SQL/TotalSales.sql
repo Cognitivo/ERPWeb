@@ -1,4 +1,4 @@
-select ifnull(sum(quantity * unit_price * vatco.coef),0) as Sales
+select round(ifnull(sum(quantity * unit_price * vatco.coef),0),2) as Sales
 from sales_invoice as si
 left join sales_invoice_detail as sd
 on si.id_sales_invoice = sd.id_sales_invoice

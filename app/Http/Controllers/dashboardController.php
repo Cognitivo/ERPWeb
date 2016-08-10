@@ -13,6 +13,9 @@ class dashboardController extends Controller
 {
   public function index(Request $request){
       $username = $request->session()->get('username');
-      return view('ERPWeb',compact('username'));
+      return view('master',compact('username'));
+  }
+  public function SaveDashboard(Request $request){
+    dd(Input::get("components"));
   }
 }
