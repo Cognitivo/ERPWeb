@@ -64,7 +64,7 @@
                                             <img height="38px" src="{{url()}}/assets/global/img/CognitivoLogo.png"
                                                  alt="logo" class="logo-default" style="vertical-align:center; margin-top:5px;" >
                                         </li>
-                                        <li class="menu-dropdown classic-menu-dropdown active mainmenu-text">
+                                        <li class="menu-dropdown classic-menu-dropdown active">
                                             <a href="javascript:;"> Dashboard
                                                 <span class="arrow"></span>
                                             </a>
@@ -151,7 +151,7 @@
                                             <i class="fa fa-circle"></i>
                                         </li>
                                         <li>
-                                            <span>@yield('title')</span>
+                                            <span>@yield('Title')</span>
                                         </li>
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
@@ -159,7 +159,6 @@
 
                                     <div class="page-content-inner">
                                        @yield('content')
-
                                     </div>
 
                                     <!-- END PAGE CONTENT INNER -->
@@ -226,7 +225,6 @@
          <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
-
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{url()}}/assets/global/scripts/app.min.js" type="text/javascript"></script>

@@ -1,10 +1,11 @@
 {
-    "SqlFile": "Sales_ByFootTraffic.sql",
-    "Type": "Kpi",
-    "Dimensions": "3,3",
-    "Caption": "Sales Per Foot Traffic",
-    "Value": "foottraffic",
-    "Unit":"Usd",
-    "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
-}
+    "Query": [{
+            "formula": "Q1/Q2",
+            "Q1": "select ifnull(sum(quantity),0) as FootTraffic from app_branch_walkins where(start_date >= * StartDate * and start_date <= * EndDate * ) and(end_date >= * StartDate * and end_date <= * EndDate * )",
+            "Q2": "select sum(sid.quantity * sid.unit_price) as Sales from sales_invoice as si left join sales_invoice_detail as sid on si.id_sales_invoice = sid.id_sales_invoice where si.trans_date between * StartDate * and * EndDate *"}],
+            "Type": "kpi",
+            "Dimension": "3,3",
+            "Caption": "Sales Per Foot Traffic",
+            "Value": "data",
+            "Module": "Sales"
+        }

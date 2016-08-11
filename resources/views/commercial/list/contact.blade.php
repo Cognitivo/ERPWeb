@@ -9,38 +9,44 @@
         <div class="portlet-title">
             <div class="caption font-dark">
 
-
             </div>
             <div class="tools"></div>
         </div>
         <div class="portlet-body">
-            <table class="table table-striped table-bordered table-hover order-column"   id="sample_1">
-
+            <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                 <thead>
-                <tr >
-                    <th>Fecha</th>
-                    <th>Cliente</th>
-                    <th>Número</th>
-                </tr>
-              </thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Government ID</th>
+                        <th>Address</th>
+                        <th>Telephone</th>
+                    </tr>
+                </thead>
                 <tbody>
-@foreach($contacts as $item)
-<tr>
-
-  <td>
-    {{$item->timestamp}}
-  </td>
-
-<td>
-  <a href="{{route('contacts.edit',$item->id_contact)}}">{{$item->name}}</a>
-
-</td>
-<td>
-  {{$item->gov_code}}
-</td>
-</tr>
-@endforeach
-
+                @foreach($contacts as $item)
+                    @if ($item->is_active === 1)
+                        <tr>
+                    @else
+                        <tr style="background-color:pink;">
+                    @endif
+                            <td>
+                                {{ date('F d, Y', strtotime($item->timestamp)) }}
+                            </td>
+                            <td>
+                                <a href="{{route('contacts.edit',$item->id_contact)}}">{{$item->name}}</a>
+                            </td>
+                            <td>
+                                {{$item->gov_code}}
+                            </td>
+                            <td>
+                                {{$item->address}}
+                            </td>
+                            <td>
+                                {{$item->telephone}}
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

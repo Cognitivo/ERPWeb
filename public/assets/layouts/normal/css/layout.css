@@ -44,7 +44,7 @@ Page Header
 .page-header {
   opacity: 1 ;
   filter: alpha(opacity=100) ;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   z-index: 5;
   width: 100%;
   margin: 0;
@@ -376,7 +376,9 @@ Page Header
               margin-bottom: 2px;
               margin-right: 5px; }
         .page-header .page-header-top .top-menu .navbar-nav li.dropdown-dark .dropdown-menu {
-          border: 0; }
+          border: 0;
+          box-shadow: 0px 3px 8px silver;
+            }
           .page-header .page-header-top .top-menu .navbar-nav li.dropdown-dark .dropdown-menu:before {
             border-left: none;
             border-right: none; }

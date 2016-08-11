@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Commercial;
-
 
 use App\Empresa;
 use Illuminate\Http\Request;
@@ -26,10 +24,8 @@ class contactsController extends Controller
      */
     public function index()
     {
-        
         $username = Session::get('username');
-
-        $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->get();
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
@@ -38,8 +34,7 @@ class contactsController extends Controller
     public function indexCustomers(Request $request)
     {
         $username = $request->session()->get('username');
-
-        $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
+        $contacts = Contact::where('is_customer', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->get();
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
@@ -48,8 +43,7 @@ class contactsController extends Controller
     public function indexSuppliers(Request $request)
     {
         $username = $request->session()->get('username');
-
-        $contacts = Contact::where('id_company', Auth::user()->id_company)->get();
+        $contacts = Contact::where('is_supplier', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->get();
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
@@ -100,8 +94,8 @@ class contactsController extends Controller
      */
     public function edit($id)
     {
-      
-      $username = Session::get('username');     
+
+      $username = Session::get('username');
       $contacts = Contact::where('id_contact', $id)->get();
       //dd($contacts);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
@@ -120,7 +114,7 @@ class contactsController extends Controller
     {
         // dd($id);
 
-      $contacts= Contact::findOrFail($id);      
+      $contacts= Contact::findOrFail($id);
       $contacts->fill($request->all());
 
       $contacts->save();
