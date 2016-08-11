@@ -35,6 +35,7 @@
         <link href="{{url()}}/assets/layouts/normal/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
+        <link href="{{url()}}/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css">
     </head>
     <!-- END HEAD -->
     <body class="page-container-bg-solid">

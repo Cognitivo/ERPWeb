@@ -80,9 +80,13 @@ class contactsController extends Controller
     {
       $username = $request->session()->get('username');
       $contacts = Contact::where('id_contact', $id)->first();
+      $contact_subscription = contact_subscription::where('id_contact', $id)->first();
 
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-      return view('commercial/form/contact')->with('contacts',$contacts)->with('username',$username);
+      return view('commercial/form/contact')
+      ->with('contacts',$contacts)
+      ->with('contact_subscription', $contact_subscription)
+      ->with('username',$username);
         //
     }
 
