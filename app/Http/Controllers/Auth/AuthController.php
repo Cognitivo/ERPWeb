@@ -68,7 +68,6 @@ class AuthController extends Controller
         ]);
     }
 
-
     public function postLogin(Request $request){
           $this->validate($request, [
         'name' => 'required',
@@ -81,6 +80,7 @@ class AuthController extends Controller
         $errors = ["message"=>"The Credentials are Incorrect"];
         return redirect()->back()->withErrors($errors)->withInput(Input::except('password'));
     }
+
     public function getLogout(Request $request)
     {
         Auth::logout();

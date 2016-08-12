@@ -276,9 +276,48 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
+                                <div class="tab-pane" id="tab_1_5">
+                                                            <form role=form action="#">
+                                                              <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
+                                                                  <thead>
+                                                                      <tr>
+                                                                        <th>Date</th>
+                                                                          <th>id_item</th>
+                                                                          <th>Start Date</th>
+                                                                          <th>End Date</th>
+                                                                          <th>unit price</th>
+                                                                        </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                  @foreach($contact_subscription as $subscription)
+                                                                             <td>
+                                                                                  {{ date('F d, Y', strtotime($subscription->timestamp)) }}
+                                                                              </td>
+                                                                              <td>
+                                                                                  {{$subscription->id_item}}
+                                                                              </td>
+                                                                              <td>
+                                                                                  {{$subscription->Items->name}}
+                                                                              </td>
+                                                                              <td>
+                                                                                  {{$subscription->start_date}}
+                                                                              </td>
+                                                                              <td>
+                                                                                  {{$subscription->end_date}}
+                                                                              </td>
+                                                                              <td>
+                                                                                  {{$subscription->unit_price}}
+                                                                              </td>
+                                                                          </tr>
+                                                                      @endforeach
+                                                                  </tbody>
+                                                              </table>
+                                                            </form>
+                                                        </div>
                                 <!-- END PROFILE CONTENT -->
                             </div>
                         </div>

@@ -14,6 +14,8 @@ use Illuminate\Routing\Route;
 use Auth;
 use App\Subcription;
 use App\Contact;
+use App\ContactSubsciption;
+use App\Items;
 
 class contactsController extends Controller
 {
@@ -24,11 +26,15 @@ class contactsController extends Controller
      */
     public function index()
     {
+
         $username = Session::get('username');
         $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->get();
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-        return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
+        return view('commercial/list/contact')
+        ->with('contacts',$contacts)
+        ->with('username',$username);
+
     }
 
     public function indexCustomers(Request $request)
@@ -78,10 +84,9 @@ class contactsController extends Controller
      */
     public function show($id, Request $request)
     {
+
       $username = $request->session()->get('username');
       $contacts = Contact::where('id_contact', $id)->first();
-      $contact_subscription = contact_subscription::where('id_contact', $id)->first();
-
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
       return view('commercial/form/contact')
       ->with('contacts',$contacts)
@@ -100,10 +105,15 @@ class contactsController extends Controller
     {
 
       $username = Session::get('username');
-      $contacts = Contact::where('id_contact', $id)->get();
-      //dd($contacts);
+      //$contacts = Contact::where('id_contact', $id)->get();
+      $contacts= Contact::find($id);
+      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
+    //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-      return view('commercial/form/contact')->with('contacts',$contacts[0])->with('username',$username);
+      return view('commercial/form/contact')
+      ->with('contacts',$contacts)
+      ->with('username',$username)
+      ->with('contact_subscription',$contact_subscription);
         //
     }
 
