@@ -21,6 +21,8 @@ Route::group(['middleware' => 'auth'], function ()
 Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
 Route::get('getcomponents', 'kpiController@GetComponents');
 Route::post('savedashboard', 'dashboardController@SaveDashboard');
+Route::get('managecomponents','dashboardController@ManageDashboard');
+Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('/', 'dashboardController@index');
 
 Route::resource('contacts','Commercial\contactsController');

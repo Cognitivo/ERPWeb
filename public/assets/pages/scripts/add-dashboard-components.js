@@ -1,29 +1,8 @@
-var DashboardComponents = [];
+
 
 $(document).ready(function() {
     handleComponents();
 });
-
-<<<<<<< HEAD
-function handleComponents (){
-  $("body").on("click","#components li a",function(e){
-    var url = $(this).attr("data-key");
-    $.get("./kpi/" + url + "/2016-07-01/2017-01-01",function(data){
-
-
-      //var Response = JSON.parse(data);
-      var Response = data;
-      console.log(Response);
-      if(Response.type == "kpi"){
-        handleKPI(Response);
-      }
-      else if (Response.type == "pie") {
-        handlePie(Response);
-      }
-      else if (Response.type == "bar") {
-        handleBarChart(Response)
-      }
-=======
 function handleComponents() {
     $("body").on("click", "#components li a", function(e) {
         var url = $(this).attr("data-key");
@@ -36,7 +15,6 @@ function handleComponents() {
                 handleBarChart(Response)
             }
         }, "json");
->>>>>>> ce8d3a1339d5e7fe0e0427372e51f828eb85bbee
     });
 }
 

@@ -77,7 +77,7 @@
                                                     </a>
                                                 </li>
                                                 <li class=" ">
-                                                    <a href="dashboard_2.html" class="nav-link  ">
+                                                    <a href="{{url('managecomponents')}}" class="nav-link  ">
                                                         <i class="icon-bulb"></i> Manage </a>
                                                 </li>
                                             </ul>
@@ -159,6 +159,8 @@
                                     <!-- BEGIN PAGE CONTENT INNER -->
 
                                     <div class="page-content-inner">
+                                      @section('innercontent')
+                                      @show
                                        @yield('content')
                                     </div>
 
@@ -233,7 +235,8 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/pages/scripts/dashboard_app.js" type="text/javascript"></script>
+        @section('pagescripts')
+        @show
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="{{url()}}/assets/layouts/normal/scripts/layout.min.js" type="text/javascript"></script>

@@ -111,20 +111,4 @@ class kpiController extends Controller
     $Response["Key"] = $Key;
     return Response::json($Response);
   }
-
-  public function GetComponents(){
-    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
-                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
-                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
-    $Iterator = new \RecursiveIteratorIterator($Directory);
-    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
-                                                                    \RegexIterator::USE_KEY);
-    $Components = array();
-    foreach($ComponentJsonFiles as $File){
-      $Json = json_decode(file_get_contents($File),true);
-      $FileInfo = pathinfo($File);
-      $Components[$Json["Caption"]] = $FileInfo["filename"];
-    }
-    return json_encode($Components);
-  }
 }
