@@ -26,7 +26,12 @@ Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('/', 'dashboardController@index');
 
 Route::resource('contacts','Commercial\contactsController');
+Route::resource('subscription','Commercial\contactsubscriptionController');
+Route::resource('relation','Commercial\relationController');
 Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
 Route::resource('customers','Commercial\contactsController@indexCustomers');
+
+
+
 
 });
