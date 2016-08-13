@@ -1,7 +1,7 @@
 @extends('../../master')
 
 @section('title', 'Contacts | CognitivoERP')
-@section('Title', 'Contacts')
+@section('Title', 'Contact Form')
 
 @section('content')
 @if(isset($contacts))
@@ -29,6 +29,7 @@
                             <div class="profile-usertitle-name">'contacts' </div>
                             <div class="profile-usertitle-job"> 'contacts' </div>
                         </div>
+
                         <!-- END SIDEBAR USER TITLE -->
                         <!-- SIDEBAR BUTTONS -->
                         <div class="profile-userbuttons">
