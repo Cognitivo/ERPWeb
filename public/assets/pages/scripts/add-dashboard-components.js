@@ -4,18 +4,26 @@ $(document).ready(function() {
     handleComponents();
 });
 function handleComponents() {
-    $("body").on("click", "#components li a", function(e) {
-        var url = $(this).attr("data-key");
-        $.get("./kpi/" + url + "/2016-01-01/2017-01-01", function(Response) {
-            if (Response.Type.toLowerCase() == "kpi") {
-                handleKPI(Response);
-            } else if (Response.Type.toLowerCase() == "piechart") {
-                handlePie(Response);
-            } else if (Response.Type.toLowerCase() == "barchart") {
-                handleBarChart(Response)
-            }
-        }, "json");
-    });
+        $.get("./kpi/getusercomponents"),function(Response){
+          if(Response.hasOwnProperty('error')){
+            $.each(Response.error, function(key, value) {
+              console.log(value);
+            });
+          }
+          if(Response.hasOwnProperty('components')){
+            $.each(data, function(key, value) {
+              $.get("./kpi/" + value + "/2016-01-01/2017-01-01", function(Response) {
+                  if (Response.Type.toLowerCase() == "kpi") {
+                      handleKPI(Response);
+                  } else if (Response.Type.toLowerCase() == "piechart") {
+                      handlePie(Response);
+                  } else if (Response.Type.toLowerCase() == "barchart") {
+                      handleBarChart(Response)
+                  }
+              }, "json");
+            });
+          }
+        }
 }
 
 function handleKPI(Response) {
@@ -28,7 +36,6 @@ function handleKPI(Response) {
             $(".page-content-inner").append($(divWidgetRow));
             $(".page-content-inner .widget-row").append($(divKPI));
         }
-        DashboardComponents.push(Response.Key);
     }
 }
 
@@ -71,7 +78,6 @@ function handleBarChart(Response) {
                 }
             }
         });
-        DashboardComponents.push(Response.Key);
     }
 
 

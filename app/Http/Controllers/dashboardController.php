@@ -20,13 +20,27 @@ class dashboardController extends Controller
   }
   public function SaveDashboard(Request $request){
     $Name = Auth::user()->name;
-    File::makeDirectory(Config::get("Paths.Components") . $Name . "/");
-    File::put(Config::get("Paths.Components") . $Name . "/dashboard.json",json_encode(Input::get("components")));
+    if (!file_exists(Config::get("Paths.UserDashboard") . $Name . "/")) {
+      File::makeDirectory(Config::get("Paths.UserDashboard") . $Name . "/");
+    }
+    try{
+      if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
+        $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
+      }
+      foreach (Input::get('components') as $Comp) {
+        $DashboardComponents[] = $Comp;
+      }
+      file_put_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",json_encode($DashboardComponents));
+    }
+    catch(Exception $e){
+      return $e->getMessage();
+    }
+    return true;
   }
   public function ManageDashboard(){
     $Name = Auth::user()->name;
-    if(File::exists(Config::get("Paths.Components") . $Name . "/dashboard.json")){
-      $DashboardComponents = file_get_contents(Config::get("Paths.Components") . $Name . "/dashboard.json",true);
+    if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
+      $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
       return view('Dashboard.ConfigComponents',compact('DashboardComponents'));
     }
     else{

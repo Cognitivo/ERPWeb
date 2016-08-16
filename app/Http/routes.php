@@ -19,9 +19,10 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 Route::group(['middleware' => 'auth'], function ()
 {
 Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
-Route::get('getcomponents', 'kpiController@GetComponents');
+Route::get('kpi/getusercomponents', 'kpiController@GetUserComponents');
 Route::post('savedashboard', 'dashboardController@SaveDashboard');
 Route::get('managecomponents','dashboardController@ManageDashboard');
+Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('/', 'dashboardController@index');
 

@@ -9,6 +9,8 @@ use Input;
 use Response;
 use View;
 use Config;
+use Auth;
+use File;
 
 class kpiController extends Controller
 {
@@ -17,11 +19,6 @@ class kpiController extends Controller
         //search for JsonKey
         $ComponentConfigJson = file_get_contents(Config::get("Paths.Components") . $Key . ".json");
         $ComponentConfig = json_decode($ComponentConfigJson,true);
-
-       
-        switch($ComponentConfig["Type"]){
-          case "Kpi":
-            self::ExecuteKpi($Key,$StartDate,$EndDate);
 
         switch(strtolower($ComponentConfig["Type"])){
           case "kpi":
@@ -110,5 +107,15 @@ class kpiController extends Controller
     $Response["Series"] = $ComponentConfig["Series"];
     $Response["Key"] = $Key;
     return Response::json($Response);
+  }
+  public function GetUserComponents(){
+    $Name = Auth::user()->name;
+    if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
+      $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
+      return json_encode(array("components"=>$DashboardComponents));
+    }
+    else{
+      return json_encode(array("error"=>"No Components"));
+    }
   }
 }

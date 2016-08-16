@@ -12,15 +12,15 @@ $(document).ready(function() {
     $('#components :checked').each(function() {
       DashboardComponents.push($(this).val());
       $("#UserComponents").append("<li>" + $(this).next('label').text() + "</li>")
+      $("#AddComponents").hide();
     });
   });
     $("body").on("click", "#UpdateUserDashboard", function(e) {
-			var JsonString = JSON.stringify(DashboardComponents);
         if (typeof DashboardComponents !== 'undefined' && DashboardComponents.length > 0) {
             $.ajax({
                 type: "POST",
                 url: "./savedashboard",
-                data: {components:JsonString},
+                data: {components:DashboardComponents},
                 cache: false,
 
                 success: function(Response) {
