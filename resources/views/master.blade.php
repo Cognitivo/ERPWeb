@@ -71,7 +71,7 @@
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                                 <li class=" active">
-                                                    <a href="index.html" class="nav-link  active">
+                                                    <a href="{{url('/')}}" class="nav-link  active">
                                                         <i class="icon-bar-chart"></i> Launch
                                                         <span class="badge badge-success">1</span>
                                                     </a>
@@ -204,7 +204,7 @@
         <script src="{{url()}}/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
-        <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
+        
 
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="{{url()}}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
@@ -237,6 +237,7 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
+        <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
         @section('pagescripts')
         @show
         <!-- END PAGE LEVEL SCRIPTS -->

@@ -1,7 +1,7 @@
 {
-    "Query": "select date(trans_date) as Date, (sid.unit_price * sid.quantity) as Sales, b.name as Branch from sales_invoice as si inner join sales_invoice_detail as sid on si.id_sales_invoice = sid.id_sales_invoice left join app_branch as b on si.id_branch = b.id_branch where si.id_company = 1  and si.id_branch = 1 group by date(trans_date) order by date(trans_date)",
-    "Type": "bar",
-    "Dimension": "3,3",
+    "SqlFile": "SalesXDay.sql",
+    "Type": "Barchart",
+    "Dimensions": "3,3",
     "Caption": "Sales per Day",
     "Label": "Date",
     "Series": [{
@@ -11,5 +11,6 @@
         "NumberPrefix": "$",
         "Color": ""
     }],
+    "Parameters":"StartDate,EndDate",
     "Module": "sales"
 }

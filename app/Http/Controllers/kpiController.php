@@ -54,10 +54,6 @@ class kpiController extends Controller
     $Response["Dimensions"] = $ComponentConfig["Dimensions"];
     $Response["Caption"] = $ComponentConfig["Caption"];
     $Response["Value"] = $ComponentConfig["Value"];
-
-
-    return json_encode($Response);
-
     $Response["Unit"] = $ComponentConfig["Unit"];
     $Response["Key"] = $Key;
     return Response::json($Response);
@@ -73,6 +69,10 @@ class kpiController extends Controller
       $Query = str_replace("@" . $Parameter,"'" . ${$Parameter} . "'", $Query);
     }
     $Data = DB::select(DB::raw($Query));
+    foreach ($Data as $Row) {
+      $Response[$ComponentConfig["Label"]][] = $Row->{$ComponentConfig["Label"]};
+      $Response[$ComponentConfig["PieValues"]][] = $Row->{$ComponentConfig["PieValues"]};
+    }
     $Response["Type"] = $ComponentConfig["Type"];
     $Response["Dimensions"] = $ComponentConfig["Dimensions"];
     $Response["Caption"] = $ComponentConfig["Caption"];
