@@ -124,9 +124,10 @@ class contactsController extends Controller
      */
     public function show($id, Request $request)
     {
-
+      session(['idcontact'=>$id]);
       $username = $request->session()->get('username');
       $contacts = Contact::where('id_contact', $id)->first();
+
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
       return view('commercial/form/contact')
       ->with('contacts',$contacts)
@@ -145,10 +146,11 @@ class contactsController extends Controller
     {
 
 
-
+  session(['idcontact'=>$id]);
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
+        
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
         $relation = Contact::where('parent_id_contact','=',$id)->get();
           $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');

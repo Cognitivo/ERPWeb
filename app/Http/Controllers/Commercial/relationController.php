@@ -17,6 +17,8 @@ use App\ContactRole;
 use App\Contact;
 use App\ContactSubsciption;
 use App\Items;
+use Carbon\Carbon;
+
 
 class relationController extends Controller
 {
@@ -74,15 +76,42 @@ class relationController extends Controller
      */
     public function store(Request $request)
     {
+        $idcontact = Session::get('idcontact');
+
       $contact = new Contact;
+
       $contact->id_contact_role =$request->id_contact_role;
+
       $contact->id_company =Auth::user()->id_company;
+
       $contact->id_user =Auth::user()->id_user;
+
       $contact->name = $request->name;
-      $contact->alias = $request->alias;
-      $contact->code = $request->code;
+        if ( $request->alias!=null) {
+
+         $contact->alias = $request->alias;
+        }
+        else {
+         $contact->alias = $request->name;
+        }
+        if ( $request->code!=null) {
+         $contact->code = $request->code;
+        }
+        else {
+         $contact->code = 'code';
+        }
+
+
+
       $contact->gov_code = $request->gov_code;
-      $contact->telephone= $request->telephone;
+      if ( $request->telephone!=null) {
+       $contact->telephone = $request->telephone;
+      }
+      else {
+       $contact->telephone = 'telephone';
+      }
+
+
       $contact->is_read = 0;
       $contact->is_head = 1;
       $contact->is_customer = 1;
@@ -90,7 +119,11 @@ class relationController extends Controller
       $contact->is_employee = 0;
       $contact->is_sales_rep = 0;
       $contact->is_person = 0;
-      $contacts->parent_id_contact=$request->idcontact;
+
+
+
+      $contact->parent_id_contact=$idcontact;
+
 
       $contact->timestamp = Carbon::now();
       $contact->is_active = 1;
@@ -98,7 +131,7 @@ class relationController extends Controller
 
       $contact->save();
 
-      return redirect("contacts");
+      return redirect()->action('Commercial\contactsController@edit', [$idcontact]);
     }
 
     /**
