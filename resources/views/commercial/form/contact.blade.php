@@ -198,8 +198,9 @@
 
                                   <form role=form action="#">
                                     <div class="form-group">
-                                        <!-- <a href="{{ route('relation.create') }}"  class="btn btn-primary " data-toggle="modal" id="create_contact">Create Contact</a> -->
-                                        <a href="#responsive" data-toggle="modal">asd</>
+
+                                       <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Relation</a>
+
                                     </div>
                                     <div id="responsive" class="modal fade" tabindex="-1" data-width="760">
                                         <div class="modal-header">
@@ -208,8 +209,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                              @inject('metrics', 'app\Http\Commercial\relation')
-                                        {{ $metrics->create() }}
+
                                             </div>
                                         </div>
                                         <div class="modal-footer">

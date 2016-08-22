@@ -86,7 +86,9 @@ class contactsController extends Controller
       //$contacts = Contact::where('id_contact', $id)->get();
     //  $contacts= Contact::find($id);
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
+
         $relation = Contact::where('parent_id_contact','=',$id)->get();
+        
         $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
