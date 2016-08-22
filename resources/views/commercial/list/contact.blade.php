@@ -27,7 +27,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($contacts as $item)
+                  <a href="{{ route('contacts.page',2)}}">page2</a>
+                  @foreach($contacts as $item)
                     @if ($item->is_active === 1)
                         <tr>
                     @else

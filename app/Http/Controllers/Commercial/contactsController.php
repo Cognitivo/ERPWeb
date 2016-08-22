@@ -19,6 +19,7 @@ use App\ContactRole;
 use App\Items;
 use Carbon\Carbon;
 
+
 class contactsController extends Controller
 {
     /**
@@ -29,8 +30,23 @@ class contactsController extends Controller
     public function index()
     {
 
+
         $username = Session::get('username');
-        $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->simplepaginate(10000);
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->simplepaginate(200);
+
+        //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
+        return view('commercial/list/contact')
+        ->with('contacts',$contacts)
+        ->with('username',$username);
+
+    }
+    public function page($page)
+    {
+
+
+        $username = Session::get('username');
+        $skip=$page*200;
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->skip($skip)->get(200);
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')
@@ -41,6 +57,7 @@ class contactsController extends Controller
 
     public function indexCustomers(Request $request)
     {
+
         $username = $request->session()->get('username');
         $contacts = Contact::where('is_customer', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->simplepaginate(10000);
 
@@ -150,7 +167,7 @@ class contactsController extends Controller
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
-        
+
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
         $relation = Contact::where('parent_id_contact','=',$id)->get();
           $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');

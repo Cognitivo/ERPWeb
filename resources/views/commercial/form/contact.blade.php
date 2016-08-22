@@ -217,7 +217,8 @@
                                             <button type="button" class="btn green">Save changes</button>
                                         </div>
                                     </div>
-                                    <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
+
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
                                         <thead>
                                             <tr>
 
