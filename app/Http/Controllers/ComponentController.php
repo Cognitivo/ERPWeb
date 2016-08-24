@@ -12,7 +12,7 @@ use Config;
 use Auth;
 use File;
 
-class kpiController extends Controller
+class ComponentController extends Controller
 {
     public function Execute_KPI($Key, $StartDate, $EndDate){
 

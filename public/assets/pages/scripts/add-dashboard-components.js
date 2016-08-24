@@ -6,7 +6,7 @@ $(document).ready(function() {
 function handleComponents() {
     $.ajax({
         type: "GET",
-        url: "./kpi/getusercomponents",
+        url: "./component/getusercomponents",
         cache: false,
 
         success: function(Response) {
@@ -18,7 +18,7 @@ function handleComponents() {
             }
             if(data.hasOwnProperty('components')){
                 $.each(data.components, function(key, value) {
-                  $.get("./kpi/" + value + "/2016-01-01/2017-01-01", function(Response) {
+                  $.get("./component/" + value + "/2016-01-01/2017-01-01", function(Response) {
                       if (Response.Type.toLowerCase() == "kpi") {
                           handleKPI(Response);
                       } else if (Response.Type.toLowerCase() == "piechart") {
