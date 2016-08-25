@@ -30,9 +30,9 @@ function handleComponents() {
               });
             }
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-        }  
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            // alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
     });
 }
 

@@ -86,7 +86,7 @@ class contactsController extends Controller
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->paginate(200);
 
         $relation = Contact::where('parent_id_contact','=',$id)->get();
-
+      $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
         $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
@@ -95,6 +95,7 @@ class contactsController extends Controller
       ->with('username',$username)
       ->with('contact_subscription',$contact_subscription)
         ->with('relation',$relation)
+          ->with('contact_tag',$contact_tag)
         ->with('contactrole',$contactrole);
 
     }
