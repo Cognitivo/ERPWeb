@@ -113,6 +113,9 @@
                                 <li>
                                     <a href="#tab_1_5" data-toggle="tab">Subscriptions</a>
                                 </li>
+                                <li>
+                                    <a href="#tab_1_6" data-toggle="tab">Tag</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="portlet-body">
@@ -198,7 +201,7 @@
 
                                   <form role=form action="#">
                                     <div class="form-group">
-                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
+                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Relation</a>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                         <thead>
@@ -271,6 +274,39 @@
 
 
                                                         </div>
+                                                        <div class="tab-pane" id="tab_1_6">
+                                                                                    <form role=form action="#">
+
+                                                                                        <div class="form-group">
+                                                                                            <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">Create Tag</a>
+                                                                                        </div>
+                                                                                      <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
+                                                                                          <thead>
+                                                                                              <tr>
+
+                                                                                                  <th>Tag</th>
+
+                                                                                                </tr>
+                                                                                          </thead>
+                                                                                          <tbody>
+                                                                                          @foreach($contact_tag as $tag)
+
+
+                                                                                                      <td>
+                                                                                                          {{$tag->Tag->name}}
+                                                                                                      </td>
+
+                                                                                                  </tr>
+                                                                                              @endforeach
+                                                                                          </tbody>
+                                                                                      </table>
+
+
+
+                                                                                    </form>
+
+
+                                                                                </div>
                                 <!-- END PROFILE CONTENT -->
                             </div>
                         </div>

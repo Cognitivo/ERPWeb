@@ -19,6 +19,7 @@ use App\ContactRole;
 use App\Items;
 use Carbon\Carbon;
 use View;
+use App\ContactTag;
 
 
 class contactsController extends Controller
@@ -149,6 +150,7 @@ class contactsController extends Controller
       return view('commercial/form/contact')
       ->with('contacts',$contacts)
       ->with('contact_subscription', $contact_subscription)
+
       ->with('username',$username);
         //
     }
@@ -168,7 +170,8 @@ class contactsController extends Controller
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
 
-      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
+      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
+          $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
         $relation = Contact::where('parent_id_contact','=',$id)->get();
           $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
     //  dd($contact_subscription);
@@ -177,6 +180,7 @@ class contactsController extends Controller
       ->with('contacts',$contacts)
       ->with('username',$username)
       ->with('contact_subscription',$contact_subscription)
+        ->with('contact_tag', $contact_tag)
         ->with('relation',$relation)
           ->with('contactrole',$contactrole);
         //

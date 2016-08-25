@@ -33,6 +33,7 @@ Route::get('contacts.get',function()
 });
 Route::resource('contacts','Commercial\contactsController');
 Route::resource('subscription','Commercial\contactsubscriptionController');
+Route::resource('tag','Commercial\contactstagController');
 Route::resource('relation','Commercial\relationController');
 Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
 Route::resource('customers','Commercial\contactsController@indexCustomers');
