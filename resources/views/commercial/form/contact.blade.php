@@ -198,27 +198,9 @@
 
                                   <form role=form action="#">
                                     <div class="form-group">
-
-                                       <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Relation</a>
-
+                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
                                     </div>
-                                    <div id="responsive" class="modal fade" tabindex="-1" data-width="760">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                            <h4 class="modal-title">Responsive</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" data-dismiss="modal" class="btn btn-outline dark">Close</button>
-                                            <button type="button" class="btn green">Save changes</button>
-                                        </div>
-                                    </div>
-
-                                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_1">
+                                    <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                         <thead>
                                             <tr>
 

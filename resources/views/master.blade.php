@@ -247,15 +247,7 @@
         <script src="{{url()}}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
-        <script src="{{url()}}/assets/global/scripts/datatable.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL SCRIPTS -->
-
-        <!-- END THEME GLOBAL SCRIPTS -->
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="{{url()}}/assets/pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
+      
 </body>
 
 

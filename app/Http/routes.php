@@ -25,6 +25,12 @@ Route::get('managecomponents','dashboardController@ManageDashboard');
 Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('/', 'dashboardController@index');
 
+Route::get('contacts.get',function()
+{
+  $query=Request::get('q');
+  $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
+  return View::make('contacts.index')->with($contacts);
+});
 Route::resource('contacts','Commercial\contactsController');
 Route::resource('subscription','Commercial\contactsubscriptionController');
 Route::resource('relation','Commercial\relationController');
