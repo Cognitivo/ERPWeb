@@ -6,5 +6,6 @@
     "Label": "Tag",
     "PieValues": "Percentage",
     "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }

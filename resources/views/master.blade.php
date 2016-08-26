@@ -86,8 +86,13 @@
                                             <a href="javascript:;"> Statistics
                                                 <span class="arrow"></span>
                                             </a>
-                                            <ul class="dropdown-menu pull-left" style="min-width: 710px" id="components">
-
+                                            <ul class="dropdown-menu pull-left">
+                                                <li class=" active">
+                                                    <a href="{{url('componentslist')}}" class="nav-link  active">
+                                                        <i class="icon-bar-chart"></i> Launch
+                                                        <span class="badge badge-success">1</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">

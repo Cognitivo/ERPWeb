@@ -6,5 +6,6 @@
     "Parameters":"StartDate,EndDate",
     "Unit":"USD",
     "Value": "foottraffic",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }

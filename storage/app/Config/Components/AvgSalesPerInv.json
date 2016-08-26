@@ -6,5 +6,6 @@
     "Value": "AvgSales",
     "Unit":"USD",
     "Module": "Sales",
-    "Parameters":"StartDate,EndDate"
+    "Parameters":"StartDate,EndDate",
+    "Description":""
 }

@@ -118,4 +118,18 @@ class ComponentController extends Controller
       return json_encode(array("error"=>"No Components"));
     }
   }
+  public function ListComponents(){
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
+                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
+    $Iterator = new \RecursiveIteratorIterator($Directory);
+    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
+                                                                    \RegexIterator::USE_KEY);
+    $Components = array();
+    foreach($ComponentJsonFiles as $File){
+      $Components[] = json_decode(file_get_contents($File),true);
+      $FileInfo = pathinfo($File);
+    }
+    return View::make('components.list.components',compact('Components'));
+  }
 }

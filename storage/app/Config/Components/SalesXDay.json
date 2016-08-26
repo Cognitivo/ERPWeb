@@ -12,5 +12,6 @@
         "Color": ""
     }],
     "Parameters":"StartDate,EndDate",
-    "Module": "sales"
+    "Module": "sales",
+    "Description":""
 }

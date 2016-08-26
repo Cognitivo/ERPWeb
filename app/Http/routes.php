@@ -23,6 +23,7 @@ Route::get('component/getusercomponents', 'ComponentController@GetUserComponents
 Route::post('savedashboard', 'dashboardController@SaveDashboard');
 Route::get('managecomponents','dashboardController@ManageDashboard');
 Route::get('listcomponents','dashboardController@ListComponents');
+Route::get('componentslist','ComponentController@ListComponents');
 Route::get('/', 'dashboardController@index');
 
 Route::get('contacts.get',function()

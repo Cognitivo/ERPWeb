@@ -18,5 +18,6 @@
         "Color": "a4c9f3"
     }],
     "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }

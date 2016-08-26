@@ -6,5 +6,6 @@
     "Value": "AvgQuantity",
     "Parameters":"StartDate,EndDate",
     "Unit":"",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }

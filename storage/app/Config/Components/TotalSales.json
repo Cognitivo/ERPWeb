@@ -6,5 +6,6 @@
     "Value": "Sales",
     "Unit":"USD",
     "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }
