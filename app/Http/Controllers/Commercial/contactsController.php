@@ -197,7 +197,6 @@ class contactsController extends Controller
     public function update(Request $request, $id)
     {
         // dd($id);
-
       $contacts= Contact::findOrFail($id);
       $contacts->fill($request->all());
 
@@ -219,7 +218,7 @@ class contactsController extends Controller
     }
     public function get(Request $request)
     {
-      dd(Request::get('q'));
+
       $query=Request::get('q');
           $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
     }

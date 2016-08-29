@@ -20,6 +20,7 @@ use App\Tag;
 use App\ContactTag;
 use Carbon\Carbon;
 
+
 class contactstagController extends Controller
 {
     /**
@@ -66,6 +67,7 @@ class contactstagController extends Controller
      */
     public function create()
     {
+    
       $id=0;
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
@@ -92,7 +94,7 @@ class contactstagController extends Controller
     public function store(Request $request)
     {
       $idcontact = Session::get('idcontact');
-
+      dd($request);
       $tag = new ContactTag;
 
     $tag->id_contact=$idcontact;
