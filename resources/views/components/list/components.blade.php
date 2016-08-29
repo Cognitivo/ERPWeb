@@ -14,7 +14,7 @@
         </div>
         <div class="portlet-body">
           <div class="form-group">
-              <a href="{{ route('componentcreate') }}" class="btn btn-primary" id="create_contact">Create Component</a>
+              <a href="{{url('componentcreate')}}" class="btn btn-primary" id="create_contact">Create Component</a>
           </div>
             <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                 <thead>
