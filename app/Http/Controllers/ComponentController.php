@@ -132,4 +132,28 @@ class ComponentController extends Controller
     }
     return View::make('components.list.components',compact('Components'));
   }
+  public function ShowCreate(){
+    return View::make('components.forms.components');
+  }
+  public function CreateComponent(Request $request){
+    $Component = array();
+    $Key = str_replace(' ', '', $request->input("name"));
+    $Component["Caption"] = $request->input("name");
+    $Component["Type"] = $request->input("type");
+    $Component["Unit"] = $request->input("unit");
+    $Component["Module"] = $request->input("module");
+    $Component["Description"] = $request->input("description");
+    switch(strtolower($request->input("type"))){
+      case "kpi":
+        $Component["Dimension"] = "Small";
+        break;
+      case "barchart":
+        $Component["Dimension"] = "Medium";
+        break;
+      case "piechart":
+        $Component["Dimension"] = "Medium";
+        break;
+    }
+    file_put_contents(Config::get("Paths.Components") . "/" . $Key . ".json",json_encode($Component));
+  }
 }

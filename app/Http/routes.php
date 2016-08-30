@@ -25,6 +25,7 @@ Route::get('managecomponents','dashboardController@ManageDashboard');
 Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('componentslist','ComponentController@ListComponents');
 Route::get('showcreate','ComponentController@ShowCreate');
+Route::post('createcomponent','ComponentController@CreateComponent');
 Route::get('/', 'dashboardController@index');
 
 Route::get('contacts.get',function()
