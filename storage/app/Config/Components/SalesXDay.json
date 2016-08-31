@@ -9,8 +9,9 @@
         "Name": "Total Sales",
         "Column": "Sales",
         "NumberPrefix": "$",
-        "Color": "#1E90FF"
+        "Color": ""
     }],
     "Parameters":"StartDate,EndDate",
-    "Module": "sales"
+    "Module": "sales",
+    "Description":""
 }

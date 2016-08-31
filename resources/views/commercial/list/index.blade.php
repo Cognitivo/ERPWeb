@@ -16,7 +16,7 @@
           <div class="form-group">
               <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
           </div>
-            <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
+            <table class="table table-hover table-light" id="sample_1">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                
+
                   @foreach($contacts as $item)
                     @if ($item->is_active === 1)
                         <tr>
@@ -51,8 +51,11 @@
                             </td>
                         </tr>
                     @endforeach
+
+
                 </tbody>
             </table>
+                  {!! $contacts->render() !!}
         </div>
     </div>
 @endsection

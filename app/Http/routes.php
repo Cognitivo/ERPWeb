@@ -15,18 +15,33 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-
-
-Route::group(['middleware' => 'auth'], function () {
-Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
-Route::get('getcomponents', 'kpiController@GetComponents');
+//Security
+Route::group(['middleware' => 'auth'], function ()
+{
+Route::get('component/{Key}/{StartDate}/{EndDate}', 'ComponentController@Execute_KPI');
+Route::get('component/getusercomponents', 'ComponentController@GetUserComponents');
 Route::post('savedashboard', 'dashboardController@SaveDashboard');
+Route::get('managecomponents','dashboardController@ManageDashboard');
+Route::get('listcomponents','dashboardController@ListComponents');
+Route::get('componentslist','ComponentController@ListComponents');
+Route::get('showcreate','ComponentController@ShowCreate');
+Route::post('createcomponent','ComponentController@CreateComponent');
 Route::get('/', 'dashboardController@index');
 
+Route::get('contacts.get',function()
+{
+  $query=Request::get('q');
+  $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
+  return View::make('contacts.index')->with($contacts);
+});
 Route::resource('contacts','Commercial\contactsController');
+Route::resource('subscription','Commercial\contactsubscriptionController');
+Route::resource('tag','Commercial\contactstagController');
+Route::resource('relation','Commercial\relationController');
+Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
+Route::resource('customers','Commercial\contactsController@indexCustomers');
+
+
+
 
 });
-
-
-
- 

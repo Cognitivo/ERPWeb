@@ -1,10 +1,11 @@
 {
     "SqlFile": "TotalSales.sql",
-    "Type": "Kpi",
+    "Type": "kpi",
     "Dimensions": "6,3",
     "Caption": "Total Sales",
     "Value": "Sales",
-    "Unit":"Usd",
+    "Unit":"USD",
     "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
+    "Module": "Sales",
+    "Description":""
 }

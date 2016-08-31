@@ -35,6 +35,7 @@
         <link href="{{url()}}/assets/layouts/normal/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
+        <link href="{{url()}}/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css">
     </head>
     <!-- END HEAD -->
     <body class="page-container-bg-solid">
@@ -64,19 +65,19 @@
                                             <img height="38px" src="{{url()}}/assets/global/img/CognitivoLogo.png"
                                                  alt="logo" class="logo-default" style="vertical-align:center; margin-top:5px;" >
                                         </li>
-                                        <li class="menu-dropdown classic-menu-dropdown active mainmenu-text">
+                                        <li class="menu-dropdown classic-menu-dropdown active">
                                             <a href="javascript:;"> Dashboard
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                                 <li class=" active">
-                                                    <a href="index.html" class="nav-link  active">
+                                                    <a href="{{url('/')}}" class="nav-link  active">
                                                         <i class="icon-bar-chart"></i> Launch
                                                         <span class="badge badge-success">1</span>
                                                     </a>
                                                 </li>
                                                 <li class=" ">
-                                                    <a href="dashboard_2.html" class="nav-link  ">
+                                                    <a href="{{url('managecomponents')}}" class="nav-link  ">
                                                         <i class="icon-bulb"></i> Manage </a>
                                                 </li>
                                             </ul>
@@ -85,8 +86,13 @@
                                             <a href="javascript:;"> Statistics
                                                 <span class="arrow"></span>
                                             </a>
-                                            <ul class="dropdown-menu pull-left" style="min-width: 710px" id="components">
-
+                                            <ul class="dropdown-menu pull-left">
+                                                <li class=" active">
+                                                    <a href="{{url('componentslist')}}" class="nav-link  active">
+                                                        <i class="icon-bar-chart"></i> Launch
+                                                        <span class="badge badge-success">1</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
@@ -151,15 +157,16 @@
                                             <i class="fa fa-circle"></i>
                                         </li>
                                         <li>
-                                            <span>@yield('title')</span>
+                                            <span>@yield('Title')</span>
                                         </li>
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
                                     <!-- BEGIN PAGE CONTENT INNER -->
 
                                     <div class="page-content-inner">
+                                      @section('innercontent')
+                                      @show
                                        @yield('content')
-
                                     </div>
 
                                     <!-- END PAGE CONTENT INNER -->
@@ -202,6 +209,8 @@
         <script src="{{url()}}/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
+
+
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="{{url()}}/assets/global/plugins/moment.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
@@ -227,20 +236,23 @@
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
 
-
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{url()}}/assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/pages/scripts/dashboard_app.js" type="text/javascript"></script>
+        <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
+        @section('pagescripts')
+        @show
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="{{url()}}/assets/layouts/normal/scripts/layout.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/layouts/normal/scripts/demo.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
+
+      
 </body>
 
 

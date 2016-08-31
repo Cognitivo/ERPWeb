@@ -15,39 +15,28 @@ use Auth;
 use App\Subcription;
 use App\Contact;
 use App\ContactSubsciption;
-use App\ContactRole;
 use App\Items;
-use Carbon\Carbon;
-use View;
+use App\Tag;
 use App\ContactTag;
+use Carbon\Carbon;
 
 
-class contactsController extends Controller
+class contactstagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-  $query=$request->input('q');
 
         $username = Session::get('username');
 
-        $contacts =$query
-        ? Contact::where('id_company', Auth::user()->id_company)->where('name','LIKE',"%$query%")
-        ->orwhere('code','LIKE',"%$query%")
-          ->orwhere('gov_code','LIKE',"%$query%")
-         ->orderBy('name')->paginate(50)
-
-         :Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->paginate(50)
-        ;
-
+        $contacts = Contact::where('id_company', Auth::user()->id_company)->orderBy('name')->Paginate(10000);
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-        return View::make('commercial.contacts.index')
+        return view('commercial/list/contact')
         ->with('contacts',$contacts)
         ->with('username',$username);
 
@@ -55,9 +44,8 @@ class contactsController extends Controller
 
     public function indexCustomers(Request $request)
     {
-
         $username = $request->session()->get('username');
-        $contacts = Contact::where('is_customer', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->paginate(200);
+        $contacts = Contact::where('is_customer', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->simplePaginate(10000);
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
@@ -66,7 +54,7 @@ class contactsController extends Controller
     public function indexSuppliers(Request $request)
     {
         $username = $request->session()->get('username');
-        $contacts = Contact::where('is_supplier', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->paginate(200);
+        $contacts = Contact::where('is_supplier', true)->where('id_company', Auth::user()->id_company)->orderBy('name')->simplePaginate(10000);
 
         //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
         return view('commercial/list/contact')->with('contacts',$contacts)->with('username',$username);
@@ -79,25 +67,22 @@ class contactsController extends Controller
      */
     public function create()
     {
+    
       $id=0;
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
-    //  $contacts= Contact::find($id);
-      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->paginate(200);
-
-        $relation = Contact::where('parent_id_contact','=',$id)->get();
-      $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
-        $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
+      $contacts= Contact::find($id);
+      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
+      //  $relation = Contact::where('parent_id_contact','=',$id)->get();
+        $tag=Tag::where('id_company', Auth::user()->id_company)->lists('name','id_tag');
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-      return view('commercial/form/contact')
-      //->with('contacts',$contacts)
+      return view('commercial/form/tag')
+      ->with('contacts',$contacts)
       ->with('username',$username)
-      ->with('contact_subscription',$contact_subscription)
-        ->with('relation',$relation)
-          ->with('contact_tag',$contact_tag)
-        ->with('contactrole',$contactrole);
-
+        ->with('contact_subscription',$contact_subscription)
+      //  ->with('relation',$relation)
+        ->with('tag',$tag);
     }
 
     /**
@@ -108,30 +93,29 @@ class contactsController extends Controller
      */
     public function store(Request $request)
     {
-      $contact = new Contact;
-      $contact->id_contact_role =$request->id_contact_role;
-      $contact->id_company =Auth::user()->id_company;
-      $contact->id_user =Auth::user()->id_user;
-      $contact->name = $request->name;
-      $contact->alias = $request->alias;
-      $contact->code = $request->code;
-      $contact->gov_code = $request->gov_code;
-      $contact->telephone= $request->telephone;
-      $contact->is_read = 0;
-      $contact->is_head = 1;
-      $contact->is_customer = 1;
-      $contact->is_supplier = 0;
-      $contact->is_employee = 0;
-      $contact->is_sales_rep = 0;
-      $contact->is_person = 0;
+      $idcontact = Session::get('idcontact');
+      dd($request);
+      $tag = new ContactTag;
 
-      $contact->timestamp = Carbon::now();
-      $contact->is_active = 1;
+    $tag->id_contact=$idcontact;
+      $tag->id_tag=$request->id_tag;
+
+      $tag->id_company =Auth::user()->id_company;
+
+      $tag->id_user =Auth::user()->id_user;
 
 
-      $contact->save();
 
-      return redirect("contacts");
+      $tag->is_read = 0;
+      $tag->is_head = 1;
+
+      $tag->timestamp = Carbon::now();
+
+
+
+      $tag->save();
+
+      return redirect()->action('Commercial\contactsController@edit', [$idcontact]);
     }
 
     /**
@@ -143,16 +127,12 @@ class contactsController extends Controller
     public function show($id, Request $request)
     {
 
-      session(['idcontact'=>$id]);
       $username = $request->session()->get('username');
       $contacts = Contact::where('id_contact', $id)->first();
-
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
       return view('commercial/form/contact')
       ->with('contacts',$contacts)
-      ->with('contact_subscription', $contact_subscription)
-
-      ->with('username',$username);
+        ->with('username',$username);
         //
     }
 
@@ -165,27 +145,19 @@ class contactsController extends Controller
     public function edit($id)
     {
 
-
-  session(['idcontact'=>$id]);
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
-
-      $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
-          $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
-        $relation = Contact::where('parent_id_contact','=',$id)->get();
-          $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
+      $contact_tag = ContactTag::where('id_contact', $id)->all();
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
-      return view('commercial/form/contact')
+      return view('commercial/form/tag')
       ->with('contacts',$contacts)
       ->with('username',$username)
-      ->with('contact_subscription',$contact_subscription)
-        ->with('contact_tag', $contact_tag)
-        ->with('relation',$relation)
-          ->with('contactrole',$contactrole);
+      ->with('contact_tag',$contact_tag);
         //
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -197,14 +169,18 @@ class contactsController extends Controller
     public function update(Request $request, $id)
     {
         // dd($id);
-      $contacts= Contact::findOrFail($id);
-      $contacts->fill($request->all());
 
-      $contacts->save();
+
+              $contact_tag= ContactTag::findOrFail($id);
+              $contact_tag->fill($request->all());
+
+              $contact_tag->save();
+
 
       return redirect('contacts');
 
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -215,11 +191,5 @@ class contactsController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function get(Request $request)
-    {
-
-      $query=Request::get('q');
-          $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
     }
 }

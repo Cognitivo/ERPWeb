@@ -1,10 +1,11 @@
 {
     "SqlFile": "AvgSalesPerInv.sql",
-    "Type": "Kpi",
+    "Type": "kpi",
     "Dimensions": "3,3",
     "Caption": "Average Sales Per Invoice",
     "Value": "AvgSales",
-    "Unit":"Usd",
+    "Unit":"USD",
     "Module": "Sales",
-    "Parameters":"StartDate,EndDate"
+    "Parameters":"StartDate,EndDate",
+    "Description":""
 }

@@ -1,18 +1,26 @@
 var DashBoard;
-var UserComponents = {
-    Components: []
-};
+
+var DashboardComponents = [];
 $(document).ready(function() {
-    $.get("./getcomponents", function(Data) {
-        ListComponents(Data);
+
+  $("body").on("click", "#ListComponents", function(e) {
+    $.get("./listcomponents",function(Response){
+      $("#ShowComponents").append(Response);
     });
-    $("body").on("click", "#SaveDashboard", function(e) {
-			var JsonString = JSON.stringify(DashboardComponents);
+  });
+  $("body").on("click", "#AddComponents", function(e) {
+    $('#components :checked').each(function() {
+      DashboardComponents.push($(this).val());
+      $("#UserComponents").append("<li>" + $(this).next('label').text() + "</li>")
+      $("#AddComponents").hide();
+    });
+  });
+    $("body").on("click", "#UpdateUserDashboard", function(e) {
         if (typeof DashboardComponents !== 'undefined' && DashboardComponents.length > 0) {
             $.ajax({
                 type: "POST",
                 url: "./savedashboard",
-                data: {components:JsonString},
+                data: {components:DashboardComponents},
                 cache: false,
 
                 success: function(Response) {
@@ -22,7 +30,6 @@ $(document).ready(function() {
         }
     });
 });
-
 function ListComponents(Data) {
     ul = document.getElementById("components");
     var compCount = 0;

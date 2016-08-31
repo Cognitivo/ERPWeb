@@ -1,10 +1,11 @@
 {
     "SqlFile": "Sales_ByFootTraffic.sql",
-    "Type": "Kpi",
+    "Type": "kpi",
     "Dimensions": "3,3",
     "Caption": "Sales Per Foot Traffic",
-    "Value": "foottraffic",
-    "Unit":"Usd",
     "Parameters":"StartDate,EndDate",
-    "Module": "Sales"
+    "Unit":"USD",
+    "Value": "foottraffic",
+    "Module": "Sales",
+    "Description":""
 }

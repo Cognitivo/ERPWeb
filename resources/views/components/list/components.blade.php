@@ -14,43 +14,36 @@
         </div>
         <div class="portlet-body">
           <div class="form-group">
-              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
+              <a href="{{url('showcreate')}}" class="btn btn-primary" id="create_contact">Create Component</a>
           </div>
             <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                 <thead>
                     <tr>
-                        <th>Date</th>
                         <th>Name</th>
-                        <th>Government ID</th>
-                        <th>Address</th>
-                        <th>Telephone</th>
+                        <th>Type</th>
+                        <th>Module ID</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                 
-                  @foreach($contacts as $item)
-                    @if ($item->is_active === 1)
-                        <tr>
-                    @else
-                        <tr style="background-color:pink;">
-                    @endif
+                  @foreach($Components as $Item)
+                     <tr>
+                   
                             <td>
-                                {{ date('F d, Y', strtotime($item->timestamp)) }}
+                                {{$Item['Caption']}}
                             </td>
                             <td>
-                                <a href="{{route('contacts.edit',$item->id_contact)}}">{{$item->name}}</a>
+                                <a href="">{{$Item['Type']}}</a>
                             </td>
                             <td>
-                                {{$item->gov_code}}
+                                {{$Item['Module']}}
                             </td>
                             <td>
-                                {{$item->address}}
+                                {{$Item['Description']}}
                             </td>
-                            <td>
-                                {{$item->telephone}}
-                            </td>
-                        </tr>
-                    @endforeach
+                        </tr> 
+                  @endforeach
                 </tbody>
             </table>
         </div>

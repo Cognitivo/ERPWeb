@@ -1,46 +1,44 @@
-var DashboardComponents = [];
+
 
 $(document).ready(function() {
     handleComponents();
 });
-
-<<<<<<< HEAD
-function handleComponents (){
-  $("body").on("click","#components li a",function(e){
-    var url = $(this).attr("data-key");
-    $.get("./kpi/" + url + "/2016-07-01/2017-01-01",function(data){
-
-
-      //var Response = JSON.parse(data);
-      var Response = data;
-      console.log(Response);
-      if(Response.type == "kpi"){
-        handleKPI(Response);
-      }
-      else if (Response.type == "pie") {
-        handlePie(Response);
-      }
-      else if (Response.type == "bar") {
-        handleBarChart(Response)
-      }
-=======
 function handleComponents() {
-    $("body").on("click", "#components li a", function(e) {
-        var url = $(this).attr("data-key");
-        $.get("./kpi/" + url + "/2016-01-01/2017-01-01", function(Response) {
-            if (Response.Type.toLowerCase() == "kpi") {
-                handleKPI(Response);
-            } else if (Response.Type.toLowerCase() == "piechart") {
-                handlePie(Response);
-            } else if (Response.Type.toLowerCase() == "barchart") {
-                handleBarChart(Response)
+    $.ajax({
+        type: "GET",
+        url: "./component/getusercomponents",
+        cache: false,
+
+        success: function(Response) {
+            var data = JSON.parse(Response);
+          if(data.hasOwnProperty('error')){
+                $.each(data.error, function(key, value) {
+                  console.log(value);
+              });
             }
-        }, "json");
->>>>>>> ce8d3a1339d5e7fe0e0427372e51f828eb85bbee
+            if(data.hasOwnProperty('components')){
+                $.each(data.components, function(key, value) {
+                  $.get("./component/" + value + "/2016-01-01/2017-01-01", function(Response) {
+                      if (Response.Type.toLowerCase() == "kpi") {
+                          handleKPI(Response);
+                      } else if (Response.Type.toLowerCase() == "piechart") {
+                          handlePie(Response);
+                      } else if (Response.Type.toLowerCase() == "barchart") {
+                          handleBarChart(Response)
+                      }
+                  }, "json");
+              });
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            // alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
     });
 }
 
 function handleKPI(Response) {
+    console.log(Response.Key);
+    console.log($("#" + Response.Key).length);
     if (!($("#" + Response.Key).length)) {
         var divKPI = '<div class="col-md-3" id="' + Response.Key + '"> <!-- BEGIN WIDGET THUMB --> <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 "> <h4 class="widget-thumb-heading">' + Response.Caption + '</h4> <div class="widget-thumb-wrap"> <i class="widget-thumb-icon bg-green icon-bulb"></i> <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">' + Response.Unit + '</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="' + Response[Response.Value] + '">' + Response[Response.Value] + '</span> </div> </div> </div> <!-- END WIDGET THUMB --> </div>';
         if ($(".page-content-inner .widget-row").length) {
@@ -50,7 +48,6 @@ function handleKPI(Response) {
             $(".page-content-inner").append($(divWidgetRow));
             $(".page-content-inner .widget-row").append($(divKPI));
         }
-        DashboardComponents.push(Response.Key);
     }
 }
 
@@ -93,51 +90,52 @@ function handleBarChart(Response) {
                 }
             }
         });
-        DashboardComponents.push(Response.Key);
     }
 
 
 }
 
 function handlePie(Response) {
-    var id = Response.caption.replace(/ /g, '')
-    var divBar = '<div class="col-md-6"> <canvas id=' + id + ' class="canvas" styde="width:50%; height:50%"></canvas> </div>'
-    if ($('#' + id).parent().attr('class') == 'col-md-6') {
-        $('#' + id).html("")
-    } else {
-        $("#dashboard").append(divBar);
-    }
-    var data_label = []
-    var data_value = []
-    var array_color = []
-
-    $.each(Response.data, function(v, k) {
-        data_label.push(k.Tag)
-        data_value.push(k.Percentage)
-        array_color.push(randomColor())
-    })
-
-    var ctx = $("#" + id);
-    var data = {
-        labels: data_label,
-        datasets: [{
-            data: data_value,
-            backgroundColor: array_color,
-            hoverBackgroundColor: array_color,
-
-        }]
-    };
-    var myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: data,
-        options: {
-
-            responsive: true,
-            legend: {
-                position: 'top',
-            }
+    var id = Response.Key;
+    var ChartLabels = [];
+    var DataSets = [];
+    if (!($("#" + id).length)) {
+        var divPie = '<div class="col-md-6"> <canvas id=' + id + ' class="canvas" styde="width:50%; height:50%"></canvas> </div>';
+        if ($('#' + id).parent().attr('class') == 'col-md-6') {
+            $('#' + id).html("")
+        } else {
+            $(".page-content-inner").append(divPie);
         }
-    });
+        var ctx = $("#" + id);
+        $.each(Response[Response.Label],function(key,value){
+            ChartLabels.push(value);
+        });
+        DataSets.push({
+            data:Response[Response.PieValues],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        });
+        var myPieChart = new Chart(ctx,{
+            type: 'pie',
+            data: {labels:ChartLabels,
+                    datasets:DataSets},
+            options: {
+
+                responsive: true,
+                legend: {
+                    position: 'top',
+                }
+            }
+        });
+    }
 }
 
 var randomColorFactor = function() {
