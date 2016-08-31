@@ -94,7 +94,7 @@ class contactstagController extends Controller
     public function store(Request $request)
     {
       $idcontact = Session::get('idcontact');
-      dd($request);
+      //dd($request);
       $tag = new ContactTag;
 
     $tag->id_contact=$idcontact;

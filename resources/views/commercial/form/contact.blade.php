@@ -236,8 +236,11 @@
                                   </form>
                                 </div>
 
-                                <div class="tab-pane" id="tab_1_5">
+                                              <div class="tab-pane" id="tab_1_5">
                                                             <form role=form action="#">
+                                                             <div class="form-group">
+                                        <a href="{{ route('subscription.create') }}" class="btn btn-primary" id="create_contact">Create Subscription</a>
+                                    </div>
                                                               <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                                                   <thead>
                                                                       <tr>
@@ -249,6 +252,7 @@
                                                                         </tr>
                                                                   </thead>
                                                                   <tbody>
+                                                                  <input type="hidden" name="" value="{{   $total=0 }}">
                                                                   @foreach($contact_subscription as $subscription)
 
                                                                               <td>
@@ -264,15 +268,18 @@
                                                                                   {{$subscription->unit_price}}
                                                                               </td>
                                                                           </tr>
+                                                                          <input type="hidden" name="" value="{!! $total += $subscription->unit_price !!}">
                                                                       @endforeach
                                                                   </tbody>
+
                                                               </table>
 
 
 
                                                             </form>
 
-
+                                                             <div class="">
+                                                                        <h1>{{ $total }}</h1></div>
                                                         </div>
                                                         <div class="tab-pane" id="tab_1_6">
                                                                                     <form role=form action="#">

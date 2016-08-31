@@ -166,17 +166,28 @@ class contactsController extends Controller
     {
 
 
-  session(['idcontact'=>$id]);
+      session(['idcontact'=>$id]);
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
 
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
+      
           $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
         $relation = Contact::where('parent_id_contact','=',$id)->get();
           $contactrole=ContactRole::where('id_company', Auth::user()->id_company)->lists('name','id_contact_role');
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
+
+         
+       foreach ($relation as $key => $value) {      
+                $subscription_aux =  ContactSubsciption::where('id_contact', '=', $value->id_contact)->get();
+              $aux =  $contact_subscription->merge($subscription_aux);
+              $contact_subscription= $aux;
+       }
+       
+       //dd($contact_subscription->all());
+
       return view('commercial/form/contact')
       ->with('contacts',$contacts)
       ->with('username',$username)

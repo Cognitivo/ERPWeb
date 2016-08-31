@@ -89,7 +89,7 @@
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <i class="icon-globe theme-font hide"></i>
-                                <span class="caption-subject font-blue-madison bold uppercase">Contact</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">Subscription</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
@@ -104,11 +104,11 @@
                                 <div class="tab-pane active" id="tab_1_1">
                                     <form role="form" action="#">
                                       <div class="form-group">
-                                          <label class="control-label">Name</label>
+                                          <label class="control-label">Aderente</label>
                                           {!! Form::date('start_date', null, ['class'=>'form-control col-md-7 col-xs-12', 'placeholder'=>'Full Name']) !!}
                                       </div>
                                       <div class="form-group">
-                                          <label class="control-label">Name</label>
+                                          <label class="control-label">Plan</label>
                                           {!! Form::text('end_date', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                                       </div>
                                         <div class="form-group">
