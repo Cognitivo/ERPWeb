@@ -42,9 +42,11 @@ Route::get('get_contacts',function(){
     
 });
 Route::get('get_plan',function(){
-    $query = Request::get('query'); 
-    $plan= \App\ContactSubsciption::join('items','items.id_item','=','contact_subscription.id_item')->
-     where('items.name','LIKE',"%$query%")->get();    
+
+    $query = Request::get('query');
+
+    $plan= \App\ContactSubsciption::join('items','items.id_item','=','contact_subscription.id_item')
+    ->where('items.name','LIKE',"%$query%")->select('name','items.id_item')->get();    
      return response()->json($plan);
     
 });

@@ -30,6 +30,7 @@
         <link href="{{url()}}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="{{url()}}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
+         <link href="{{url()}}/assets/global/plugins/vsjs/dist/vis.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="{{url()}}/assets/layouts/normal/css/layout.min.css" rel="stylesheet" type="text/css" />
@@ -116,6 +117,15 @@
                                                 </li>
                                             </ul>
                                         </li>
+
+                                            <li class="menu-dropdown classic-menu-dropdown ">
+                                            <a href="javascript:;"> Filabel
+                                                <span class="arrow"></span>
+                                            </a>
+                                         
+                                        </li>
+
+
                                     </ul>
                                 </div>
                                 <!-- END MEGA MENU -->
@@ -237,6 +247,7 @@
          <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
           <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script> 
+           <script src="{{url()}}/assets/global/plugins/vsjs/dist/vis.js"></script> 
       
         <!-- END PAGE LEVEL PLUGINS -->
 
