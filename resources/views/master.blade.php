@@ -24,10 +24,12 @@
         <link href="{{url()}}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+        
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="{{url()}}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="{{url()}}/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/easy-autocomplete.min.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <link href="{{url()}}/assets/layouts/normal/css/layout.min.css" rel="stylesheet" type="text/css" />
@@ -234,6 +236,8 @@
          {{-- chart js --}}
          <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
+          <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script> 
+      
         <!-- END PAGE LEVEL PLUGINS -->
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
@@ -243,6 +247,7 @@
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
         <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
+    
         @section('pagescripts')
         @show
         <!-- END PAGE LEVEL SCRIPTS -->
