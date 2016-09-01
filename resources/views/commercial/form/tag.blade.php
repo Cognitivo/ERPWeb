@@ -98,7 +98,7 @@
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">Information</a>
+                                    <a href="#tab_1_1" data-toggle="tab">Informaciòn</a>
                                 </li>
 
                             </ul>
@@ -115,7 +115,7 @@
 
                                     <div class="margiv-top-10">
                                           {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
-                                          <a href="javascript:;" class="btn default"> Cancel </a>
+                                          <a href="javascript:;" class="btn default"> Cancelar </a>
                                       </div>
                                     </form>
                                 </div>

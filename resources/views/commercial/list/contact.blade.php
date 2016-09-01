@@ -14,16 +14,16 @@
         </div>
         <div class="portlet-body">
           <div class="form-group">
-              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
+              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">CREAR CONTACTO</a>
           </div>
             <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Government ID</th>
-                        <th>Address</th>
-                        <th>Telephone</th>
+                        <th>FECHA</th>
+                        <th>NOMBRE</th>
+                        <th>RUC</th>
+                        <th>DIRECCION</th>
+                        <th>TELEFONO</th>
                     </tr>
                 </thead>
                 <tbody>

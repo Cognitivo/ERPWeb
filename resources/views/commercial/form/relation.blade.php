@@ -128,7 +128,7 @@
                                         </div>
                                       <div class="margiv-top-10">
                                             {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
-                                            <a href="javascript:;" class="btn default"> Cancel </a>
+                                            <a href="javascript:;" class="btn default"> Cancelar </a>
                                         </div>
                                     </form>
                                 </div>

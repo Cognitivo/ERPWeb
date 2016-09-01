@@ -99,22 +99,22 @@
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">Information</a>
+                                    <a href="#tab_1_1" data-toggle="tab">INFORMACION</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_2" data-toggle="tab">Geolocation</a>
+                                    <a href="#tab_1_2" data-toggle="tab">GEOLOCALIZACION</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_3" data-toggle="tab">Relationships</a>
+                                    <a href="#tab_1_3" data-toggle="tab">RELACION</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_4" data-toggle="tab">Commercial</a>
+                                    <a href="#tab_1_4" data-toggle="tab">COMERCIAL</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_5" data-toggle="tab">Subscriptions</a>
+                                    <a href="#tab_1_5" data-toggle="tab">SUBSCRIPCION</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_6" data-toggle="tab">Tag</a>
+                                    <a href="#tab_1_6" data-toggle="tab">ETIQUETA</a>
                                 </li>
                             </ul>
                         </div>
@@ -184,7 +184,7 @@
 
                                         <div class="margiv-top-10">
                                             {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
-                                            <a href="javascript:;" class="btn default"> Cancel </a>
+                                            <a href="javascript:;" class="btn default"> CANCELAR</a>
                                         </div>
                                     </form>
                                 </div>
@@ -201,16 +201,16 @@
 
                                   <form role=form action="#">
                                     <div class="form-group">
-                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Create Relation</a>
+                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Crear Relaciòn</a>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                         <thead>
                                             <tr>
 
-                                                <th>Code</th>
-                                                <th>Name</th>
-                                                <th>Gov Code</th>
-                                                <th>Relation</th>
+                                                <th>CODIGO</th>
+                                                <th>NOMBRE</th>
+                                                <th>RUC</th>
+                                                <th>RELACION</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -242,10 +242,10 @@
                                                                   <thead>
                                                                       <tr>
 
-                                                                          <th>Plan</th>
-                                                                          <th>Start Date</th>
-                                                                          <th>End Date</th>
-                                                                          <th>unit price</th>
+                                                                          <th>PLAN</th>
+                                                                          <th>FECHA INICIO</th>
+                                                                          <th>FECHA FIN</th>
+                                                                          <th>PRECIO UNITARIO</th>
                                                                         </tr>
                                                                   </thead>
                                                                   <tbody>
@@ -278,13 +278,13 @@
                                                                                     <form role=form action="#">
 
                                                                                         <div class="form-group">
-                                                                                            <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">Create Tag</a>
+                                                                                            <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">CREAR ETIQUETA</a>
                                                                                         </div>
                                                                                       <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                                                                           <thead>
                                                                                               <tr>
 
-                                                                                                  <th>Tag</th>
+                                                                                                  <th>ETIQUETA</th>
 
                                                                                                 </tr>
                                                                                           </thead>

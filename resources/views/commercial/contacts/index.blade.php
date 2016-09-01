@@ -15,7 +15,7 @@
         </div>
         <div class="portlet-body">
           <div class="form-group">
-              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">Create Contact</a>
+              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">CREAR CONTACTO</a>
   {!! Form::open(['method'=> 'GET']) !!}
 
                 {!!Form::input('search','q',null,['placeholder'=>'Enter Text...'])!!}
@@ -24,12 +24,12 @@
             <table class="table table-hover table-light" id="sample_1">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                          <th>Code</th>
-                        <th>Name</th>
-                        <th>Government ID</th>
-                        <th>Address</th>
-                        <th>Telephone</th>
+                        <th>FECHA</th>
+                          <th>CODIGO</th>
+                        <th>NOMBRE</th>
+                        <th>RUC</th>
+                        <th>DIRECCION</th>
+                        <th>TELEFONO</th>
                     </tr>
                 </thead>
                 <tbody>
