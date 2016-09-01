@@ -34,6 +34,21 @@ Route::get('contacts.get',function()
   $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
   return View::make('contacts.index')->with($contacts);
 });
+
+Route::get('get_contacts',function(){
+    $query = Request::get('query'); 
+    $contacts= \App\Contact::where('parent_id_contact',Session::get('idcontact'))->where('name','LIKE',"%$query%")->get();    
+     return response()->json($contacts);
+    
+});
+Route::get('get_plan',function(){
+    $query = Request::get('query'); 
+    $plan= \App\ContactSubsciption::join('items','items.id_item','=','contact_subscription.id_item')->
+     where('items.name','LIKE',"%$query%")->get();    
+     return response()->json($plan);
+    
+});
+
 Route::resource('contacts','Commercial\contactsController');
 Route::resource('subscription','Commercial\contactsubscriptionController');
 Route::resource('tag','Commercial\contactstagController');

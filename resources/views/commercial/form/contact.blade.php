@@ -3,7 +3,19 @@
 @section('title', 'Contacts | CognitivoERP')
 @section('Title', 'Contact Form')
 
+ @if(Session::has('message'))
+<div class="alert alert-danger alert-dismissable" id="result">
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>  
+   <p id="message">
+
+   {{Session::get('message')}}
+
+   </p>
+   
+</div>
+@endif 
 @section('content')
+
 @if(isset($contacts))
 {!! Form::model($contacts,['route' => ['contacts.update',$contacts->id_contact], 'method'=>'put']) !!}
 @else
@@ -99,22 +111,27 @@
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">INFORMACION</a>
+
+                                    <a href="#tab_1_1" data-toggle="tab">Información</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_2" data-toggle="tab">GEOLOCALIZACION</a>
+                                    <a href="#tab_1_2" data-toggle="tab">Localización</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_3" data-toggle="tab">RELACION</a>
+                                    <a href="#tab_1_3" data-toggle="tab">Relación</a>
+                                </li>
+                               {{--  <li>
+                                    <a href="#tab_1_4" data-toggle="tab">Commercial</a>
+                                </li> --}}
+                                <li>
+                                    <a href="#tab_1_5" data-toggle="tab">Subscripción</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_4" data-toggle="tab">COMERCIAL</a>
+                                    <a href="#tab_1_6" data-toggle="tab">Etiqueta</a>
                                 </li>
-                                <li>
-                                    <a href="#tab_1_5" data-toggle="tab">SUBSCRIPCION</a>
-                                </li>
-                                <li>
-                                    <a href="#tab_1_6" data-toggle="tab">ETIQUETA</a>
+                                 <li>
+                                    <a href="#tab_1_7" data-toggle="tab">Finanza</a>
+
                                 </li>
                             </ul>
                         </div>
@@ -124,24 +141,29 @@
                                 <div class="tab-pane active" id="tab_1_1">
                                     <form role="form" action="#">
                                       <div class="form-group">
-                                          <label class="control-label">Code</label>
-                                          {!! Form::text('code', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                          <label class="control-label">CODIGO</label>
+                                          @if (isset($contacts))
+                                              {!! Form::text('code', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                          @else
+                                             {!! Form::text('code', \App\Contact::last_contact()[0]->code+1, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                          @endif
+                                          
                                       </div>
                                       <div class="form-group">
-                                          <label class="control-label">Role</label>
+                                          <label class="control-label">ROL</label>
                                       {!!  Form::select('id_contact_role',$contactrole,null,['class'=> 'form-control' ,'required']) !!}
                                       </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Name</label>
+                                            <label class="control-label">NOMBRE</label>
                                             {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Alias</label>
+                                            <label class="control-label">ALIAS</label>
                                             {!! Form::text('alias', null, ['class'=>'form-control', 'placeholder'=>'Short Name or Alias']) !!}
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Government ID</label>
+                                            <label class="control-label">RUC</label>
                                             {!! Form::text('gov_code', null, ['class'=>'form-control', 'placeholder'=>'80001234-x']) !!}
                                         </div>
                                         <div class="form-group">
@@ -156,25 +178,25 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Gender</label>
+                                            <label class="control-label">GENERO</label>
                                             {!! Form::select('gender',['Male','Female'], null, ['class'=>'form-control']) !!}
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Date of Birth</label>
+                                            <label class="control-label">FECHA DE NACIMIENTO</label>
                                             {!! Form::text('date_birth', null, ['class'=>'form-control form-control-inline input-medium date-picker', 'size'=>'16']) !!}
                                         </div>
 
                                         <hr/>
                                         <div class="form-group">
-                                            <label class="control-label">Email</label>
+                                            <label class="control-label">CORREO</label>
                                             {!! Form::email('email', null, ['class'=>'form-control', 'placeholder'=>'hola@hotmail.com']) !!}
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Telephone</label>
+                                            <label class="control-label">TELEFONO</label>
                                             {!! Form::text('telephone', null, ['class'=>'form-control', 'placeholder'=>'+595 21 3288271']) !!}
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">Comment</label>
+                                            <label class="control-label">COMENTARIO</label>
                                             {!! Form::text('comment', null, ['class'=>'form-control']) !!}
                                         </div>
                                         <div class="form-group">
@@ -182,17 +204,20 @@
                                             {!! Form::text('timestamp', null, ['class'=>'form-control','readonly'=>'true']) !!}
                                         </div>
 
+                                          <div class="form-group">
+                                    
+                                      <label class="control-label">DIRECCION</label>
+                                      {!! Form::textarea('address', null, ['class'=>'form-control', 'rows'=>'3', 'placeholder'=>'Roque Centurion Miranda Nro.1625 n/ Asuncion, Paraguay']) !!}
+                                  </div>
+
                                         <div class="margiv-top-10">
-                                            {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
+                                            {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
                                             <a href="javascript:;" class="btn default"> CANCELAR</a>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="tab_1_2">
-                                  <div class="form-group">
-                                      <label class="control-label">Address</label>
-                                      {!! Form::textarea('address', null, ['class'=>'form-control', 'rows'=>'3', 'placeholder'=>'Roque Centurion Miranda Nro.1625 n/ Asuncion, Paraguay']) !!}
-                                  </div>
+                                
                                 </div>
 
                                 <!-- END PERSONAL INFO TAB -->
@@ -201,7 +226,7 @@
 
                                   <form role=form action="#">
                                     <div class="form-group">
-                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">Crear Relaciòn</a>
+                                        <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">CREAR RELACION</a>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                         <thead>
@@ -217,7 +242,7 @@
                                         @foreach($relation as $relations)
 
                                                     <td>
-                                                    {{$relations->code}}
+                                                    {{$relations->Code}}
                                                     </td>
                                                     <td>
                                                         {{$relations->name}}
@@ -236,23 +261,31 @@
                                   </form>
                                 </div>
 
-                                <div class="tab-pane" id="tab_1_5">
-                                                            <form role=form action="#">
+                                              <div class="tab-pane" id="tab_1_5">
+                                                            
+                                                             <div class="form-group">
+                                        <a href="{{ route('subscription.create') }}" class="btn btn-primary" id="create_contact">CREAR SUSBSCRIPCION</a>
+                                    </div>
                                                               <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                                                   <thead>
                                                                       <tr>
+
 
                                                                           <th>PLAN</th>
                                                                           <th>FECHA INICIO</th>
                                                                           <th>FECHA FIN</th>
                                                                           <th>PRECIO UNITARIO</th>
+
+                                                                          <th>ACCIONES</th>
+
                                                                         </tr>
                                                                   </thead>
                                                                   <tbody>
+                                                                  <input type="hidden" name="" value="{{   $total=0 }}">
                                                                   @foreach($contact_subscription as $subscription)
-
+                                                                              <td>{{ $subscription->Contacts->name }}</td>
                                                                               <td>
-                                                                                <a href="{{route('subscription.edit',$subscription->id_subscription)}}">{{$subscription->Items->name}}</a>
+                                                                                {{$subscription->Items->name}}
                                                                               </td>
                                                                               <td>
                                                                                   {{$subscription->start_date}}
@@ -263,16 +296,32 @@
                                                                               <td>
                                                                                   {{$subscription->unit_price}}
                                                                               </td>
+                                                                            <td><a href="{{route('subscription.edit', $subscription)}}" style="display: inline;" >
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>/
+                        <form action="{{route('subscription.destroy', $subscription)}}" method="POST" style="display: inline">
+                         <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <button type="submit" name="">
+                            <i class="glyphicon glyphicon-trash"></i>
+                         </button>
+                          </form>
+
+                        </td>
                                                                           </tr>
+                                                                          <input type="hidden" name="" value="{!! $total += $subscription->unit_price !!}">
+                                                                             
                                                                       @endforeach
                                                                   </tbody>
+
                                                               </table>
 
 
 
-                                                            </form>
+                                                           
 
-
+                                                             <div class="">
+                                                                        <h1>{{ $total }}</h1></div>
                                                         </div>
                                                         <div class="tab-pane" id="tab_1_6">
                                                                                     <form role=form action="#">
@@ -303,10 +352,86 @@
 
 
 
-                                                                                    </form>
+                                                            </form>
 
 
-                                                                                </div>
+                                                        </div>
+
+                                <div class="tab-pane" id="tab_1_7">
+                                @if (isset($contacts))
+                                     {!! Form::model($contacts,['route' => ['contacts.update',$contacts->id_contact], 'method'=>'put']) !!}
+                                     {!! csrf_field() !!}
+                                     <input type="hidden" name="is_finance" value="1">
+                                         <div class="form-group">
+                                         <div  class="md-checkbox-inline">
+                                             
+                                       
+                                            <div class="md-checkbox">
+                                              {!! Form::checkbox('is_customer',null, null, ['class'=>'md-check', 'id'=>'chbxCustomer']) !!}
+                                              <label for="chbxCustomer">
+                                                  <span></span>
+                                                  <span class="check"></span>
+                                                  <span class="box"></span>
+                                                  Cliente
+                                              <label>
+                                            </div>
+                                                    <div class="md-checkbox">
+                                              {!! Form::checkbox('is_supplier',null, null, ['class'=>'md-check', 'id'=>'chbxSupplier']) !!}
+                                              <label for="chbxSupplier">
+                                                  <span></span>
+                                                  <span class="check"></span>
+                                                  <span class="box"></span>
+                                                  Proveedor
+                                              <label>
+                                            </div>
+                                              </div>
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <label class="control-label">CONTRATO</label>
+                                            {!! Form::select('id_contract',$contract, null, ['class'=>'form-control']) !!}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">MONEDA</label>
+                                            {!! Form::select('id_currency',$currency, null, ['class'=>'form-control']) !!}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">BANCO</label>
+                                            {!! Form::select('id_bank',$bank, null, ['class'=>'form-control']) !!}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">LISTA DE PRECIO</label>
+                                            {!! Form::select('id_price_list',$price_list, null, ['class'=>'form-control']) !!}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">VENDEDOR</label>
+                                            {!! Form::select('id_sales_rep',$sales_rep, null, ['class'=>'form-control']) !!}
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label class="control-label">CUENTA</label>
+                                            {!! Form::select('id_field',$account,null, ['class'=>'form-control']) !!}
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">NUMERO DE CUENTA</label>
+                                            @if (App\ContactField::get_field_value($contacts->id_contact)->get()->count())
+                                    {!! Form::text('account_value',App\ContactField::get_field_value($contacts->id_contact)->get()[0]->value, ['class'=>'form-control']) !!}
+                                            @else   
+                                                                                
+                                                  {!! Form::text('account_value',null, ['class'=>'form-control']) !!}
+                                            @endif
+                                          
+                                        </div>
+
+                                         <div class="margiv-top-10">
+                                            {!! Form::submit( 'Guardar', ['class'=>'btn green']) !!}
+                                          
+                                        </div>
+                                {!! Form::close() !!}
+                                @endif
+                             
+                                </div>
                                 <!-- END PROFILE CONTENT -->
                             </div>
                         </div>

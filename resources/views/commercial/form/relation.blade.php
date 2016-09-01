@@ -94,11 +94,11 @@
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <i class="icon-globe theme-font hide"></i>
-                                <span class="caption-subject font-blue-madison bold uppercase">Contact</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">CONTACTO</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">Information</a>
+                                    <a href="#tab_1_1" data-toggle="tab">INFORMACION</a>
                                 </li>
 
                             </ul>
@@ -109,26 +109,26 @@
                                 <div class="tab-pane active" id="tab_1_1">
                                     <form role="form" action="#">
                                       <div class="form-group">
-                                          <label class="control-label">Code</label>
+                                          <label class="control-label">CODIGO</label>
                                           {!! Form::text('code', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                                       </div>
                                       <div class="form-group">
-                                          <label class="control-label">Role</label>
+                                          <label class="control-label">ROL</label>
                                       {!!  Form::select('id_contact_role',$contactrole,null,['class'=> 'form-control' ,'required']) !!}
                                       </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Name</label>
+                                            <label class="control-label">NOMBRE</label>
                                             {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Government ID</label>
+                                            <label class="control-label">RUC</label>
                                             {!! Form::text('gov_code', null, ['class'=>'form-control', 'placeholder'=>'80001234-x']) !!}
                                         </div>
                                       <div class="margiv-top-10">
-                                            {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
-                                            <a href="javascript:;" class="btn default"> Cancelar </a>
+                                            {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
+                                            <a href="javascript:;" class="btn default"> CANCELAR </a>
                                         </div>
                                     </form>
                                 </div>

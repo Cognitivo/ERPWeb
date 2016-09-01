@@ -17,6 +17,8 @@ use App\Contact;
 use App\ContactSubsciption;
 use App\Items;
 
+use Carbon\Carbon;
+
 class contactsubscriptionController extends Controller
 {
     /**
@@ -63,7 +65,7 @@ class contactsubscriptionController extends Controller
      */
     public function create()
     {
-        //
+        return view('commercial/form/subscription');
     }
 
     /**
@@ -74,7 +76,21 @@ class contactsubscriptionController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+         $subscription= new ContactSubsciption;
 
+         $subscription->fill($request->all());
+         $subscription->id_company=Auth::user()->id_company;
+        $subscription->id_user =Auth::user()->id_user;
+         $subscription->id_contact= $this->split($request->id_contact);
+         $subscription->id_item = $this->split($request->id_item);
+         $subscription->timestamp= Carbon::now();
+          
+
+          //dd($subscription);
+         $subscription->save();
+    
+        return redirect()->action('Commercial\contactsController@edit', [Session::get('idcontact')]);
     }
 
     /**
@@ -107,7 +123,10 @@ class contactsubscriptionController extends Controller
       $username = Session::get('username');
       //$contacts = Contact::where('id_contact', $id)->get();
       $contacts= Contact::find($id);
-      $contact_subscription = ContactSubsciption::where('id_contact', $id)->first();
+      //$contact_subscription = ContactSubsciption::where('id_contact', $id)->first();
+      $contact_subscription= ContactSubsciption::find($id);
+
+     // $contact_subscription->start_date= 
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
       return view('commercial/form/subscription')
@@ -128,15 +147,18 @@ class contactsubscriptionController extends Controller
     public function update(Request $request, $id)
     {
         // dd($id);
-
-
+ 
+               
               $contact_subscription= ContactSubsciption::findOrFail($id);
               $contact_subscription->fill($request->all());
-
+              $contact_subscription->id_contact= $this->split($request->id_contact);
+               $contact_subscription->id_item = $this->split($request->id_item);
+               $contact_subscription->timestamp= Carbon::now();
+            
               $contact_subscription->save();
 
 
-      return redirect('contacts');
+      return redirect()->action('Commercial\contactsController@edit', [Session::get('idcontact')]);
 
     }
 
@@ -149,6 +171,29 @@ class contactsubscriptionController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
+        $contact_subscription= ContactSubsciption::findOrFail($id);
+        
+         
+            try {
+            $contact_subscription->delete();              
+             return redirect()->back(); 
+        } catch (\Illuminate\Database\QueryException $e) {
+            $message = 'No se puede eliminar';
+            Session::flash('message', $message);
+          return redirect()->back();    
+
+        }
+    }
+
+
+    public function split($value){
+        $split= explode("\t",$value);
+        
+        if(count($split)>1){
+            return $split[1];
+        }
+        return null;
+        
     }
 }

@@ -94,11 +94,11 @@
                         <div class="portlet-title tabbable-line">
                             <div class="caption caption-md">
                                 <i class="icon-globe theme-font hide"></i>
-                                <span class="caption-subject font-blue-madison bold uppercase">Contact</span>
+                                <span class="caption-subject font-blue-madison bold uppercase">CONTACTO</span>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">Informaciòn</a>
+                                    <a href="#tab_1_1" data-toggle="tab">INFORMACION</a>
                                 </li>
 
                             </ul>
@@ -109,13 +109,13 @@
                                 <div class="tab-pane active" id="tab_1_1">
                                     <form role="form" action="#">
                                                                           <div class="form-group">
-                                          <label class="control-label">Tag</label>
+                                          <label class="control-label">ETIQUETA</label>
                                       {!!  Form::select('id_tag',$tag,null,['class'=> 'form-control' ,'required']) !!}
                                       </div>
 
                                     <div class="margiv-top-10">
-                                          {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
-                                          <a href="javascript:;" class="btn default"> Cancelar </a>
+                                          {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
+                                          <a href="javascript:;" class="btn default"> CANCELAR </a>
                                       </div>
                                     </form>
                                 </div>
