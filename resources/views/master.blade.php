@@ -119,7 +119,7 @@
                                         </li>
 
                                             <li class="menu-dropdown classic-menu-dropdown ">
-                                            <a href="javascript:;"> Filabel
+                                            <a href="/timeline"> Filabel
                                                 <span class="arrow"></span>
                                             </a>
                                          

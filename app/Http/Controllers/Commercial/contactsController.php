@@ -257,7 +257,7 @@ class contactsController extends Controller
           
         }
 
-        return redirect('contacts');
+      return redirect()->action('Commercial\contactsController@edit', [Session::get('idcontact')]);
 
     }
 

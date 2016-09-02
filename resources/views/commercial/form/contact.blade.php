@@ -320,8 +320,8 @@
 
                                                            
 
-                                                             <div class="">
-                                                                        <h1>{{ number_format($total,0) }}</h1></div>
+                                                             <div  align="right">
+                                                                 <h1 style="display: inline;">{{ number_format($total,0) }}</h1></div>
                                                         </div>
                                                         <div class="tab-pane" id="tab_1_6">
                                                                                     <form role=form action="#">

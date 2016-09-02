@@ -29,4 +29,12 @@ class Contact extends Model
     {
     	return $this->hasMany('App\ContactField','id_contact_field');
     }
+
+
+    public function scopeget_contact_subscription($query,$value)
+    {
+        return $query->where(function($query){
+            $query->where('id_contact',\Session::get('idcontact'))->orWhere('parent_id_contact',\Session::get('idcontact'));
+        })->where('name','LIKE',"%$value%");
+    }
 }

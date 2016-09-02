@@ -37,7 +37,7 @@ Route::get('contacts.get',function()
 
 Route::get('get_contacts',function(){
     $query = Request::get('query'); 
-    $contacts= \App\Contact::where('parent_id_contact',Session::get('idcontact'))->where('name','LIKE',"%$query%")->get();    
+    $contacts= \App\Contact::get_contact_subscription($query)->get();    
      return response()->json($contacts);
     
 });
@@ -58,6 +58,12 @@ Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
 Route::resource('customers','Commercial\contactsController@indexCustomers');
 
 
+
+Route::get('timeline',function(){
+	return view('Filabel/timeline');
+});
+
+Route::get('get_timeline', 'TimelineController@show');
 
 
 });
