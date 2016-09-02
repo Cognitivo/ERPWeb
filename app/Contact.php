@@ -10,7 +10,7 @@ class Contact extends Model
 
     protected $table = 'contacts';
 
-    protected $fillable = ['timestamp', 'name', 'gov_code', 'parent_id_contact'];
+    protected $fillable = ['alias', 'name', 'gov_code','code','telephone','email','address','gender','id_contact_role','date_birth','comment'];
 
     public $timestamps = false;
 

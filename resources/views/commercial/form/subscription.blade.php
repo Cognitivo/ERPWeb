@@ -101,9 +101,9 @@
                                 <div class="tab-pane active" id="tab_1_1">
                                   
 @if (isset($contact_subscription))
-   {!! Form::model($contact_subscription,['route' => ['subscription.update',$contact_subscription->id_subscription], 'method'=>'put']) !!}
+   {!! Form::model($contact_subscription,['route' => ['subscription.update',$contact_subscription->id_subscription], 'method'=>'put','id'=>'form_subscription']) !!}
 @else
-    {!! Form::open(array('route'=> 'subscription.store','class'=>'form-horizontal')) !!}
+    {!! Form::open(array('route'=> 'subscription.store','class'=>'form-horizontal','id'=>'form_subscription')) !!}
 @endif
 
 
@@ -114,20 +114,29 @@
                                       <div class="form-group">
                                             <label class="control-label">NOMBRE</label>
                                             @if (isset($contact_subscription))
-                                               {!! Form::text('id_contact',  $contact_subscription->Contacts->name."\t".$contact_subscription->id_contact, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                               {!! Form::text('name_contact',  $contact_subscription->Contacts->name, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                               <input type="hidden" name="id_contact" id="id_contact" value="{{ $contact_subscription->id_contact }}"/>
                                             @else
-                                              {!! Form::text('id_contact', null, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                              {!! Form::text('name_contact', null, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                               <input type="hidden" name="id_contact" id="id_contact" value="">
                                             @endif
                                             
                                         </div>
                                           <div class="form-group">
                                             <label class="control-label">PLAN</label>
                                             @if (isset($contact_subscription))
-                                                {!! Form::text('id_item', $contact_subscription->Items->name."\t".$contact_subscription->id_item , ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                                {!! Form::text('name_item', $contact_subscription->Items->name , ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                                <input type="hidden" name="id_item" id="id_item" value="{{ $contact_subscription->id_item }}"/>
                                             @else
-                                                {!! Form::text('id_item', null, ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                                {!! Form::text('name_item', null, ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                                <input type="hidden" name="id_item" id="id_item" value=""/>
                                             @endif
                                             
+                                        </div>
+
+                                         <div class="form-group">
+                                            <label class="control-label">PRECIO UNITARIO</label>
+                                            {!! Form::text('unit_price', null, ['class'=>'form-control mask_currency', 'placeholder'=>'Full Name','id'=>'unit_price']) !!}
                                         </div>
                                       <div class="form-group">
                                           <label class="control-label">FECHA INICIO</label>
@@ -137,10 +146,7 @@
                                           <label class="control-label">FECHA FIN</label>
                                           {!! Form::date('end_date', null, ['class'=>'form-control', 'placeholder'=>'End Date']) !!}
                                       </div>
-                                        <div class="form-group">
-                                            <label class="control-label">PRECIO UNITARIO</label>
-                                            {!! Form::text('unit_price', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                                        </div>
+                                       
 
                                         <div class="margiv-top-10">
                                             {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
@@ -171,6 +177,10 @@
 
 
     <script type="text/javascript">
+
+    $('#form_subscription').submit(function(){           
+        $('.mask_currency').inputmask('remove');
+    })
         
     $(document).ready(function() {
         contacts()
@@ -187,9 +197,17 @@
 
         getValue: function(element) {
 
-            return element.name +"\t"+element.id_contact
+            return element.name 
         },
         list: {
+            onSelectItemEvent: function() {
+            var value = $("#example-ajax-post").getSelectedItemData().id_contact;
+            
+          
+            $("#id_contact").val(value).trigger("change");
+
+           
+        },
             match: {
                 enabled: true
             },
@@ -198,6 +216,7 @@
 
 
         },
+      
 
         ajaxSettings: {
             dataType: "json",
@@ -241,9 +260,16 @@ function plan(){
 
         getValue: function(element) {
 
-            return element.name +"\t"+element.id_item
+            return element.name 
         },
         list: {
+             onSelectItemEvent: function() {
+            var value = $("#example-ajax-post1").getSelectedItemData().id_item;
+            var price = $("#example-ajax-post1").getSelectedItemData().unit_cost;
+           
+            $("#id_item").val(value).trigger("change");
+             $('#unit_price').val(price).trigger("change");
+        },
             match: {
                 enabled: true
             },

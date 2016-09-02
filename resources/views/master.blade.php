@@ -246,8 +246,13 @@
          {{-- chart js --}}
          <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
+        
+         <script src="{{url()}}/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+        <script src="{{url()}}/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js" type="text/javascript"></script>
+
           <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script> 
            <script src="{{url()}}/assets/global/plugins/vsjs/dist/vis.js"></script> 
+
       
         <!-- END PAGE LEVEL PLUGINS -->
 
@@ -258,6 +263,7 @@
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
         <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
+          <script src="{{url()}}/assets/pages/scripts/form-input-mask.js" type="text/javascript"></script>
     
         @section('pagescripts')
         @show

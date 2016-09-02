@@ -183,7 +183,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">FECHA DE NACIMIENTO</label>
-                                            {!! Form::text('date_birth', null, ['class'=>'form-control form-control-inline input-medium date-picker', 'size'=>'16']) !!}
+                                            {!! Form::date('date_birth', null, ['class'=>'form-control form-control-inline input-medium ']) !!}
                                         </div>
 
                                         <hr/>
@@ -270,7 +270,7 @@
                                                                   <thead>
                                                                       <tr>
 
-
+                                                                           <th>NOMBRE</th>
                                                                           <th>PLAN</th>
                                                                           <th>FECHA INICIO</th>
                                                                           <th>FECHA FIN</th>
@@ -294,7 +294,7 @@
                                                                                   {{$subscription->end_date}}
                                                                               </td>
                                                                               <td>
-                                                                                  {{$subscription->unit_price}}
+                                                                                  {{number_format($subscription->unit_price,0)}}
                                                                               </td>
                                                                             <td><a href="{{route('subscription.edit', $subscription)}}" style="display: inline;" >
                             <i class="glyphicon glyphicon-pencil"></i>
@@ -321,7 +321,7 @@
                                                            
 
                                                              <div class="">
-                                                                        <h1>{{ $total }}</h1></div>
+                                                                        <h1>{{ number_format($total,0) }}</h1></div>
                                                         </div>
                                                         <div class="tab-pane" id="tab_1_6">
                                                                                     <form role=form action="#">

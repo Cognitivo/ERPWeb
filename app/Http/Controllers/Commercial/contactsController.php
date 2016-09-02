@@ -112,24 +112,18 @@ class contactsController extends Controller
      */
     public function store(Request $request)
     {
+
         $contact                  = new Contact;
-        $contact->id_contact_role = $request->id_contact_role;
+        $contact->fill($request->all());              
         $contact->id_company      = Auth::user()->id_company;
-        $contact->id_user         = Auth::user()->id_user;
-        $contact->name            = $request->name;
-        $contact->alias           = $request->alias;
-        $contact->code            = $request->code;
-        $contact->gov_code        = $request->gov_code;
-        $contact->telephone       = $request->telephone;
+        $contact->id_user         = Auth::user()->id_user;        
         $contact->is_read         = 0;
         $contact->is_head         = 1;
         $contact->is_customer     = 1;
         $contact->is_supplier     = 0;
         $contact->is_employee     = 0;
-        $contact->is_sales_rep    = 0;
-        $contact->address         = $request->address;
+        $contact->is_sales_rep    = 0;       
         $contact->is_person       = $request->is_person ? 1 : 0;
-
         $contact->timestamp = Carbon::now();
         $contact->is_active = 1;
 
@@ -196,7 +190,8 @@ class contactsController extends Controller
         }
 
         //dd($contact_subscription[0]->Contacts->name);
-
+        $date= Carbon::parse($contacts->date_birth);
+        $contacts->date_birth= $date->toDateString();
         return view('commercial/form/contact')
             ->with('contacts', $contacts)
             ->with('username', $username)
