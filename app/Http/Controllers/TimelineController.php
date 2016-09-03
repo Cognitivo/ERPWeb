@@ -41,7 +41,7 @@ class TimelineController extends Controller
      */
     public function store(Request $request)
     {
-
+        dd($request->all());
         $production_order= new ProductionOrder;
 
         $production_order->name=$request->content;
