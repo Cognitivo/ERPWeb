@@ -64,6 +64,8 @@ Route::get('timeline',function(){
 });
 
 Route::get('get_timeline', 'TimelineController@show');
-
+Route::get('update_timeline/{id}', 'TimelineController@update');
+Route::get('store_timeline','TimelineController@store');
+Route::get('delete_item/{id}','TimelineController@destroy');
 
 });
