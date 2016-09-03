@@ -41,16 +41,16 @@ class TimelineController extends Controller
      */
     public function store(Request $request)
     {
-
+       
         $production_order= new ProductionOrder;
 
         $production_order->name=$request->content;
-        $production_order->start_date_est=Carbon::parse($request->start);
-        $production_order->end_date_est=Carbon::parse($request->end);
+        $production_order->start_date_est= $this->date_format($request->start);
+        $production_order->end_date_est=$this->date_format($request->end);
         $production_order->id_production_line=$request->group;
         $production_order->id_company=1;
         $production_order->id_user= \Auth::user()->id_user;
-        $production_order->trans_date=Carbon::parse($request->start);
+        $production_order->trans_date=$this->date_format($request->start);
         $production_order->is_head=1;
         $production_order->timestamp;
         $production_order->id_branch=1;
@@ -61,7 +61,7 @@ class TimelineController extends Controller
         $production_order->save();
      
 
-         return response()->json(true);
+         return response()->json(['id'=>$production_order->getKey()]);
 
     }
 
@@ -110,15 +110,19 @@ class TimelineController extends Controller
      */
     public function update(Request $request, $id)
     {
+         
+         //dd($id);
+        //dd($this->date_format($request->end));
+
         $production_order =  ProductionOrder::find($id);
  
-        $production_order->start_date_est = Carbon::parse($request->start);
-        $production_order->end_date_est = Carbon::parse($request->end);
+       $production_order->start_date_est= $this->date_format($request->start);
+        $production_order->end_date_est = $this->date_format($request->end);
         $production_order->id_production_line= $request->group;
 
         $production_order->save();
 
-        return response()->json(true);
+        return response()->json(['id'=>$production_order->getKey()]);
     }
 
     /**
@@ -133,5 +137,10 @@ class TimelineController extends Controller
         $production_order->delete();
 
         return response()->json(true);
+    }
+
+    public function date_format($date){
+
+        return Carbon::createFromFormat('D M d Y H:i:s e+', $date)->toDateTimeString();
     }
 }

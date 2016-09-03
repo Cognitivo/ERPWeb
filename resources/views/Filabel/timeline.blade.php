@@ -98,7 +98,9 @@
              	url: '/store_timeline',
              	data:{'content': item.content,'start': item.start,'end':item.end,'group':item.group},
              	success: function(result){
-
+                 item.id = result.id
+                 
+                  callback(item);
              	},
              	error: function (err) {
       
@@ -112,7 +114,7 @@
         
              })
 
-          callback(item);
+          
     	}else{
     		 callback(null); // cancel item creation
     	}
@@ -121,9 +123,7 @@
     },
 
      onMove: function (item, callback) {
-      var title = 'Do you really want to move the item to\n' +
-          'start: ' + item.start + '\n' +
-          'end: ' + item.end + '?';
+      
 
           var r = confirm("Move Item!");
     if (r == true) {
@@ -131,7 +131,8 @@
            	url: '/update_timeline/'+item.id,
            	data: {'content': item.content,'start': item.start,'end':item.end,'group':item.group},
            	success: function(result){
-              console.log(result)
+              item.id = result.id
+              callback(item);
            	},
            	error: function (err) {
       
@@ -144,7 +145,7 @@
     }
            })
 
-          callback(item);
+          
     } else {
         callback(null); // cancel editing item
     }
