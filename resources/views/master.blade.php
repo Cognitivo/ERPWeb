@@ -260,12 +260,10 @@
         <script src="{{url()}}/assets/global/scripts/app.min.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        @section('pagescripts')
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
-        <script src="{{url()}}/assets/pages/scripts/add-dashboard-components.js" type="text/javascript"></script>
         <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
           <script src="{{url()}}/assets/pages/scripts/form-input-mask.js" type="text/javascript"></script>
-    
-        @section('pagescripts')
         @show
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->

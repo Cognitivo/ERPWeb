@@ -16,7 +16,7 @@ use Config;
 class dashboardController extends Controller
 {
   public function index(Request $request){
-      return view('master');
+      return view('Dashboard.launch');
   }
   public function SaveDashboard(Request $request){
     $Name = Auth::user()->name;

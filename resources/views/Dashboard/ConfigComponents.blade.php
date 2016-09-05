@@ -1,5 +1,7 @@
 
 @extends('master')
+@section('title', 'Manage Dashboard | CognitivoERP')
+@section('Title', 'Manage Dashboard')
 @section('innercontent')
   <div>
     <div >

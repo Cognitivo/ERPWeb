@@ -42,14 +42,14 @@
                                                         <span class="box"></span> Kpi </label>
                                                 </div>
                                                 <div class="md-radio">
-                                                    <input type="radio" id="radio7" name="type" class="md-radiobtn">
+                                                    <input type="radio" id="radio7" name="type" class="md-radiobtn" value="BarChart">
                                                     <label for="radio7">
                                                         <span class="inc"></span>
                                                         <span class="check"></span>
                                                         <span class="box"></span> Bar Chart </label>
                                                 </div>
                                                 <div class="md-radio">
-                                                    <input type="radio" id="radio8" name="type" class="md-radiobtn">
+                                                    <input type="radio" id="radio8" name="type" class="md-radiobtn" value="PieChart">
                                                     <label for="radio8">
                                                         <span></span>
                                                         <span class="check"></span>

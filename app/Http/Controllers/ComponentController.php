@@ -11,7 +11,7 @@ use View;
 use Config;
 use Auth;
 use File;
-
+use Redirect;
 class ComponentController extends Controller
 {
     public function Execute_KPI($Key, $StartDate, $EndDate){
@@ -137,7 +137,11 @@ class ComponentController extends Controller
   }
   public function CreateComponent(Request $request){
     $Component = array();
-    $Key = str_replace(' ', '', $request->input("name"));
+    $KeyElem = explode(" ", $request->input("name"));
+    foreach ($KeyElem as $index => $value) {
+      $KeyElem[$index] = substr($value,0,3);
+    }
+    $Key = implode("",$KeyElem);
     $Component["Caption"] = $request->input("name");
     $Component["Type"] = $request->input("type");
     $Component["Unit"] = $request->input("unit");
@@ -154,6 +158,8 @@ class ComponentController extends Controller
         $Component["Dimension"] = "Medium";
         break;
     }
+    file_put_contents(Config::get("Paths.SQLs")."/".$Key.".sql", $request->input("query"));
     file_put_contents(Config::get("Paths.Components") . "/" . $Key . ".json",json_encode($Component));
+    return redirect('componentslist');
   }
 }

@@ -1,8 +1,8 @@
 
 
 @extends('../../master')
-@section('title', 'Contacts | CognitivoERP')
-@section('Title', 'Contacts')
+@section('title', 'Components | CognitivoERP')
+@section('Title', 'Components')
 
 @section('content')
     <div class="portlet light ">
