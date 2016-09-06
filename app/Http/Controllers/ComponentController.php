@@ -142,17 +142,31 @@ class ComponentController extends Controller
       $KeyElem[$index] = substr($value,0,3);
     }
     $Key = implode("",$KeyElem);
+    $Pattern = '/(?<!\w)@\w+/';
+    preg_match_all($Pattern, $request->input("query"), $Matches);
+    $Matches = array_unique($Matches[0]);
+    foreach ($Matches as $key => $value) {
+      $Matches[$key] = ltrim($value,"@");
+    }
+    $Parameters = implode(",",$Matches);
     $Component["Caption"] = $request->input("name");
     $Component["Type"] = $request->input("type");
     $Component["Unit"] = $request->input("unit");
     $Component["Module"] = $request->input("module");
     $Component["Description"] = $request->input("description");
+    $Component["Parameters"] = $Parameters;
+    $Component["SqlFile"] = $Key . ".sql";
     switch(strtolower($request->input("type"))){
       case "kpi":
         $Component["Dimension"] = "Small";
         break;
       case "barchart":
         $Component["Dimension"] = "Medium";
+        $Component["Label"] = $request->input("xaxis");
+        $Component["Series"][0]["Id"] = $request->input("yaxis");
+        $Component["Series"][0]["Name"] = $request->input("yaxiscaption");
+        $Component["Series"][0]["Column"] = $request->input("yaxiscolumn");
+        $Component["Series"][0]["Color"] = $request->input("yaxiscolor");
         break;
       case "piechart":
         $Component["Dimension"] = "Medium";

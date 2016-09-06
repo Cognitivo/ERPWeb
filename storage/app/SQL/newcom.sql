@@ -1,1 +1,0 @@
-selevt * from items
