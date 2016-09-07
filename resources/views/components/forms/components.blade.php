@@ -31,32 +31,51 @@
                                           <label class="control-label">Name</label>
                                           {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Name Of The Component']) !!}
                                       </div>
-                                      <div class="form-group">
-                                          <label class="control-label">Type</label>
-                                            <div class="md-radio-inline">
+                                          <div class="form-group form-md-radios">
+                                            <label>Type</label>
+                                            <div class="md-radio-list">
                                                 <div class="md-radio">
-                                                    <input type="radio" id="radio6" name="type" class="md-radiobtn" value="kpi">
-                                                    <label for="radio6">
+                                                    <input type="radio" id="radio1" name="type" class="md-radiobtn" value="kpi">
+                                                    <label for="radio1">
                                                         <span class="inc"></span>
                                                         <span class="check"></span>
-                                                        <span class="box"></span> Kpi </label>
+                                                        <span class="box"></span> KPI </label>
+                                                    <div class="reveal-if-active">
+                                    
+                                                    </div>
                                                 </div>
                                                 <div class="md-radio">
-                                                    <input type="radio" id="radio7" name="type" class="md-radiobtn">
-                                                    <label for="radio7">
+                                                    <input type="radio" id="radio2" name="type" class="md-radiobtn" value="BarChart">
+                                                    <label for="radio2">
                                                         <span class="inc"></span>
                                                         <span class="check"></span>
                                                         <span class="box"></span> Bar Chart </label>
+                                                    <div class="reveal-if-active">
+                                                        <label class="control-label">X-Axis</label>
+                                                        {!! Form::text('xaxis', null, ['class'=>'form-control', 'placeholder'=>'Name of column for X-Axis']) !!}
+                                                        <label class="control-label">Y-Axis</label>
+                                                        {!! Form::text('yaxis', null, ['class'=>'form-control', 'placeholder'=>'Name of column for Y-Axis']) !!}
+                                                        <label class="control-label">Y-Axis Column</label>
+                                                        {!! Form::text('yaxiscolumn', null, ['class'=>'form-control', 'placeholder'=>'Column for Y-Axis']) !!}
+                                                        <label class="control-label">Y-Axis Caption</label>
+                                                        {!! Form::text('yaxiscaption', null, ['class'=>'form-control', 'placeholder'=>'Caption for Y-Axis']) !!}
+                                                        <label class="control-label">Y-Axis Color</label>
+                                                        {!! Form::text('yaxiscolor', null, ['class'=>'form-control', 'placeholder'=>'Color for Y-Axis']) !!}
+                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="md-radio">
-                                                    <input type="radio" id="radio8" name="type" class="md-radiobtn">
-                                                    <label for="radio8">
-                                                        <span></span>
+                                                    <input type="radio" id="radio3" name="type" class="md-radiobtn" value="PieChart">
+                                                    <label for="radio3">
+                                                        <span class="inc"></span>
                                                         <span class="check"></span>
                                                         <span class="box"></span> Pie Chart </label>
+                                                    <div class="reveal-if-active">
+                                    
+                                                    </div>
                                                 </div>
                                             </div>
-                                      </div>
+                                        </div>
 
                                         <div class="form-group">
                                             <label class="control-label">Unit</label>
