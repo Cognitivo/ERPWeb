@@ -78,9 +78,11 @@ class contactsController extends Controller
         //  $contacts= Contact::find($id);
         $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->paginate(200);
 
+
+
         $relation    = Contact::where('parent_id_contact', '=', $id)->get();
         $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
-        $contactrole = ContactRole::where('id_company', Auth::user()->id_company)->lists('name', 'id_contact_role');
+        $contactrole = ContactRole::where('id_company', Auth::user()->id_company)->where('is_active',1)->lists('name', 'id_contact_role');
 
         $contract   = \DB::table('app_contract')->lists('name', 'id_contract');
         $currency   = \DB::table('app_currency')->lists('name', 'id_currency');
@@ -162,14 +164,14 @@ class contactsController extends Controller
      */
     public function edit($id)
     {
-
+          
         session(['idcontact' => $id]);
         $username = Session::get('username');
         //$contacts = Contact::where('id_contact', $id)->get();
         $contacts = Contact::find($id);
 
         $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
-
+          //dd($contact_subscription);
         $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
         $relation    = Contact::where('parent_id_contact', '=', $id)->get();
         $contactrole = ContactRole::where('id_company', Auth::user()->id_company)->lists('name', 'id_contact_role');
@@ -215,6 +217,10 @@ class contactsController extends Controller
         // dd($id);
         $contacts = Contact::findOrFail($id);
         $contacts->fill($request->all());
+
+        if($request->id_tag){
+          $contacts->id_tag= $request->id_tag;
+        }
 
         if ($request->is_person) {
             $contacts->is_person = 1;

@@ -83,7 +83,7 @@ class AuthController extends Controller
 
     public function getLogout(Request $request)
     {
-        Auth::logout();
+        \Session::flush();
         return redirect('auth/login');
     }
 }

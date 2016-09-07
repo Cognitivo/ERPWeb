@@ -24,6 +24,9 @@
         <link href="{{url()}}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+
+         <link href="{{url()}}/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link href="{{url()}}/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
         
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
@@ -51,7 +54,7 @@
                         <div class="page-header-menu">
                             <div class="container">
                                 <!-- BEGIN HEADER SEARCH BOX -->
-                                <form class="search-form" action="page_general_search.html" method="GET">
+                              {{--   <form class="search-form" action="#" method="GET">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search" name="query">
                                         <span class="input-group-btn">
@@ -59,8 +62,29 @@
                                                 <i class="icon-magnifier"></i>
                                             </a>
                                         </span>
-                                    </div>
-                                </form>
+                                    </div>                                    
+                                </form> --}}
+
+                               <div class="top-menu">
+                          <ul class="nav navbar-nav pull-right">
+                   <!-- BEGIN USER LOGIN DROPDOWN -->
+                   <li class="dropdown dropdown-user dropdown-dark">
+                       @if (Auth::check())
+                           <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                              data-close-others="true">
+                               <i class="glyphicon glyphicon-user"></i>
+                               <span class="username username-hide-mobile">{{Auth::user()->name}}</span>
+                           </a>
+                           <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                   <a href="{{url('auth/logout')}}">
+                                       <i class="icon-logout"></i>Salir</a>
+                               </li>
+                           </ul>
+                       @endif
+                   </li>
+               </ul>
+           </div>
                                 <!-- END HEADER SEARCH BOX -->
                                 <div class="hor-menu  ">
                                     <ul class="nav navbar-nav">
@@ -165,7 +189,7 @@
                                     <!-- BEGIN PAGE BREADCRUMBS -->
                                     <ul class="page-breadcrumb breadcrumb">
                                         <li>
-                                            <a href="index.html">Home</a>
+                                            <a href="/">Home</a>
                                             <i class="fa fa-circle"></i>
                                         </li>
                                         <li>
@@ -253,6 +277,8 @@
           <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script> 
            <script src="{{url()}}/assets/global/plugins/vsjs/dist/vis.js"></script> 
 
+           <script src="{{url()}}/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+
       
         <!-- END PAGE LEVEL PLUGINS -->
 
@@ -264,6 +290,7 @@
         <script src="{{url()}}/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src='{{url()}}/assets/pages/scripts/components-date-time-pickers.js' type="text/javascript"></script>
           <script src="{{url()}}/assets/pages/scripts/form-input-mask.js" type="text/javascript"></script>
+          <script src="{{url()}}/assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
         @show
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->

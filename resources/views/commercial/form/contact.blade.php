@@ -308,54 +308,55 @@
                           </form>
 
                         </td>
-                                                                          </tr>
-                                                                          <input type="hidden" name="" value="{!! $total += $subscription->unit_price !!}">
-                                                                             
-                                                                      @endforeach
-                                                                  </tbody>
+                      </tr>
+                                  <input type="hidden" name="" value="{!! $total += $subscription->unit_price !!}">
+                                     
+                              @endforeach
+                          </tbody>
 
-                                                              </table>
-
-
-
-                                                           
-
-                                                             <div  align="right">
-                                                                 <h1 style="display: inline;">{{ number_format($total,0) }}</h1></div>
-                                                        </div>
-                                                        <div class="tab-pane" id="tab_1_6">
-                                                                                    <form role=form action="#">
-
-                                                                                        <div class="form-group">
-                                                                                            <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">CREAR ETIQUETA</a>
-                                                                                        </div>
-                                                                                      <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
-                                                                                          <thead>
-                                                                                              <tr>
-
-                                                                                                  <th>ETIQUETA</th>
-
-                                                                                                </tr>
-                                                                                          </thead>
-                                                                                          <tbody>
-                                                                                          @foreach($contact_tag as $tag)
-
-
-                                                                                                      <td>
-                                                                                                          {{$tag->Tag->name}}
-                                                                                                      </td>
-
-                                                                                                  </tr>
-                                                                                              @endforeach
-                                                                                          </tbody>
-                                                                                      </table>
+                      </table>
 
 
 
-                                                            </form>
+                   
+
+                     <div  align="right">
+                         <h1 style="display: inline;">{{ number_format($total,0) }}</h1></div>
+                </div>
+                <div class="tab-pane" id="tab_1_6">
+                                            <form role=form action="#">
+                                                
+                                                @if (isset($contacts))
+                                                   <div class="form-group">
+                                                    <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">AÑADIR ETIQUETA</a>
+                                                </div>
+                                                @endif
+                                               
+                                              <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
+                                                  <thead>
+                                                      <tr>
+
+                                                          <th>ETIQUETA</th>
+
+                                                        </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                  @foreach($contact_tag as $tag)
+                                                              <td>
+                                                                  {{$tag->Tag->name}}
+                                                              </td>
+
+                                                          </tr>
+                                                      @endforeach
+                                                  </tbody>
+                                              </table>
 
 
-                                                        </div>
+
+                    </form>
+
+
+                </div>
 
                                 <div class="tab-pane" id="tab_1_7">
                                 @if (isset($contacts))

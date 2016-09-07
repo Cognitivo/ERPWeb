@@ -74,7 +74,7 @@ class contactstagController extends Controller
       $contacts= Contact::find($id);
       $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->simplepaginate(10000);
       //  $relation = Contact::where('parent_id_contact','=',$id)->get();
-        $tag=Tag::where('id_company', Auth::user()->id_company)->lists('name','id_tag');
+        $tag=Tag::where('id_company', Auth::user()->id_company)->where('is_active',1)->lists('name','id_tag');
     //  dd($contact_subscription);
       //$usuarios= User::buscar($palabra)->orderBy('id','DESC')->get();
       return view('commercial/form/tag')

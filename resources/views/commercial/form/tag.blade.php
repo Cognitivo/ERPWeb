@@ -107,11 +107,21 @@
                             <div class="tab-content">
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active" id="tab_1_1">
-                                    <form role="form" action="#">
-                                                                          <div class="form-group">
-                                          <label class="control-label">ETIQUETA</label>
-                                      {!!  Form::select('id_tag',$tag,null,['class'=> 'form-control' ,'required']) !!}
-                                      </div>
+                                    <form role="form" action="{{ route('contacts.update',$contacts) }}" method="put">                                  
+
+                                         <div class="form-group">
+                                                <label for="single-prepend-text" class="control-label">ETIQUETA</label>
+                                                <div class="input-group select2-bootstrap-prepend">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-default" type="button" data-select2-open="single-prepend-text">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </button>
+                                                    </span>
+                                                   
+
+                                                     {!!  Form::select('id_tag',$tag,null,['class'=> 'form-control select2' ,'required']) !!}
+                                                </div>
+                                            </div>
 
                                     <div class="margiv-top-10">
                                           {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}

@@ -153,13 +153,13 @@ class contactsubscriptionController extends Controller
     {
         // dd($id);
  
-               
+                
               $contact_subscription= ContactSubsciption::findOrFail($id);
               $contact_subscription->fill($request->all());             
                $contact_subscription->timestamp= Carbon::now();
-                 $subscription->id_contact= $request->id_contact;
-               $subscription->id_item= $request->id_item;
-            
+            $contact_subscription->id_contact= $request->id_contact;
+            $contact_subscription->id_item= $request->id_item;  
+                 
               $contact_subscription->save();
 
 
