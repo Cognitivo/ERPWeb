@@ -95,7 +95,7 @@ class ComponentController extends Controller
     $Data = DB::select(DB::raw($Query));
     foreach ($Data as $Row) {
       $Response[$ComponentConfig["Label"]][] = $Row->{$ComponentConfig["Label"]};
-      foreach($ComponentConfig["Series"] as $Series){
+      foreach($ComponentConfig["Series"] as $Series){ 
         $Response[$Series["Column"]][] = $Row->{$Series["Column"]};
       }
     }
@@ -110,13 +110,35 @@ class ComponentController extends Controller
   }
   public function GetUserComponents(){
     $Name = Auth::user()->name;
+    $UserComponents = array();
     if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
-      $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
-      return json_encode(array("components"=>$DashboardComponents));
+      $Components = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
+      foreach ($Components as $Key => $ComponentKey) {
+        if(File::exists(Config::get("Paths.Components") . $ComponentKey . ".json")){
+          $ComponentName = json_decode(file_get_contents(Config::get("Paths.Components") . $ComponentKey . ".json"),true)["Caption"];
+          $UserComponents[$ComponentKey] = $ComponentName;
+        }
+      }
     }
-    else{
-      return json_encode(array("error"=>"No Components"));
+    asort($UserComponents);
+    return $UserComponents;
+  }
+  public function ManageComponents(){
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
+                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
+    $Iterator = new \RecursiveIteratorIterator($Directory);
+    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
+                                                                    \RegexIterator::USE_KEY);
+    $Components = array();
+    $Components["User"] = $this->GetUserComponents();
+    foreach($ComponentJsonFiles as $File){
+      $Json = json_decode(file_get_contents($File),true);
+      $FileInfo = pathinfo($File);
+      $Components["All"][$FileInfo["filename"]] = $Json["Caption"];
     }
+    asort($Components["All"]);
+    return $Components;
   }
   public function ListComponents(){
     $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
@@ -170,6 +192,8 @@ class ComponentController extends Controller
         break;
       case "piechart":
         $Component["Dimension"] = "Medium";
+        $Component["Label"] = $request->input("label");
+        $Component["PieValues"] = $request->input("pievalues");
         break;
     }
     file_put_contents(Config::get("Paths.SQLs")."/".$Key.".sql", $request->input("query"));

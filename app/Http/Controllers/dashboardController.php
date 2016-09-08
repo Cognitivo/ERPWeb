@@ -12,6 +12,7 @@ use App\Security_User;
 use Auth;
 use File;
 use Config;
+use App\Http\Controllers\ComponentController;
 
 class dashboardController extends Controller
 {
@@ -23,13 +24,12 @@ class dashboardController extends Controller
     if (!file_exists(Config::get("Paths.UserDashboard") . $Name . "/")) {
       File::makeDirectory(Config::get("Paths.UserDashboard") . $Name . "/");
     }
+    dd($request->all());
     try{
-      if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
-        $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
-      }
       foreach (Input::get('components') as $Comp) {
         $DashboardComponents[] = $Comp;
       }
+      dd($DashboardComponents);
       file_put_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",json_encode($DashboardComponents));
     }
     catch(Exception $e){
@@ -38,29 +38,7 @@ class dashboardController extends Controller
     return true;
   }
   public function ManageDashboard(){
-    $Name = Auth::user()->name;
-    if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
-      $DashboardComponents = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
-      return view('Dashboard.ConfigComponents',compact('DashboardComponents'));
-    }
-    else{
-      $Errors = ["error"=>"NoComponents"];
-      return view('Dashboard.ConfigComponents',compact('Errors'));
-    }
-  }
-  public function ListComponents(){
-    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
-                                                    \RecursiveDirectoryIterator::KEY_AS_FILENAME |
-                                                    \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
-    $Iterator = new \RecursiveIteratorIterator($Directory);
-    $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
-                                                                    \RegexIterator::USE_KEY);
-    $Components = array();
-    foreach($ComponentJsonFiles as $File){
-      $Json = json_decode(file_get_contents($File),true);
-      $FileInfo = pathinfo($File);
-      $Components[$Json["Caption"]] = $FileInfo["filename"];
-    }
-    return View::make('Dashboard.ListComponents')->with('Components',$Components);
+    $Components = (new ComponentController)->ManageComponents();
+    return view('Dashboard.ConfigComponents')->with('Components',$Components);
   }
 }

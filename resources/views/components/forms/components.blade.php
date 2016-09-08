@@ -71,7 +71,10 @@
                                                         <span class="check"></span>
                                                         <span class="box"></span> Pie Chart </label>
                                                     <div class="reveal-if-active">
-                                    
+                                                        <label class="control-label">Label</label>
+                                                        {!! Form::text('label', null, ['class'=>'form-control', 'placeholder'=>'Label COlumn for the Pie Chart']) !!}
+                                                        <label class="control-label">Pie Values</label>
+                                                        {!! Form::text('pievalues', null, ['class'=>'form-control', 'placeholder'=>'Pie Value Column for the Pie Chart']) !!}
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,6 +113,5 @@
             </div>
         </div>
     </div>
-</div>
-{{ Form::close() }}              <!-- END PAGE CONTENT INNER -->
+</div>        <!-- END PAGE CONTENT INNER -->
 @endsection
