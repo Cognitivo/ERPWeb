@@ -33,3 +33,6 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
     transform: scale(1);
   }
 }
+.portlet-sortable-placeholder {
+  border: 2px dashed #eee;
+  margin-bottom: 25px; }

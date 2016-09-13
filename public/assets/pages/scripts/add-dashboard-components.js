@@ -1,6 +1,17 @@
 
 
 $(document).ready(function() {
+    $(".page-content-inner").sortable({
+        handle:".widget-thumb-heading",
+        connectWith:".draggable",
+        opacity: 0.8,
+        coneHelperSize: true,
+        placeholder: 'portlet-sortable-placeholder',
+        forcePlaceholderSize: true,
+        tolerance: "pointer",
+        helper: "clone",
+        cursor:"move"
+      }).disableSelection();
     handleComponents();
 });
 function handleComponents() {
@@ -11,24 +22,17 @@ function handleComponents() {
 
         success: function(Response) {
             var data = JSON.parse(Response);
-          if(data.hasOwnProperty('error')){
-                $.each(data.error, function(key, value) {
-                  console.log(value);
-              });
-            }
-            if(data.hasOwnProperty('components')){
-                $.each(data.components, function(key, value) {
-                  $.get("./component/" + value + "/2016-01-01/2017-01-01", function(Response) {
-                      if (Response.Type.toLowerCase() == "kpi") {
-                          handleKPI(Response);
-                      } else if (Response.Type.toLowerCase() == "piechart") {
-                          handlePie(Response);
-                      } else if (Response.Type.toLowerCase() == "barchart") {
-                          handleBarChart(Response)
-                      }
-                  }, "json");
-              });
-            }
+            $.each(data, function(key, value) {
+              $.get("./component/" + key + "/2016-01-01/2017-01-01", function(Response) {
+                  if (Response.Type.toLowerCase() == "kpi") {
+                      handleKPI(Response);
+                  } else if (Response.Type.toLowerCase() == "piechart") {
+                      handlePie(Response);
+                  } else if (Response.Type.toLowerCase() == "barchart") {
+                      handleBarChart(Response)
+                  }
+              }, "json");
+          });
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             // alert("Status: " + textStatus); alert("Error: " + errorThrown);
@@ -37,10 +41,8 @@ function handleComponents() {
 }
 
 function handleKPI(Response) {
-    console.log(Response.Key);
-    console.log($("#" + Response.Key).length);
     if (!($("#" + Response.Key).length)) {
-        var divKPI = '<div class="col-md-3" id="' + Response.Key + '"> <!-- BEGIN WIDGET THUMB --> <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 "> <h4 class="widget-thumb-heading">' + Response.Caption + '</h4> <div class="widget-thumb-wrap"> <i class="widget-thumb-icon bg-green icon-bulb"></i> <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">' + Response.Unit + '</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="' + Response[Response.Value] + '">' + Response[Response.Value] + '</span> </div> </div> </div> <!-- END WIDGET THUMB --> </div>';
+        var divKPI = '<div class="col-md-3 draggable" id="' + Response.Key + '"> <!-- BEGIN WIDGET THUMB --> <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 "> <h4 class="widget-thumb-heading">' + Response.Caption + '</h4> <div class="widget-thumb-wrap"> <i class="widget-thumb-icon bg-green icon-bulb"></i> <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">' + Response.Unit + '</span> <span class="widget-thumb-body-stat" data-counter="counterup" data-value="' + Response[Response.Value] + '">' + Response[Response.Value] + '</span> </div> </div> </div> <!-- END WIDGET THUMB --> </div>';
         if ($(".page-content-inner .widget-row").length) {
             $(".page-content-inner .widget-row").append($(divKPI));
         } else {
@@ -48,6 +50,17 @@ function handleKPI(Response) {
             $(".page-content-inner").append($(divWidgetRow));
             $(".page-content-inner .widget-row").append($(divKPI));
         }
+        // $(".draggable").sortable({
+        //     handle:".widget-thumb-heading",
+        //     connectWith:".draggable",
+        //     opacity: 0.8,
+        //     coneHelperSize: true,
+        //     placeholder: 'portlet-sortable-placeholder',
+        //     forcePlaceholderSize: true,
+        //     tolerance: "pointer",
+        //     helper: "clone"
+        //   });
+        $(".page-content-inner").sortable('refresh');
     }
 }
 
@@ -75,7 +88,6 @@ function handleBarChart(Response) {
                 borderWidth: 1
             });
         });
-
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -83,7 +95,8 @@ function handleBarChart(Response) {
                 labels: ChartLabels,
             },
             options: {
-
+                scaleLabel:
+                    function(label){return  '$' + label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
                 responsive: true,
                 legend: {
                     position: 'top',
@@ -144,41 +157,3 @@ var randomColorFactor = function() {
 var randomColor = function(opacity) {
     return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
 };
-
-
-
-function chunkify(a, n, balanced) {
-
-    if (n < 2)
-        return [a];
-
-    var len = a.length,
-        out = [],
-        i = 0,
-        size;
-
-    if (len % n === 0) {
-        size = Math.floor(len / n);
-        while (i < len) {
-            out.push(a.slice(i, i += size));
-        }
-    } else if (balanced) {
-        while (i < len) {
-            size = Math.ceil((len - i) / n--);
-            out.push(a.slice(i, i += size));
-        }
-    } else {
-
-        n--;
-        size = Math.floor(len / n);
-        if (len % size === 0)
-            size--;
-        while (i < size * n) {
-            out.push(a.slice(i, i += size));
-        }
-        out.push(a.slice(size * n));
-
-    }
-
-    return out;
-}

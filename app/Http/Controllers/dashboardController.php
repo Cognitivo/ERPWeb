@@ -24,18 +24,16 @@ class dashboardController extends Controller
     if (!file_exists(Config::get("Paths.UserDashboard") . $Name . "/")) {
       File::makeDirectory(Config::get("Paths.UserDashboard") . $Name . "/");
     }
-    dd($request->all());
     try{
       foreach (Input::get('components') as $Comp) {
         $DashboardComponents[] = $Comp;
       }
-      dd($DashboardComponents);
       file_put_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",json_encode($DashboardComponents));
     }
     catch(Exception $e){
       return $e->getMessage();
     }
-    return true;
+    return redirect('/');
   }
   public function ManageDashboard(){
     $Components = (new ComponentController)->ManageComponents();

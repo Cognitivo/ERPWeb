@@ -1,45 +1,14 @@
-var DashBoard;
 
-var DashboardComponents = [];
 $(document).ready(function() {
-
-  $("body").on("click", "#ListComponents", function(e) {
-    $.get("./listcomponents",function(Response){
-      $("#ShowComponents").append(Response);
-    });
+  $(".draggable").sortable({
+    handle:".widget-thumb-heading",
+    connectWith:".draggable",
+    opacity: 0.8,
+    coneHelperSize: true,
+    placeholder: 'portlet-sortable-placeholder',
+    forcePlaceholderSize: true,
+    tolerance: "pointer",
+    helper: "clone",
+    revert: 250 // animation in milliseconds
   });
-  $("body").on("click", "#AddComponents", function(e) {
-    $('#components :checked').each(function() {
-      DashboardComponents.push($(this).val());
-      $("#UserComponents").append("<li>" + $(this).next('label').text() + "</li>")
-      $("#AddComponents").hide();
-    });
-  });
-    $("body").on("click", "#UpdateUserDashboard", function(e) {
-        if (typeof DashboardComponents !== 'undefined' && DashboardComponents.length > 0) {
-            $.ajax({
-                type: "POST",
-                url: "./savedashboard",
-                data: {components:DashboardComponents},
-                cache: false,
-
-                success: function(Response) {
-                    console.log(Response);
-                }
-            });
-        }
-    });
 });
-function ListComponents(Data) {
-    ul = document.getElementById("components");
-    var compCount = 0;
-    var divRow;
-    var li;
-    var ul;
-    Components = JSON.parse(Data);
-    $.each(Components, function(key, value) {
-        li = "<li><a href='#' data-key='" + value + "' class='nav-link'>" + key + " </a></li>"
-        $(ul).append(li);
-        compCount++;
-    });
-}
