@@ -50,16 +50,6 @@ function handleKPI(Response) {
             $(".page-content-inner").append($(divWidgetRow));
             $(".page-content-inner .widget-row").append($(divKPI));
         }
-        // $(".draggable").sortable({
-        //     handle:".widget-thumb-heading",
-        //     connectWith:".draggable",
-        //     opacity: 0.8,
-        //     coneHelperSize: true,
-        //     placeholder: 'portlet-sortable-placeholder',
-        //     forcePlaceholderSize: true,
-        //     tolerance: "pointer",
-        //     helper: "clone"
-        //   });
         $(".page-content-inner").sortable('refresh');
     }
 }
@@ -69,13 +59,19 @@ function handleBarChart(Response) {
     var datasets = [];
     var ChartLabels = [];
     if (!($("#" + id).length)) {
-        var divBar = '<div class="col-md-6"> <canvas id=' + id + ' class="canvas" styde="width:50%; height:50%"></canvas> </div>';
-        if ($('#' + id).parent().attr('class') == 'col-md-6') {
-            $('#' + id).html("")
-        } else {
-            $(".page-content-inner").append(divBar);
+        var PortletBar = $("#barpieportlet").clone();
+        $(PortletBar).removeAttr("id");
+        $(PortletBar).attr("id",id);
+        $(PortletBar).removeAttr("style");
+        if ($('#canvas' + id).parent().attr('class') == 'portlet-body') {
+            $('#canvas' + id).html("");
+        }else{
+        $(".page-content-inner").append(PortletBar);
         }
-        var ctx = $("#" + id);
+        $("#" + id + " .portlet-title .caption").html(Response.Caption);
+        var divBar = '<canvas class="canvas" id="canvas' +id +'"></canvas>';
+        $("#" + id + " .portlet-body").append(divBar);
+        var ctx = $("#canvas" + id);
         $.each(Response[Response.Label], function(key, value) {
             ChartLabels.push(value);
         })
@@ -112,14 +108,21 @@ function handlePie(Response) {
     var id = Response.Key;
     var ChartLabels = [];
     var DataSets = [];
+
     if (!($("#" + id).length)) {
-        var divPie = '<div class="col-md-6"> <canvas id=' + id + ' class="canvas" styde="width:50%; height:50%"></canvas> </div>';
-        if ($('#' + id).parent().attr('class') == 'col-md-6') {
-            $('#' + id).html("")
+        var PortletPie = $("#barpieportlet").clone();
+        $(PortletPie).removeAttr("id");
+        $(PortletPie).attr("id",id);
+        $(PortletPie).removeAttr("style");
+        $(".page-content-inner").append(PortletPie);
+        $("#" + id + " .portlet-title .caption").html(Response.Caption);
+        var divPie = '<canvas id=canvas' + id + ' class="canvas" styde="width:50%; height:50%"></canvas>';
+        if ($('#canvas' + id).parent().attr('class') == 'portlet-body') {
+            $('#canvas' + id).html("")
         } else {
-            $(".page-content-inner").append(divPie);
+            $("#" + id + " .portlet-body").append(divPie);
         }
-        var ctx = $("#" + id);
+        var ctx = $("#canvas" + id);
         $.each(Response[Response.Label],function(key,value){
             ChartLabels.push(value);
         });

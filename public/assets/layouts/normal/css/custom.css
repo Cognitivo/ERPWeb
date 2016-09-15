@@ -36,3 +36,8 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
 .portlet-sortable-placeholder {
   border: 2px dashed #eee;
   margin-bottom: 25px; }
+
+.page-content .container .page-settings{
+  display:inline-block;
+  float:right;
+}

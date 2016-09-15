@@ -199,7 +199,10 @@
                                     </ul>
                                     <!-- END PAGE BREADCRUMBS -->
                                     <!-- BEGIN PAGE CONTENT INNER -->
-
+                                    <div class="page-settings">
+                                    @section('pagesettings')
+                                    @show
+                                    </div>
                                     <div class="page-content-inner">
                                       @section('innercontent')
                                       @show
