@@ -12,4 +12,5 @@
 		{"Id":"PendingAmount",
 		"Name":"Pending Amount",
 		"Column":"pendiente",
-		"Color":""}]}
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

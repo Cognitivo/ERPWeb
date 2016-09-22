@@ -9,13 +9,13 @@
         "Name": "Total Sales",
         "Column": "Sales",
         "NumberPrefix": "$",
-        "Color": ""
+        "Color": "#4ABDAC"
     }, {
         "Id": "Costs",
         "Name": "Total Costs",
         "Column": "Costs",
         "NumberPrefix": "$",
-        "Color": "a4c9f3"
+        "Color": "#FC4A1A"
     }],
     "Parameters":"StartDate,EndDate",
     "Module": "Sales",

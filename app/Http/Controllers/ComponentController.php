@@ -121,7 +121,7 @@ class ComponentController extends Controller
       }
     }
     asort($UserComponents);
-    return $UserComponents;
+    return json_encode($UserComponents);
   }
   public function ManageComponents(){
     $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
@@ -131,7 +131,7 @@ class ComponentController extends Controller
     $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
                                                                     \RegexIterator::USE_KEY);
     $Components = array();
-    $Components["User"] = $this->GetUserComponents();
+    $Components["User"] = json_decode($this->GetUserComponents(),true);
     foreach($ComponentJsonFiles as $File){
       $Json = json_decode(file_get_contents($File),true);
       $FileInfo = pathinfo($File);
