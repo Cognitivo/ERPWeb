@@ -44,7 +44,16 @@ Route::get('get_contacts',function(){
 Route::get('get_plan',function(){
 
     $query = Request::get('query');
-    $plan= \App\Items::all();
+    $plan= \App\Items::where('name','LIKE',"%$query%")->get();
+
+         
+     return response()->json($plan);    
+});
+
+Route::get('get_item/{type_item}',function($type_item){
+
+    $query = Request::get('query');
+    $plan= \App\Items::where('id_item_type',$type_item)->where('name','LIKE',"%$query%")->get();
 
          
      return response()->json($plan);    
@@ -58,9 +67,13 @@ Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
 Route::resource('customers','Commercial\contactsController@indexCustomers');
 
 
+Route::get('load_tree/{id}','ProjectTemplateController@load_tree');
+Route::resource('project_template','ProjectTemplateController');
+
+
 
 Route::get('timeline',function(){
-	return view('Filabel/timeline');
+	return view('Production/timeline');
 });
 
 Route::get('get_timeline', 'TimelineController@show');

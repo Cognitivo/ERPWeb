@@ -111,55 +111,55 @@
 
                                                
 
-                                      <div class="form-group">
-                                            <label class="control-label">NOMBRE</label>
-                                            @if (isset($contact_subscription))
-                                               {!! Form::text('name_contact',  $contact_subscription->Contacts->name, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                                               <input type="hidden" name="id_contact" id="id_contact" value="{{ $contact_subscription->id_contact }}"/>
-                                            @else
-                                              {!! Form::text('name_contact', null, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                                               <input type="hidden" name="id_contact" id="id_contact" value="">
-                                            @endif
-                                            
-                                        </div>
-                                          <div class="form-group">
-                                            <label class="control-label">PLAN</label>
-                                            @if (isset($contact_subscription))
-                                                {!! Form::text('name_item', $contact_subscription->Items->name , ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                                                <input type="hidden" name="id_item" id="id_item" value="{{ $contact_subscription->id_item }}"/>
-                                            @else
-                                                {!! Form::text('name_item', null, ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                                                <input type="hidden" name="id_item" id="id_item" value=""/>
-                                            @endif
-                                            
-                                        </div>
+                  <div class="form-group">
+                        <label class="control-label">NOMBRE</label>
+                        @if (isset($contact_subscription))
+                           {!! Form::text('name_contact',  $contact_subscription->Contacts->name, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                           <input type="hidden" name="id_contact" id="id_contact" value="{{ $contact_subscription->id_contact }}"/>
+                        @else
+                          {!! Form::text('name_contact', null, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                           <input type="hidden" name="id_contact" id="id_contact" value="">
+                        @endif
+                        
+                    </div>
+                      <div class="form-group">
+                        <label class="control-label">PLAN</label>
+                        @if (isset($contact_subscription))
+                            {!! Form::text('name_item', $contact_subscription->Items->name , ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                            <input type="hidden" name="id_item" id="id_item" value="{{ $contact_subscription->id_item }}"/>
+                        @else
+                            {!! Form::text('name_item', null, ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                            <input type="hidden" name="id_item" id="id_item" value=""/>
+                        @endif
+                        
+                    </div>
 
-                                         <div class="form-group">
-                                            <label class="control-label">PRECIO UNITARIO</label>
-                                            {!! Form::text('unit_price', null, ['class'=>'form-control mask_currency', 'placeholder'=>'Full Name','id'=>'unit_price']) !!}
-                                        </div>
-                                      <div class="form-group">
-                                          <label class="control-label">FECHA INICIO</label>
-                                          {!! Form::date('start_date', null, ['class'=>'form-control col-md-7 col-xs-12', 'placeholder'=>'Start Date']) !!}
-                                      </div>
-                                      <div class="form-group">
-                                          <label class="control-label">FECHA FIN</label>
-                                          {!! Form::date('end_date', null, ['class'=>'form-control', 'placeholder'=>'End Date']) !!}
-                                      </div>
-                                       
+                     <div class="form-group">
+                        <label class="control-label">PRECIO UNITARIO</label>
+                        {!! Form::text('unit_price', null, ['class'=>'form-control mask_currency', 'placeholder'=>'Full Name','id'=>'unit_price']) !!}
+                    </div>
+                  <div class="form-group">
+                      <label class="control-label">FECHA INICIO</label>
+                      {!! Form::date('start_date', null, ['class'=>'form-control col-md-7 col-xs-12', 'placeholder'=>'Start Date']) !!}
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">FECHA FIN</label>
+                      {!! Form::date('end_date', null, ['class'=>'form-control', 'placeholder'=>'End Date']) !!}
+                  </div>
+                   
 
-                                        <div class="margiv-top-10">
-                                            {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
-                                            <a href="javascript:;" class="btn default"> CANCELAR </a>
-                                        </div>
-                                    {!! Form::close() !!}
-                                </div>
-                                
-                                <!-- END PERSONAL INFO TAB -->
-                                <!-- CHANGE AVATAR TAB -->
-                                <div class="tab-pane" id="tab_1_2">
+                    <div class="margiv-top-10">
+                        {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
+                        <a href="javascript:;" class="btn default"> CANCELAR </a>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+            
+            <!-- END PERSONAL INFO TAB -->
+            <!-- CHANGE AVATAR TAB -->
+            <div class="tab-pane" id="tab_1_2">
 
-                                </div>
+            </div>
 
 
                                 <!-- END PROFILE CONTENT -->

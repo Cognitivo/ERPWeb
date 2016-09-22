@@ -42,6 +42,8 @@
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="favicon.ico" />
         <link href="{{url()}}/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css">
+
+        @yield('css')
     </head>
     <!-- END HEAD -->
     <body class="page-container-bg-solid">
@@ -142,11 +144,23 @@
                                             </ul>
                                         </li>
 
-                                            <li class="menu-dropdown classic-menu-dropdown ">
+                                        <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="/timeline"> Producción
                                                 <span class="arrow"></span>
                                             </a>
                                          
+                                        </li>
+                                        <li class="menu-dropdown classic-menu-dropdown ">
+                                            <a href="javascript:;"> Proyectos
+                                                <span class="arrow"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li class="">
+                                                    <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
+                                                </li>
+                                              
+
+                                            </ul>
                                         </li>
 
 
@@ -299,7 +313,7 @@
         <script src="{{url()}}/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 
-      
+      @yield('scripts')
 </body>
 
 
