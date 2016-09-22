@@ -148,14 +148,27 @@ class ComponentController extends Controller
     $ComponentJsonFiles = new \RegexIterator($Iterator, "/.*\.json$/i", \RegexIterator::MATCH,
                                                                     \RegexIterator::USE_KEY);
     $Components = array();
+    $Ctr = 0;
     foreach($ComponentJsonFiles as $File){
       $Components[] = json_decode(file_get_contents($File),true);
       $FileInfo = pathinfo($File);
+      $Components[$Ctr]["Key"] = $FileInfo["filename"];
+      $Ctr++;
     }
     return View::make('components.list.components',compact('Components'));
   }
   public function ShowCreate(){
     return View::make('components.forms.components');
+  }
+  public function ShowUpdate($Key = null){
+    if($Key){
+      if(File::exists(Config::get("Paths.Components") . $Key . ".json")){
+        $ComponentInfo = json_decode(file_get_contents(Config::get("Paths.Components") . $Key . ".json"),true);
+        $FileInfo = pathinfo(Config::get("Paths.Components") . $Key . ".json");
+        $ComponentInfo["Key"] = $FileInfo["filename"];
+        return View::make('components.forms.components')->with('ComponentInfo',$ComponentInfo);
+      }
+    }
   }
   public function CreateComponent(Request $request){
     $Component = array();

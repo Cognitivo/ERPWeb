@@ -1,6 +1,6 @@
 {
     "SqlFile": "SalesXDay.sql",
-    "Type": "Barchart",
+    "Type": "BarChart",
     "Dimensions": "3,3",
     "Caption": "Sales per Day",
     "Label": "Date",

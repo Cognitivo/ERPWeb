@@ -14,7 +14,11 @@ $(document).ready(function() {
       }).disableSelection();
     handleComponents();
 });
-function handleComponents() {
+function handleComponents(startdate,enddate) {
+    if(!startdate && !enddate){
+        startdate = moment().startOf("year").format("YYYY-MM-DD");
+        enddate = moment().format("YYYY-MM-DD");
+    }
     $.ajax({
         type: "GET",
         url: "./component/getusercomponents",
@@ -23,7 +27,7 @@ function handleComponents() {
         success: function(Response) {
             var data = JSON.parse(Response);
             $.each(data, function(key, value) {
-              $.get("./component/" + key + "/2016-01-01/2017-01-01", function(Response) {
+              $.get("./component/" + key + "/" + startdate + "/" + enddate, function(Response) {
                   if (Response.Type.toLowerCase() == "kpi") {
                       handleKPI(Response);
                   } else if (Response.Type.toLowerCase() == "piechart") {
@@ -51,6 +55,9 @@ function handleKPI(Response) {
             $(".page-content-inner .widget-row").append($(divKPI));
         }
         $(".page-content-inner").sortable('refresh');
+    }
+    else{
+        $("#" + Response.Key + " .widget-thumb-body-stat").html(Response[Response.Value]);
     }
 }
 
@@ -100,6 +107,40 @@ function handleBarChart(Response) {
             }
         });
     }
+    else{
+        $('#canvas' + id).remove();
+        var divBar = '<canvas class="canvas" id="canvas' +id +'"></canvas>';
+        $("#" + id + " .portlet-body").append(divBar);
+        var ctx = $("#canvas" + id);
+        $.each(Response[Response.Label], function(key, value) {
+            ChartLabels.push(value);
+        })
+        $.each(Response.Series, function(key, value) {
+            datasets.push({
+                label: Response.Series[key].Name,
+                backgroundColor: Response.Series[key].Color,
+                data: Response[Response.Series[key].Column],
+                borderColor: randomColor(),
+                borderWidth: 1
+            });
+        });
+        console.log(ChartLabels);
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                datasets: datasets,
+                labels: ChartLabels,
+            },
+            options: {
+                scaleLabel:
+                    function(label){return  '$' + label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
+                responsive: true,
+                legend: {
+                    position: 'top',
+                }
+            }
+        });
+    }
 
 
 }
@@ -122,6 +163,40 @@ function handlePie(Response) {
         } else {
             $("#" + id + " .portlet-body").append(divPie);
         }
+        var ctx = $("#canvas" + id);
+        $.each(Response[Response.Label],function(key,value){
+            ChartLabels.push(value);
+        });
+        DataSets.push({
+            data:Response[Response.PieValues],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        });
+        var myPieChart = new Chart(ctx,{
+            type: 'pie',
+            data: {labels:ChartLabels,
+                    datasets:DataSets},
+            options: {
+
+                responsive: true,
+                legend: {
+                    position: 'top',
+                }
+            }
+        });
+    }
+    else{
+        $("#canvas" + id).remove();
+        var divPie = '<canvas id=canvas' + id + ' class="canvas" styde="width:50%; height:50%"></canvas>';
+        $("#" + id + " .portlet-body").append(divPie);
         var ctx = $("#canvas" + id);
         $.each(Response[Response.Label],function(key,value){
             ChartLabels.push(value);
