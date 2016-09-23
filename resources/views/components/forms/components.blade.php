@@ -139,9 +139,12 @@
                                             @endif
                                         </div><div class="form-group">
                                             <label class="control-label">Query</label>
-                                            {!! Form::textarea('query', null, ['class'=>'form-control', 'rows'=>'3', 'placeholder'=>'Query of the Component','required'=>'']) !!}
+                                            <textarea rows="3" class="form-control" name="query" value="" placeholder="Query of the Component">
+                                            {{$ComponentInfo['Query']}}
+                                            </textarea>
                                         </div>
                                         <div class="margiv-top-10">
+                                            <input type="hidden" name="key" value="{{$ComponentInfo['Key']}}">
                                             {!! Form::submit( 'Save Changes', ['class'=>'btn green']) !!}
                                             <a href="javascript:;" class="btn default"> Cancel </a>
                                         </div>

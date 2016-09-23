@@ -166,6 +166,7 @@ class ComponentController extends Controller
         $ComponentInfo = json_decode(file_get_contents(Config::get("Paths.Components") . $Key . ".json"),true);
         $FileInfo = pathinfo(Config::get("Paths.Components") . $Key . ".json");
         $ComponentInfo["Key"] = $FileInfo["filename"];
+        $ComponentInfo["Query"] = file_get_contents(Config::get("Paths.SQLs")."/".$Key.".sql");
         return View::make('components.forms.components')->with('ComponentInfo',$ComponentInfo);
       }
     }
@@ -191,6 +192,47 @@ class ComponentController extends Controller
     $Component["Description"] = $request->input("description");
     $Component["Parameters"] = $Parameters;
     $Component["SqlFile"] = $Key . ".sql";
+    switch(strtolower($request->input("type"))){
+      case "kpi":
+        $Component["Dimension"] = "Small";
+        break;
+      case "barchart":
+        $Component["Dimension"] = "Medium";
+        $Component["Label"] = $request->input("xaxis");
+        $Component["Series"][0]["Id"] = $request->input("yaxis");
+        $Component["Series"][0]["Name"] = $request->input("yaxiscaption");
+        $Component["Series"][0]["Column"] = $request->input("yaxiscolumn");
+        $Component["Series"][0]["Color"] = $request->input("yaxiscolor");
+        break;
+      case "piechart":
+        $Component["Dimension"] = "Medium";
+        $Component["Label"] = $request->input("label");
+        $Component["PieValues"] = $request->input("pievalues");
+        break;
+    }
+    file_put_contents(Config::get("Paths.SQLs")."/".$Key.".sql", $request->input("query"));
+    file_put_contents(Config::get("Paths.Components") . "/" . $Key . ".json",json_encode($Component));
+    return redirect('componentslist');
+  }
+  public function UpdateComponent(Request $request){
+    $Key = $request->input("key");
+
+    $Pattern = '/(?<!\w)@\w+/';
+    preg_match_all($Pattern, $request->input("query"), $Matches);
+    $Matches = array_unique($Matches[0]);
+    foreach ($Matches as $key => $value) {
+      $Matches[$key] = ltrim($value,"@");
+    }
+    $Parameters = implode(",",$Matches);
+    $Parameters = implode(",",$Matches);
+    $Component["Caption"] = $request->input("name");
+    $Component["Type"] = $request->input("type");
+    $Component["Unit"] = $request->input("unit");
+    $Component["Module"] = $request->input("module");
+    $Component["Description"] = $request->input("description");
+    $Component["Parameters"] = $Parameters;
+    $Component["SqlFile"] = $Key . ".sql";
+
     switch(strtolower($request->input("type"))){
       case "kpi":
         $Component["Dimension"] = "Small";
