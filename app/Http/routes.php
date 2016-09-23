@@ -25,8 +25,6 @@ Route::get('managecomponents','dashboardController@ManageDashboard');
 Route::get('listcomponents','dashboardController@ListComponents');
 Route::get('componentslist','ComponentController@ListComponents');
 Route::get('showcreate','ComponentController@ShowCreate');
-Route::get('showupdate/{Key}','ComponentController@ShowUpdate');
-Route::post('updatecomponent','ComponentController@UpdateComponent');
 Route::post('createcomponent','ComponentController@CreateComponent');
 Route::get('/', 'dashboardController@index');
 
@@ -36,20 +34,24 @@ Route::get('contacts.get',function()
   $contacts=$query?Contact::where('name','LIKE',"%$query%")->get():Contact::all();
   return View::make('contacts.index')->with($contacts);
 });
+// krunal start
+//krunal End
+
+
 
 Route::get('get_contacts',function(){
-    $query = Request::get('query'); 
-    $contacts= \App\Contact::get_contact_subscription($query)->get();    
+    $query = Request::get('query');
+    $contacts= \App\Contact::get_contact_subscription($query)->get();
      return response()->json($contacts);
-    
+
 });
 Route::get('get_plan',function(){
 
     $query = Request::get('query');
     $plan= \App\Items::where('name','LIKE',"%$query%")->get();
 
-         
-     return response()->json($plan);    
+
+     return response()->json($plan);
 });
 
 Route::get('get_item/{type_item}',function($type_item){
@@ -57,8 +59,8 @@ Route::get('get_item/{type_item}',function($type_item){
     $query = Request::get('query');
     $plan= \App\Items::where('id_item_type',$type_item)->where('name','LIKE',"%$query%")->get();
 
-         
-     return response()->json($plan);    
+
+     return response()->json($plan);
 });
 
 Route::resource('contacts','Commercial\contactsController');
@@ -68,6 +70,11 @@ Route::resource('relation','Commercial\relationController');
 Route::resource('suppliers','Commercial\contactsController@indexSuppliers');
 Route::resource('customers','Commercial\contactsController@indexCustomers');
 
+//krunal Start
+Route::resource('work','Commercial\workController');
+Route::resource('workorder','Commercial\workorderController');
+Route::resource('workarea','Commercial\workareaController');
+//End
 
 Route::get('load_tree/{id}','ProjectTemplateController@load_tree');
 Route::resource('project_template','ProjectTemplateController');
