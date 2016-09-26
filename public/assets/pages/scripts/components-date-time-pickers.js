@@ -55,9 +55,12 @@ var ComponentsDateTimePickers = function () {
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
                 ranges: {
-                    'Last Week': [moment().subtract('days', 6), moment()],
-                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
-                    'Last Year': [moment().subtract('year', 1).startOf('year'), moment().subtract('year', 1).endOf('year')]
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                    'Last 7 Days': [moment().subtract('days', 6), moment()],
+                    'Last 30 Days': [moment().subtract('days', 29), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                 },
                 minDate: '01/01/2012',
                 maxDate: '12/31/2018',
@@ -91,24 +94,32 @@ var ComponentsDateTimePickers = function () {
 
         $('#reportrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                startDate: moment().startOf("year"),
+                startDate: moment().subtract('days', 29),
                 endDate: moment(),
-                minDate: '01/01/1950',
-                maxDate: moment(),
+                minDate: '01/01/2012',
+                maxDate: '12/31/2014',
+                dateLimit: {
+                    days: 60
+                },
                 showDropdowns: true,
                 showWeekNumbers: true,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
                 ranges: {
-                    'Last Week': [moment().subtract('days', 6), moment()],
-                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
-                    'Last Year': [moment().subtract('years', 1).startOf('year'), moment().subtract('years', 1).endOf('year')]
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                    'Last 7 Days': [moment().subtract('days', 6), moment()],
+                    'Last 30 Days': [moment().subtract('days', 29), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                 },
                 buttonClasses: ['btn'],
                 applyClass: 'green',
                 cancelClass: 'default',
-                format: 'DD/MM/YYYY',
+                format: 'MM/DD/YYYY',
                 separator: ' to ',
                 locale: {
-                    format: 'DD/MM/YYYY',
                     applyLabel: 'Apply',
                     fromLabel: 'From',
                     toLabel: 'To',
@@ -120,11 +131,10 @@ var ComponentsDateTimePickers = function () {
             },
             function (start, end) {
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                handleComponents(start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'));
             }
         );
         //Set the initial state of the picker label
-        $('#reportrange span').html(moment().startOf("year").format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+        $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
     }
 
     var handleDatetimePicker = function () {
