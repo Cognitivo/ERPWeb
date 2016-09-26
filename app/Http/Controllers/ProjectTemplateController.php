@@ -108,6 +108,7 @@ class ProjectTemplateController extends Controller
      */
     public function edit($id)
     {
+
         $template = ProjectTemplate::find($id);
 
         return view('Production/form_project_template')->with('template', $template);
@@ -121,8 +122,9 @@ class ProjectTemplateController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
-        //dd($request->all());
+    {
+
+        dd($request->all());
         $template       = ProjectTemplate::find($id);
         $template->name = $request->name;
 
@@ -152,7 +154,7 @@ class ProjectTemplateController extends Controller
                 }else{
                     $parent = $array_parent->where('id', $value->parent);
                 }*/
-                
+
                  $parent = $array_parent->where('id', $value->parent);
 
                 if ($parent->count()) {
@@ -195,10 +197,10 @@ class ProjectTemplateController extends Controller
 
     public function load_tree($id)
     {
-        //dd($id);
+
         $data = ProjectTemplateDetail::join('items','items.id_item','=','project_template_detail.id_item')
         ->where('id_project_template', $id)
-        ->select('id_template_detail as id', 'parent_id_template_detail as parent',DB::raw('concat(item_description,"\t",unit_value) as text'), 'project_template_detail.id_item as data','id_item_type as type')->get();
+        ->select('id_template_detail as id', 'parent_id_template_detail as parent',DB::raw('concat(item_description,"") as text'), 'project_template_detail.id_item as data','id_item_type as type')->get();
 
          //dd(json_decode($data));
         foreach ($data as $item) {
@@ -225,7 +227,7 @@ class ProjectTemplateController extends Controller
     }
 
     public function insert_db($name, $parent, $id_project, $item)
-    {   
+    {
 
         $array_aux = $this->split($name);
 
@@ -260,16 +262,16 @@ class ProjectTemplateController extends Controller
     public function exist($id)
     {
 
-        $detail = ProjectTemplateDetail::where('id_template_detail',$id)->get();        
-        
+        $detail = ProjectTemplateDetail::where('id_template_detail',$id)->get();
+
         return $detail->count() ? true : false;
     }
 
      public function exist_parent($id)
     {
 
-        $detail = ProjectTemplateDetail::where('parent_id_template_detail',$id)->get();        
-        
+        $detail = ProjectTemplateDetail::where('parent_id_template_detail',$id)->get();
+
         return $detail->count() ? true : false;
     }
 
