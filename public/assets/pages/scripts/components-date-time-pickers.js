@@ -50,6 +50,8 @@ var ComponentsDateTimePickers = function () {
 
         $('#defaultrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
+                 timePicker: true,
+                 timePickerIncrement: 30,
                 format: 'MM/DD/YYYY',
                 separator: ' to ',
                 startDate: moment().subtract('days', 29),
@@ -68,11 +70,28 @@ var ComponentsDateTimePickers = function () {
             function (start, end) {
                 $('#defaultrange input').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             }
-        );        
+        );
+            
+            //eduardo
+         $('.defaultrange').daterangepicker({
+            timePicker: true,
+            timePicker24Hour: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'DD/MM/YYYY H:mm'
+        }               
+        },
+          function (start, end) {
+                $('.defaultrange input').val(start.format('DD/MM/YYYY H:mm') + ' - ' + end.format('DD/MM/YYYY H:mm'));
+            }   
+        );
+
+
+                
 
         $('#defaultrange_modal').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                format: 'MM/DD/YYYY',
+                format: 'MM/DD/YYYY ',
                 separator: ' to ',
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
@@ -135,6 +154,7 @@ var ComponentsDateTimePickers = function () {
         );
         //Set the initial state of the picker label
         $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+         //$('.defaultrange input').val(moment().subtract(29,'days').format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY')); 
     }
 
     var handleDatetimePicker = function () {

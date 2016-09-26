@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Production;
 
 use App\Http\Controllers\Controller;
 use App\ProjectTemplate;
@@ -124,13 +124,26 @@ class ProjectTemplateController extends Controller
     public function update(Request $request, $id)
     {
 
-        dd($request->all());
-        $template       = ProjectTemplate::find($id);
+        $template = ProjectTemplate::find($id);
+
+        if ($request->production_order) {
+            $template_detail        = ProjectTemplateDetail::find($id);
+            $array_split_name_value = explode("\t", $request->text);
+
+            $template_detail->item_description = $array_split_name_value[0];
+
+            $template_detail->unit_value = count($array_split_name_value)>1?$array_split_name_value[1]:0;
+
+            $template_detail->save();
+
+            return response()->json(true);
+        }
+
         $template->name = $request->name;
 
         $array = json_decode($request->tree_save);
 
-        dd($array);
+        //dd($array);
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
@@ -149,13 +162,13 @@ class ProjectTemplateController extends Controller
                 $array_parent->push(['id' => $value->id, 'id_real' => $value->id]);
             } else {
                 //dd($array_parent);
-              /*   if(!$this->exist_parent($value->parent)){
-                    $parent = $array_parent->where('id', $value->parent);
+                /*   if(!$this->exist_parent($value->parent)){
+                $parent = $array_parent->where('id', $value->parent);
                 }else{
-                    $parent = $array_parent->where('id', $value->parent);
+                $parent = $array_parent->where('id', $value->parent);
                 }*/
 
-                 $parent = $array_parent->where('id', $value->parent);
+                $parent = $array_parent->where('id', $value->parent);
 
                 if ($parent->count()) {
                     if (!$this->exist($value->id)) {
@@ -184,12 +197,12 @@ class ProjectTemplateController extends Controller
      */
     public function destroy($id)
     {
-        $detail = ProjectTemplateDetail::where('id_template_detail',$id);
+        $detail = ProjectTemplateDetail::where('id_template_detail', $id);
 
-        if($detail->get()->count()){
+        if ($detail->get()->count()) {
             $detail->delete();
             return "ok";
-        }else{
+        } else {
             return null;
         }
 
@@ -197,20 +210,20 @@ class ProjectTemplateController extends Controller
 
     public function load_tree($id)
     {
+        //dd($id);
+        $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
+            ->where('id_project_template', $id)
+            ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",if(unit_value is null,0.0,unit_value)) as text'), 'project_template_detail.id_item as data', 'id_item_type as type')->get();
 
-        $data = ProjectTemplateDetail::join('items','items.id_item','=','project_template_detail.id_item')
-        ->where('id_project_template', $id)
-        ->select('id_template_detail as id', 'parent_id_template_detail as parent',DB::raw('concat(item_description,"") as text'), 'project_template_detail.id_item as data','id_item_type as type')->get();
-
-         //dd(json_decode($data));
+        //dd(json_decode($data));
         foreach ($data as $item) {
             if ($item->parent == null) {
                 $item->parent = "#";
             }
-            $item->data = ['id_item'=>$item->data];
-            if($item->type!=5){
-               $item->type = "file";
-            }else{
+            $item->data = ['id_item' => $item->data];
+            if ($item->type != 5) {
+                $item->type = "file";
+            } else {
                 $item->type = "default";
             }
         }
@@ -251,9 +264,10 @@ class ProjectTemplateController extends Controller
     public function update_db($name, $id, $id_item)
     {
         $array_aux = $this->split($name);
+        //dd(count($array_aux));
 
         $project_template_detail                   = ProjectTemplateDetail::findOrFail($id);
-        $project_template_detail->unit_value       = $array_aux[1];
+        $project_template_detail->unit_value       = count($array_aux) > 1 ? $array_aux[1] : 0;
         $project_template_detail->item_description = $array_aux[0];
         $project_template_detail->id_item          = $id_item;
         $project_template_detail->save();
@@ -262,15 +276,15 @@ class ProjectTemplateController extends Controller
     public function exist($id)
     {
 
-        $detail = ProjectTemplateDetail::where('id_template_detail',$id)->get();
+        $detail = ProjectTemplateDetail::where('id_template_detail', $id)->get();
 
         return $detail->count() ? true : false;
     }
 
-     public function exist_parent($id)
+    public function exist_parent($id)
     {
 
-        $detail = ProjectTemplateDetail::where('parent_id_template_detail',$id)->get();
+        $detail = ProjectTemplateDetail::where('parent_id_template_detail', $id)->get();
 
         return $detail->count() ? true : false;
     }

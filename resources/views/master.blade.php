@@ -159,6 +159,9 @@
                                                 <li class="">
                                                     <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
                                                 </li>
+                                                <li class="">
+                                                    <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
+                                                </li>
                                               
 
                                             </ul>

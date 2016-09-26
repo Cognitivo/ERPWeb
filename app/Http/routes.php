@@ -45,6 +45,13 @@ Route::get('get_contacts',function(){
      return response()->json($contacts);
 
 });
+
+Route::get('all_contacts',function(){
+    $query = Request::get('query');
+    $contacts= \App\Contact::AllContacts($query)->get();
+     return response()->json($contacts);
+
+});
 Route::get('get_plan',function(){
 
     $query = Request::get('query');
@@ -76,8 +83,8 @@ Route::resource('workorder','Commercial\workorderController');
 Route::resource('workarea','Commercial\workareaController');
 //End
 
-Route::get('load_tree/{id}','ProjectTemplateController@load_tree');
-Route::resource('project_template','ProjectTemplateController');
+Route::get('load_tree/{id}','Production\ProjectTemplateController@load_tree');
+Route::resource('project_template','Production\ProjectTemplateController');
 
 
 
@@ -85,9 +92,13 @@ Route::get('timeline',function(){
 	return view('Production/timeline');
 });
 
-Route::get('get_timeline', 'TimelineController@show');
-Route::get('update_timeline/{id}', 'TimelineController@update');
-Route::get('store_timeline','TimelineController@store');
-Route::get('delete_item/{id}','TimelineController@destroy');
+Route::get('get_timeline', 'Production\TimelineController@show');
+Route::get('update_timeline/{id}', 'Production\TimelineController@update');
+Route::get('store_timeline','Production\TimelineController@store');
+Route::get('delete_item/{id}','Production\TimelineController@destroy');
+
+
+//Production Order
+Route::resource('production_order','Production\ProductionOrderController');
 
 });
