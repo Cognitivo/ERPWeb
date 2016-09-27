@@ -62,7 +62,7 @@ Route::get('get_plan',function(){
 });
 
 Route::get('get_item/{type_item}',function($type_item){
-
+   
     $query = Request::get('query');
     $plan= \App\Items::where('id_item_type',$type_item)->where('name','LIKE',"%$query%")->get();
 

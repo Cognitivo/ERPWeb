@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Production;
 
 use App\Http\Controllers\Controller;
+use App\Project;
 use App\ProjectTemplate;
 use App\ProjectTemplateDetail;
 use Carbon\Carbon;
@@ -40,7 +41,9 @@ class ProjectTemplateController extends Controller
      */
     public function store(Request $request)
     {
-
+           //dd($request->all());
+           //dd(json_decode($request->tree_save));
+        //save template
         $project_template                 = new ProjectTemplate;
         $project_template->name           = $request->name;
         $project_template->id_item_output = 1;
@@ -52,35 +55,55 @@ class ProjectTemplateController extends Controller
         $project_template->timestamp      = Carbon::now();
         $project_template->save();
 
+        //save project
+        $project                      = new Project;
+        $project->id_project_template = $project_template->getKey();
+        $project->name                = $request->name;
+        $project->priority            = 1;
+        $project->id_company          = 1;
+        $project->id_user             = 1;
+        $project->is_active           = 1;
+        $project->is_head             = 1;
+        $project->is_read             = 1;
+        $project->timestamp           = Carbon::now();
+        $project->save();
+
+        //save project_template_detail
         $array = json_decode($request->tree_save);
 
         //dd($array);
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
+        //$parent = collect();
         foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
-            if ($value->parent == "#") {
+            if ($value->parent == "#") {                
                 $cont         = 0;
                 $array_parent = collect();
-                $id_real      = $this->insert_db($value->text, null, $project_template->getKey(), $request->item);
+                $id_real      = $this->insert_db($value->text, null, $project_template->getKey(), $value->data->id_item);
                 $array_parent->push(['id' => $value->id, 'id_real' => $id_real]);
             } else {
                 //dd($array_parent);
-
-                $parent = $array_parent->where('id', $value->parent);
-
-                if ($parent->count()) {
-                    $id_real = $this->insert_db($value->text, $parent[$cont]['id_real'], $project_template->getKey());
+                
+                //var_dump($array_parent);
+                $parent = $array_parent->where('id', $value->parent)->first();
+               
+                if (count($parent)) {
+                  
+                    $parent_real = $parent['id_real'];                   
+                    $id_real = $this->insert_db($value->text,$parent_real , $project_template->getKey(),$value->data->id_item);
                     $array_parent->push(['id' => $value->id, 'id_real' => $id_real]);
                     $cont++;
+                   
                 }
 
                 //dd($array_parent);
             }
 
         }
+       // dd("ok");
         return redirect()->route('project_template.index');
         // dd($array_parent);
 
@@ -124,21 +147,22 @@ class ProjectTemplateController extends Controller
     public function update(Request $request, $id)
     {
 
-        $template = ProjectTemplate::find($id);
+       
 
-        if ($request->production_order) {
+    /*    if ($request->production_order) {
             $template_detail        = ProjectTemplateDetail::find($id);
             $array_split_name_value = explode("\t", $request->text);
 
             $template_detail->item_description = $array_split_name_value[0];
 
-            $template_detail->unit_value = count($array_split_name_value)>1?$array_split_name_value[1]:0;
+            //$template_detail->unit_value = count($array_split_name_value) > 1 ? $array_split_name_value[1] : 0;
 
             $template_detail->save();
 
             return response()->json(true);
-        }
-
+        }*/
+        
+        $template = ProjectTemplate::find($id);
         $template->name = $request->name;
 
         $array = json_decode($request->tree_save);
@@ -154,10 +178,10 @@ class ProjectTemplateController extends Controller
                 $cont         = 0;
                 $array_parent = collect();
                 if (!$this->exist($value->id)) {
-                    $id_real = $this->insert_db($value->text, null, $id, $request->id_item);
+                    $id_real = $this->insert_db($value->text, null, $id, $value->data->id_item);
 
                 } else {
-                    $id_real = $this->update_db($value->text, $value->id, $request->id_item); //to do
+                    $id_real = $this->update_db($value->text, $value->id, $value->data->id_item); //to do
                 }
                 $array_parent->push(['id' => $value->id, 'id_real' => $value->id]);
             } else {
@@ -168,15 +192,15 @@ class ProjectTemplateController extends Controller
                 $parent = $array_parent->where('id', $value->parent);
                 }*/
 
-                $parent = $array_parent->where('id', $value->parent);
+                $parent = $array_parent->where('id', $value->parent)->first();
 
-                if ($parent->count()) {
+                if (count($parent)) {
                     if (!$this->exist($value->id)) {
                         //dd($parent);
-                        $id_real = $this->insert_db($value->text, $parent[$cont]['id_real'], $id, $request->id_item);
+                        $id_real = $this->insert_db($value->text, $parent['id_real'], $id, $value->data->id_item);
 
                     } else {
-                        $id_real = $this->update_db($value->text, $value->id, $request->id_item); //to do
+                        $id_real = $this->update_db($value->text, $value->id, $value->data->id_item); //to do
                     }
                     $array_parent->push(['id' => $value->id, 'id_real' => $value->id]);
                     $cont++;
@@ -213,7 +237,7 @@ class ProjectTemplateController extends Controller
         //dd($id);
         $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
             ->where('id_project_template', $id)
-            ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",if(unit_value is null,0.0,unit_value)) as text'), 'project_template_detail.id_item as data', 'id_item_type as type')->get();
+            ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",0) as text') , 'project_template_detail.id_item as data', 'id_item_type as type')->get();
 
         //dd(json_decode($data));
         foreach ($data as $item) {
@@ -242,19 +266,19 @@ class ProjectTemplateController extends Controller
     public function insert_db($name, $parent, $id_project, $item)
     {
 
-        $array_aux = $this->split($name);
+        //$array_aux = $this->split($name);
 
         $project_template_detail                            = new ProjectTemplateDetail;
         $project_template_detail->parent_id_template_detail = $parent;
         $project_template_detail->id_project_template       = $id_project;
         $project_template_detail->id_company                = 1;
         $project_template_detail->id_user                   = 1;
-        $project_template_detail->unit_value                = $array_aux[1];
-        $project_template_detail->item_description          = $array_aux[0];
-        $project_template_detail->is_head                   = 1;
-        $project_template_detail->is_read                   = 1;
-        $project_template_detail->timestamp                 = Carbon::now();
-        $project_template_detail->id_item                   = $item;
+        //$project_template_detail->unit_value                = $array_aux[1];
+        $project_template_detail->item_description = $name;
+        $project_template_detail->is_head          = 1;
+        $project_template_detail->is_read          = 1;
+        $project_template_detail->timestamp        = Carbon::now();
+        $project_template_detail->id_item          = $item;
         $project_template_detail->save();
 
         return $project_template_detail->getKey();
@@ -263,12 +287,12 @@ class ProjectTemplateController extends Controller
 
     public function update_db($name, $id, $id_item)
     {
-        $array_aux = $this->split($name);
+        //$array_aux = $this->split($name);
         //dd(count($array_aux));
 
-        $project_template_detail                   = ProjectTemplateDetail::findOrFail($id);
-        $project_template_detail->unit_value       = count($array_aux) > 1 ? $array_aux[1] : 0;
-        $project_template_detail->item_description = $array_aux[0];
+        $project_template_detail = ProjectTemplateDetail::findOrFail($id);
+        //$project_template_detail->unit_value       = count($array_aux) > 1 ? $array_aux[1] : 0;
+        $project_template_detail->item_description = $name;
         $project_template_detail->id_item          = $id_item;
         $project_template_detail->save();
     }

@@ -47,7 +47,7 @@ function load_tree(id) {
             flat: true
         })
         var fulltree = JSON.stringify(objtree);
-        console.log(fulltree)
+        //console.log(fulltree)
         $('#tree_save').val(fulltree)
     }).on("select_node.jstree", function(e, _data) {
         if (_selectedNodeId === _data.node.id) {
@@ -70,7 +70,7 @@ $(function() {
 });
 $("#add_task").on("click", function() {
     var node_select = $('#jstree').jstree('get_selected')[0]
-    var name_node = $('#item').val() + "\t" + $('#unit_value').val()
+    var name_node = $('#item').val()
     var type = $('#type_item').val()
     if (node_select == undefined) {
         if (name_node != "") {
@@ -140,7 +140,7 @@ function demo_delete() {
 function demo_rename() {
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
-    var text = $('#item').val() + "\t" + $('#unit_value').val()
+    var text = $('#item').val()
     var id_item = $('#id_item').val()
     $('#jstree').jstree('rename_node', sel, text);
     ref.get_node(sel[0]).data.id_item = id_item;
@@ -150,7 +150,7 @@ function items() {
     var options = {
         url: function(phrase) {
             var frase = $("#item").val();
-            var type_item = $("#type_item").val();
+            var type_item = $("#type_item option:selected").val();
             return "/get_item/" + type_item + "/?query=" + frase;
         },
         getValue: function(element) {
@@ -226,31 +226,26 @@ function load_tree_project_order(id) {
         } else {
             _selectedNodeId = _data.node.id;
         }
-    }).on('rename_node.jstree', function(e, data) {
-
+    }).jstree();
+    /*on('rename_node.jstree', function(e, data) {
         var token = $("#update_task_production_order").data('token');
         var ref = $('#jstree').jstree(true)
-            sel = ref.get_selected();
-
+        sel = ref.get_selected();
         $.ajax({
-                url: '/project_template/' + sel[0],
+                url: '/save_project_task_production_order/' + sel[0],
                 type: 'post',
                 data: {
-                    _method: 'put',
+                    _method: 'post',
                     _token: token,
                     'text': data.text,
-                    'production_order': 1
+                    'id_project': id,
+                    ''
                 },
-                success: function(msg) {
-             
-                },
+                success: function(msg) {},
                 error: function(msg) {}
             })
-            /* $.get('response.php?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
-               .fail(function () {
-                 data.instance.refresh();
-               });*/
-    }).jstree();
+          
+    })*/
 }
 
 function demo_rename_production_order() {
@@ -260,20 +255,16 @@ function demo_rename_production_order() {
         return false;
     }
     sel = sel[0];
-    
     ref.edit(sel);
 };
 $('#update_task_production_order').click(function() {
     demo_rename_production_order()
 })
 
-
-
 function contacts() {
     var options = {
         url: function(phrase) {
             var frase = $("#contact").val();
-            
             return "/all_contacts/?query=" + frase;
         },
         getValue: function(element) {
@@ -284,9 +275,59 @@ function contacts() {
                 var value = $("#contact").getSelectedItemData().id_contact;
                 var name_contact = $("#contact").getSelectedItemData().name;
                 var name_parent = $('#contact').getSelectedItemData().parent_name;
-                $('#name_contact').text(name_contact).trigger("change");
-                 $('#name_parent').text(name_parent).trigger("change");
+                var lat = $("#contact").getSelectedItemData().geo_lat;
+                var lng = $("#contact").getSelectedItemData().geo_long;
+                var address = $("#contact").getSelectedItemData().address;
+
+
+
+                draw_tree_contact(name_parent, name_contact)
                 $("#id_contact").val(value).trigger("change");
+                $('#address_contact').val(address).trigger('change')
+                var map;
+                map = new GMaps({
+                    div: '#gmap_geo',
+                    lat: lat,
+                    lng: lng
+                });
+              /*  map.addMarker({
+                    lat: lat,
+                    lng: lng,
+                    title: 'Lima',
+                    details: {
+                        database_id: 42,
+                        author: 'HPNeo'
+                    },
+                    click: function(e) {
+                        if (console.log) console.log(e);
+                        alert('You clicked in this marker');
+                    }
+                });*/
+
+ /*               GMaps.geocode({
+    lat: lat,
+    lng: lng,
+    callback: function(results, status) {
+        if (status == 'OK') {
+          console.log(results[0])
+             // results = list of addresses at that location 
+        }
+    }
+});*/
+
+GMaps.geocode({
+  address: address.trim(),
+  callback: function(results, status) {
+    if (status == 'OK') {
+      var latlng = results[0].geometry.location;
+      map.setCenter(latlng.lat(), latlng.lng());
+      map.addMarker({
+        lat: latlng.lat(),
+        lng: latlng.lng()
+      });
+    }
+  }
+});
             }
         },
         ajaxSettings: {
@@ -311,4 +352,43 @@ function contacts() {
             //theme: "square"
     };
     $("#contact").easyAutocomplete(options);
+}
+
+function draw_tree_contact(parent, son) {
+    var tree = $("#tree_1").jstree(true);
+    if (tree != false) {
+        $("#tree_1").jstree("destroy");
+    }
+    $('#tree_1').jstree({
+        'core': {
+            'data': [{
+                'text': parent,
+                'state': {
+                    'opened': true,
+                    'selected': true
+                },
+                'children': [
+                    son
+                ]
+            }]
+        }
+    });
+};
+
+
+
+//get name project
+$(document).ready(function(){
+  var name_project= $('#id_project option:selected').text()
+  get_name_project(name_project)
+})
+
+$('#id_project').on('change',function(){
+    var name_project= $('#id_project option:selected').text()
+  get_name_project(name_project)
+})
+
+
+function get_name_project(name) {
+  $('#name_production_order').val(name)
 }

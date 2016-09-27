@@ -17,9 +17,9 @@
 	        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task">
 	            <i class="icon-cloud-upload"></i>
 	        </a>
-	        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task" >
+	        {{-- <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task" >
 	            <i class="icon-wrench"></i>
-	        </a>
+	        </a> --}}
 	        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}">
 	            <i class="icon-trash"></i>
 	        </a>
@@ -78,14 +78,14 @@
 	                    </div>
 	                </div>
 
-	                <div class="form-group">
+	         {{--        <div class="form-group">
 	                    <label class="col-md-3 control-label">
 	                       Cantidad
 	                    </label>
 	                    <div class="col-md-9">
 	                         <input class="form-control" value="0" type="text" name="unit_value"  id="unit_value" />
 	                    </div>
-	                </div>
+	                </div> --}}
 
 	            </div>
 	            <div class="form-actions">
