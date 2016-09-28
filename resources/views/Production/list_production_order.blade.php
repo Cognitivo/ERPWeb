@@ -25,7 +25,7 @@
                 	<i class="glyphicon glyphicon-pencil"> </i>
                 </a>
 			
-                <form action="{{ route('production_order.destroy',$element->id_production_order) }}" method="delete" accept-charset="utf-8" style="display: inline;">
+                <form action="{{ route('production_order.destroy',$element->id_production_order) }}" method="delete" style="display: inline;">
                  	{!! csrf_field() !!}
                 	 <button  class=" btn btn-delete red"  >
                     	<i class="glyphicon glyphicon-trash"></i>

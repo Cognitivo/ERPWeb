@@ -24,13 +24,13 @@ function tree_new() {
     }).jstree();
 }
 
-function load_tree(id) {
-    console.log(id)
+function load_tree(id_template,id_project) {
+    //console.log(id)
     $('#jstree').jstree({
         'core': {
             'check_callback': true,
             'data': {
-                "url": "/load_tree/" + id,
+                "url": "/load_tree/" + id_template + "/" +id_project,
                 "dataType": "json"
             },
         },
@@ -61,12 +61,31 @@ function load_tree(id) {
 $(function() {
     contacts()
     items()
+
+   
+
     if ($('#type_load').val() == '#') {
         tree_new()
     } else {
         //alert($('#type_load').val())
-        load_tree($('#type_load').val())
+        load_tree($('#type_load').val(),null)
     }
+
+    var parent = $('#parent_name_contact').val()
+    var son =$('#contact').val()
+
+   draw_tree_contact(parent,son)
+
+   var lat = $('#geo_lat').val()
+   var lng = $('#geo_long').val()
+   var address = $('#address_contact').val() 
+
+   if(lat!=undefined && lng!=undefined){
+    load_gmap_contact(lat,lng,address)
+   }
+
+
+
 });
 $("#add_task").on("click", function() {
     var node_select = $('#jstree').jstree('get_selected')[0]
@@ -191,17 +210,25 @@ function items() {
         }
       }); */
 //Production Order
-function load_tree_project_order(id) {
+var aux_id=null
+function load_tree_project_order(id_template,id_project) {
+    //console.log("loko")
+    //
     var tree = $("#jstree").jstree(true);
+    if(aux_id!=id_template){       
     if (tree != false) {
         $("#jstree").jstree("destroy");
     }
+    aux_id=id_template
+    
+   
     $('#jstree').jstree({
         'core': {
             'check_callback': true,
             'data': {
-                "url": "/load_tree/" + id,
-                "dataType": "json"
+                "url": "/load_tree/" + id_template + "/" +id_project,
+                "dataType": "json",
+                "data": {'id_production_order': $('#id_production_order').val()}
             },
         },
         "types": {
@@ -227,6 +254,10 @@ function load_tree_project_order(id) {
             _selectedNodeId = _data.node.id;
         }
     }).jstree();
+
+  }
+
+
     /*on('rename_node.jstree', function(e, data) {
         var token = $("#update_task_production_order").data('token');
         var ref = $('#jstree').jstree(true)
@@ -256,12 +287,14 @@ function demo_rename_production_order() {
     }
     sel = sel[0];
     ref.edit(sel);
+
 };
 $('#update_task_production_order').click(function() {
     demo_rename_production_order()
 })
 
 function contacts() {
+
     var options = {
         url: function(phrase) {
             var frase = $("#contact").val();
@@ -278,57 +311,14 @@ function contacts() {
                 var lat = $("#contact").getSelectedItemData().geo_lat;
                 var lng = $("#contact").getSelectedItemData().geo_long;
                 var address = $("#contact").getSelectedItemData().address;
-
-
-
                 draw_tree_contact(name_parent, name_contact)
                 $("#id_contact").val(value).trigger("change");
-                $('#address_contact').val(address).trigger('change')
-                var map;
-                map = new GMaps({
-                    div: '#gmap_geo',
-                    lat: lat,
-                    lng: lng
-                });
-              /*  map.addMarker({
-                    lat: lat,
-                    lng: lng,
-                    title: 'Lima',
-                    details: {
-                        database_id: 42,
-                        author: 'HPNeo'
-                    },
-                    click: function(e) {
-                        if (console.log) console.log(e);
-                        alert('You clicked in this marker');
-                    }
-                });*/
 
- /*               GMaps.geocode({
-    lat: lat,
-    lng: lng,
-    callback: function(results, status) {
-        if (status == 'OK') {
-          console.log(results[0])
-             // results = list of addresses at that location 
-        }
-    }
-});*/
-
-GMaps.geocode({
-  address: address.trim(),
-  callback: function(results, status) {
-    if (status == 'OK') {
-      var latlng = results[0].geometry.location;
-      map.setCenter(latlng.lat(), latlng.lng());
-      map.addMarker({
-        lat: latlng.lat(),
-        lng: latlng.lng()
-      });
-    }
-  }
-});
+                load_gmap_contact(lat,lng,address)
+               
             }
+
+
         },
         ajaxSettings: {
             dataType: "json",
@@ -376,19 +366,70 @@ function draw_tree_contact(parent, son) {
 };
 
 
-
 //get name project
-$(document).ready(function(){
+/*$(document).ready(function(){
   var name_project= $('#id_project option:selected').text()
   get_name_project(name_project)
-})
+})*/
+$('#id_project').on('change', function() {
 
-$('#id_project').on('change',function(){
-    var name_project= $('#id_project option:selected').text()
-  get_name_project(name_project)
-})
+   
+    var name_project = $('#id_project option:selected').text()
+    get_name_project(name_project)
+    var id_project_id_project_template = $('#id_project option:selected').val()
+    //var id_project_template = id_project_id_project_template.split("-")[1]    
+    //load_tree_project_order(id_project_template)
 
+
+})
 
 function get_name_project(name) {
-  $('#name_production_order').val(name)
+    $('#name_production_order').val(name)
+}
+
+
+function load_gmap_contact(lat,lng,address) {
+   $('#address_contact').val(address).trigger('change')
+                var map;
+                map = new GMaps({
+                    div: '#gmap_geo',
+                    lat: lat,
+                    lng: lng
+                });
+                /*  map.addMarker({
+                      lat: lat,
+                      lng: lng,
+                      title: 'Lima',
+                      details: {
+                          database_id: 42,
+                          author: 'HPNeo'
+                      },
+                      click: function(e) {
+                          if (console.log) console.log(e);
+                          alert('You clicked in this marker');
+                      }
+                  });*/
+                /*               GMaps.geocode({
+    lat: lat,
+    lng: lng,
+    callback: function(results, status) {
+        if (status == 'OK') {
+          console.log(results[0])
+             // results = list of addresses at that location 
+        }
+    }
+});*/
+                GMaps.geocode({
+                    address: address.trim(),
+                    callback: function(results, status) {
+                        if (status == 'OK') {
+                            var latlng = results[0].geometry.location;
+                            map.setCenter(latlng.lat(), latlng.lng());
+                            map.addMarker({
+                                lat: latlng.lat(),
+                                lng: latlng.lng()
+                            });
+                        }
+                    }
+                });
 }

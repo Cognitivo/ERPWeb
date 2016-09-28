@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
+use App\ProductionOrderDetail;
+
 class ProjectTemplateController extends Controller
 {
     /**
@@ -164,6 +166,7 @@ class ProjectTemplateController extends Controller
         
         $template = ProjectTemplate::find($id);
         $template->name = $request->name;
+        $template->save();
 
         $array = json_decode($request->tree_save);
 
@@ -232,13 +235,19 @@ class ProjectTemplateController extends Controller
 
     }
 
-    public function load_tree($id)
+    public function load_tree(Request $request,$id_template,$id_project)
     {
-        //dd($id);
-        $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
-            ->where('id_project_template', $id)
+         if(isset($request->id_production_order)){
+            $data = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
+            ->where('id_production_order',$request->id_production_order)->select('id_order_detail as id','parent_id_order_detail as parent',DB::raw('concat(production_order_detail.name,"\t",quantity) as text'),'production_order_detail.id_item as data', 'id_item_type as type')->get();
+         }else{
+            $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
+            ->where('id_project_template', $id_template)
             ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",0) as text') , 'project_template_detail.id_item as data', 'id_item_type as type')->get();
 
+         }
+
+        
         //dd(json_decode($data));
         foreach ($data as $item) {
             if ($item->parent == null) {
@@ -287,12 +296,12 @@ class ProjectTemplateController extends Controller
 
     public function update_db($name, $id, $id_item)
     {
-        //$array_aux = $this->split($name);
+        $array_aux = $this->split($name);
         //dd(count($array_aux));
 
         $project_template_detail = ProjectTemplateDetail::findOrFail($id);
         //$project_template_detail->unit_value       = count($array_aux) > 1 ? $array_aux[1] : 0;
-        $project_template_detail->item_description = $name;
+        $project_template_detail->item_description = $array_aux[0];
         $project_template_detail->id_item          = $id_item;
         $project_template_detail->save();
     }

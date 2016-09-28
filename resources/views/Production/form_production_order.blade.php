@@ -25,7 +25,7 @@
                 <li id="name_parent"> 
                     <ul>
                         <li data-jstree='{ "selected" : true }'>
-                            <a href="javascript:;" id="name_contact">  </a>
+                            <a href="javascript:;" id="name_contact"> </a>
                         </li>
                       
                     </ul>
@@ -41,7 +41,7 @@
         <div class="portlet-title">
             <div class="caption">
                 <i class=" icon-layers font-green"></i>
-                <span class="caption-subject font-green bold uppercase">Geolocation</span>
+                <span class="caption-subject font-green bold uppercase">Localización Contacto</span>
             </div>
             <div class="actions">
               
@@ -51,7 +51,12 @@
          <div class="form-group">                     
                        
                          
-                {!! Form::textarea('address', null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
+                {!! Form::textarea('address', isset($production_order)?$production_order->project->contact->address:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
+
+                @if (isset($production_order))
+                    {!! Form::hidden('geo_lat',$production_order->project->contact->geo_lat,['id'=>'geo_lat']) !!}
+                    {!! Form::hidden('geo_long',$production_order->project->contact->geo_long,['id'=>'geo_long']) !!}
+                @endif
                         
                     </div>
             <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
@@ -64,10 +69,12 @@
 
          <div class="portlet-body form">
          @if (isset($production_order))
-             {{--  <form class="form-horizontal" role="form" method="put" action="{{route('project_template.update',$template) }}"> --}}
+              <input type="hidden" name="" id="id_production_order" value="{{ $production_order->id_production_order }}">
              {!! Form::model($production_order,['route' => ['production_order.update',$production_order], 'method'=>'put','class'=> 'form-horizontal']) !!}
          @else
-              <form class="form-horizontal" role="form" method="post" action="{{route('production_order.store') }}">
+              
+
+              {!! Form::open(['route'=>'production_order.store','class'=>'form-horizontal' ,'role'=>'form','method'=>'post']) !!}
          @endif
 
 
@@ -90,8 +97,13 @@
                                 <div class="input-icon">
                                     <i class="fa fa-bell-o">
                                     </i>
-                                    <input class="form-control" placeholder="Left icon" type="text" id="contact" name="contact" />
-                                    <input type="hidden" name="id_contact" id="id_contact" value="">
+
+                                     {!! Form::text('contact', isset($production_order)?$production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact']) !!}
+
+                                     {!! Form::hidden('id_contact',isset($production_order)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!} {!! Form::hidden('parent_name_contact',isset($production_order)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!} 
+
+                                                                  
+                                   
                                 </div>
                             </div>
                         </div>
@@ -106,7 +118,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                   {{--  <div class="form-group">
                         <label class="col-md-3 control-label">
                            Area
                         </label>
@@ -114,14 +126,15 @@
                          {!!  Form::select('type_item',$project_tags,null,['class'=> 'form-control' ,'id'=>'type_item']) !!}
 
                         </div>
-                    </div>
+                    </div> --}}
 
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Rango de Fecha</label>
                                         <div class="col-md-9">
                                             <div class="input-group defaultrange" >
-                                                <input type="text" class="form-control" required="" readonly=""
-                                                       name="rango_fecha">
+                                                  
+
+                                                {!! Form::text('range_date',isset($production_order)?$production_order->start_date_est."-".$production_order->end_date_est:null,['class'=>'form-control','readonly','required']) !!}       
                                                 <span class="input-group-btn">
                                                     <button class="btn default date-range-toggle" type="button">
                                                         <i class="fa fa-calendar"></i>
@@ -149,9 +162,9 @@
                         <div class="col-md-9">
 
                          <div class="input-group">
-                            {!!  Form::select('id_project',$templates,null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
+                            {!!  Form::select('id_project',$templates,isset($production_order)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
                             <span class="input-group-addon">
-                            <a  data-target="#load_template" data-toggle="modal" id="link_template">
+                            <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                                  <i class="fa fa-user"></i>
                             </a>
                                
@@ -168,7 +181,7 @@
                 <div class="form-actions">
                     <div class="row">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn green" type="submit">
+                            <button class="btn green" type="submit" id="send_production_order">
                                 Submit
                             </button>
                             <button class="btn default" type="button">
@@ -241,7 +254,7 @@
     </script> --}}
        
          <script src="http://maps.google.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU" type="text/javascript"></script>
-        <script src="../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+        <script src="{{ url() }}/assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
 
     
         
@@ -251,14 +264,39 @@
 
        <script type="text/javascript">
 		
-		$('#link_template').click(function(){
+		 var id_project_id_project_template = $('#id_project option:selected').val()
+              var id_project = id_project_id_project_template.split("-")[0]  
+              var id_project_template= id_project_id_project_template.split("-")[1] 
+         
+
+        $('#link_template').click(function(){
               //console.log($('#jstree1').jstree())
-              var id_project_id_project_template = $('#id_project option:selected').val()
-              var id_project_template= id_project_id_project_template.split("-")[1]        
+                  
                      
-           load_tree_project_order(id_project_template)
+           load_tree_project_order(id_project_template,id_project)
    
 		})
+
+
+        $(document).ready(function(){
+
+              var name_project= $('#id_project option:selected').text()
+              get_name_project(name_project)
+             if($('#id_production_order').val()!=undefined){
+            load_tree_project_order(id_project_template,id_project)
+            }
+        })
+
+
+        $('#send_production_order').click(function(){
+
+        var objtree = $('#jstree').jstree(true).get_json('#', {
+            flat: true
+        })
+        var fulltree = JSON.stringify(objtree);
+        console.log(fulltree)
+        $('#tree_save').val(fulltree)
+        })
 
 
 	</script>

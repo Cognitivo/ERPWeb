@@ -46,4 +46,16 @@ class Contact extends Model
         }
         return null;
     }
+
+
+    /**
+     * Contact belongs to ParentContact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parentContact()
+    {
+        // belongsTo(RelatedModel, foreignKey = parentContact_id, keyOnRelatedModel = id)
+        return $this->belongsTo(Contact::class,'parent_id_contact');
+    }
 }

@@ -150,6 +150,9 @@
                                                 <span class="arrow"></span>
                                             </a>
                                                 <ul class="dropdown-menu pull-left">
+                                                 <li class="">
+                                                      <a href="{{ url('timeline')}}" class="nav-link">Planificación</a>
+                                                  </li>
                                                   <li class="">
                                                       <a href="{{ route('production_line.index') }}" class="nav-link">Lines de Trabajo</a>
                                                   </li>

@@ -83,7 +83,7 @@ Route::resource('workorder','Commercial\workorderController');
 Route::resource('workarea','Commercial\workareaController');
 //End
 
-Route::get('load_tree/{id}','Production\ProjectTemplateController@load_tree');
+Route::get('load_tree/{id_template}/{id_project}','Production\ProjectTemplateController@load_tree');
 Route::resource('project_template','Production\ProjectTemplateController');
 
 
