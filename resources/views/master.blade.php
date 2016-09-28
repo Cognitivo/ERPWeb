@@ -20,7 +20,7 @@
         <link href="{{url()}}/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="{{url()}}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />         
+        <link href="{{url()}}/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
@@ -28,7 +28,7 @@
         <link href="{{url()}}/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="{{url()}}/assets/global/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
-        
+
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="{{url()}}/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
@@ -65,7 +65,7 @@
                                                 <i class="icon-magnifier"></i>
                                             </a>
                                         </span>
-                                    </div>                                    
+                                    </div>
                                 </form> --}}
 
                                <div class="top-menu">
@@ -149,7 +149,16 @@
                                             <a href="/timeline"> Producción
                                                 <span class="arrow"></span>
                                             </a>
-                                         
+                                                <ul class="dropdown-menu pull-left">
+                                            <li class="">
+                                                <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
+                                            </li>
+                                            <li class="">
+                                                <a href="{{ route('production_line.index') }}" class="nav-link">Lines de Trabajo</a>
+                                            </li>
+                                          </ul>
+
+
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="javascript:;"> Proyectos
@@ -159,10 +168,7 @@
                                                 <li class="">
                                                     <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
                                                 </li>
-                                                <li class="">
-                                                    <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
-                                                </li>
-                                              
+
 
                                             </ul>
                                         </li>
@@ -283,8 +289,8 @@
         <script src="{{url()}}/assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
 
-    
-        
+
+
         <!-- {{-- <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
@@ -296,16 +302,16 @@
          <!--  -->
          <script src="{{url()}}/assets/global/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/chartjs/Chart.bundle.min.js" type="text/javascript"></script>
-        
+
          <script src="{{url()}}/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
         <script src="{{url()}}/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js" type="text/javascript"></script>
 
-          <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script> 
-           <script src="{{url()}}/assets/global/plugins/vsjs/dist/vis.js"></script> 
+          <script src="{{url()}}/assets/global/plugins/EasyAutocomplete-1.3.3/jquery.easy-autocomplete.min.js"></script>
+           <script src="{{url()}}/assets/global/plugins/vsjs/dist/vis.js"></script>
 
            <script src="{{url()}}/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 
-      
+
         <!-- END PAGE LEVEL PLUGINS -->
 
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
