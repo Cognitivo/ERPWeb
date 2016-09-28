@@ -26,6 +26,7 @@ Route::get('showupdate/{Key}','ComponentController@ShowUpdate');
 Route::post('createcomponent','ComponentController@CreateComponent');
 Route::post('updatecomponent','ComponentController@UpdateComponent');
 Route::get('/', 'dashboardController@index');
+Route::get('newroute', 'dashboardController@new');
 Route::get('contacts.get',function()
 {
   $query=Request::get('q');
