@@ -1,11 +1,1 @@
-{
-    "SqlFile": "AvgQuantityPerInv.sql",
-    "Type": "kpi",
-    "Dimensions": "3,3",
-    "Caption": "Average Quantity Per Invoice",
-    "Value": "AvgQuantity",
-    "Parameters":"StartDate,EndDate",
-    "Unit":"",
-    "Module": "Sales",
-    "Description":""
-}
+{"Caption":"Average Quantity Per Invoice ","Type":"kpi","Unit":"","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"AvgQuantityPerInv.sql","Dimension":"Small"}
