@@ -150,11 +150,14 @@
                                                 <span class="arrow"></span>
                                             </a>
                                                 <ul class="dropdown-menu pull-left">
+                                                  <li class="">
+                                                      <a href="{{ route('production_line.index') }}" class="nav-link">Lines de Trabajo</a>
+                                                  </li>
                                             <li class="">
                                                 <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
                                             </li>
                                             <li class="">
-                                                <a href="{{ route('production_line.index') }}" class="nav-link">Lines de Trabajo</a>
+                                                <a href="{{ route('production_execustion.index') }}" class="nav-link">Execustion de Trabajo</a>
                                             </li>
                                           </ul>
 

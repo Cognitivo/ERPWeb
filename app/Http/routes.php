@@ -101,6 +101,6 @@ Route::get('delete_item/{id}','Production\TimelineController@destroy');
 //Production Order
 Route::resource('production_order','Production\ProductionOrderController');
 Route::resource('production_line','Production\ProductionLineController');
-Route::resource('production_execustion','Production\ProductionExecustionController');
+Route::resource('production_execustion','Production\ProductionExecutionController');
 
 });
