@@ -92,7 +92,7 @@ var ComponentsDateTimePickers = function () {
         $('#defaultrange_modal').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
                 format: 'MM/DD/YYYY ',
->>>>>>> origin/master
+
                 separator: ' to ',
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
@@ -114,7 +114,7 @@ var ComponentsDateTimePickers = function () {
 
         $('#reportrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                startDate: startDate: moment().startOf("year"),
+                startDate: moment().startOf("year"),
                 endDate: moment(),
                 minDate: '01/01/1950',
                 maxDate: moment(),

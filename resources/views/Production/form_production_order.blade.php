@@ -264,7 +264,7 @@
 
        <script type="text/javascript">
 		
-		 var id_project_id_project_template = $('#id_project option:selected').val()
+		         var id_project_id_project_template = $('#id_project option:selected').val()
               var id_project = id_project_id_project_template.split("-")[0]  
               var id_project_template= id_project_id_project_template.split("-")[1] 
          
@@ -272,7 +272,10 @@
         $('#link_template').click(function(){
               //console.log($('#jstree1').jstree())
                   
-                     
+                 var id_project_id_project_template = $('#id_project option:selected').val()
+              var id_project = id_project_id_project_template.split("-")[0]  
+              var id_project_template= id_project_id_project_template.split("-")[1] 
+
            load_tree_project_order(id_project_template,id_project)
    
 		})
