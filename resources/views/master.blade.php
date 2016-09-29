@@ -153,15 +153,15 @@
                                                  <li class="">
                                                       <a href="{{ url('timeline')}}" class="nav-link">Planificación</a>
                                                   </li>
-                                                  <li class="">
+                                                   <li class="">
                                                       <a href="{{ route('production_line.index') }}" class="nav-link">Lines de Trabajo</a>
-                                                  </li>
+                                                  </li> 
                                             <li class="">
                                                 <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
                                             </li>
                                             <li class="">
                                                 <a href="{{ route('production_execustion.index') }}" class="nav-link">Execustion de Trabajo</a>
-                                            </li>
+                                            </li> 
                                           </ul>
 
 
