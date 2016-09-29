@@ -31,10 +31,10 @@
                      <tr>
                    
                             <td>
-                                {{$Item['Caption']}}
+                                <a href="{{url('showupdate/'.$Item['Key'])}}">{{$Item['Caption']}}</a>
                             </td>
                             <td>
-                                <a href="">{{$Item['Type']}}</a>
+                                {{$Item['Type']}}
                             </td>
                             <td>
                                 {{$Item['Module']}}

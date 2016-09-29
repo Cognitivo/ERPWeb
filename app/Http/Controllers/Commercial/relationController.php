@@ -47,7 +47,7 @@ class relationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
 
       $id=0;
@@ -76,6 +76,9 @@ class relationController extends Controller
      */
     public function store(Request $request)
     {
+
+      dd(Session::get('idcontact'));
+
         $idcontact = Session::get('idcontact');
 
       $contact = new Contact;

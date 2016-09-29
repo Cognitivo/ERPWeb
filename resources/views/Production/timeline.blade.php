@@ -1,6 +1,6 @@
 @extends('../../master')
 @section('title', 'Producción | CognitivoERP')
-@section('Title', 'Producción')
+@section('Title', 'Planificación')
 
 @section('content')
 

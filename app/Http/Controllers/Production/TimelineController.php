@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Production;
 
 use Illuminate\Http\Request;
 
@@ -132,7 +132,8 @@ class TimelineController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
+    {  
+       
         $production_order= ProductionOrder::find($id);
         $production_order->delete();
 
