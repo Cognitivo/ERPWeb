@@ -54,161 +54,170 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
+															<div class="col-md-6">
+																<div class="portlet-title">
+
+																		 </div>
+																		<div class="portlet-body">
+																		@if (isset($order))
+																		<input type="hidden" id="type_load" value="{{$order->id_production_order}}">
+																						 <div id="jstree" class="tree-demo">
+
+																								</div>
+																							@else
+																								<input type="hidden" id="type_load" value="#">
+																						<div id="jstree" class="tree-demo" >
+
+																						 </div>
+																							@endif
+
+																</div>
+															</div>
+
+															<input type="hidden" name="tree_save" id="tree_save">
+
+															<div class="tabbable-custom nav-justified">
+														                                    <ul class="nav nav-tabs nav-justified">
+														                                        <li class="active"><a href="#tab_1_1_1" data-toggle="tab">Producto</a></li>
+														                                        <li><a href="#tab_1_1_2" data-toggle="tab">Mat.Prima</a></li>
+														                                        <li><a href="#tab_1_1_3" data-toggle="tab">Servicia</a></li>
+														                                        <li><a href="#tab_1_1_4" data-toggle="tab">Activo Fijo</a></li>
+														                                        <li><a href="#tab_1_1_5" data-toggle="tab">Insumos</a></li>
+														                                        <li><a href="#tab_1_1_6" data-toggle="tab">Serv.Contr</a></li>
+														                                    </ul>
+														                                    <div class="tab-content">
+														                                        <div class="tab-pane active" id="tab_1_1_1">
+														                                            <div class="form-group">
+														                                                <label for="cantidad" class="control-label">Cantidad EJC</label>
+														                                                <div >
+														                                                    <input type="text" class="form-control" id="cantidad" placeholder="Quantity">
+														                                                </div>
+														                                            </div>
+														                                            <div class="portlet box blue">
+														                                                <div class="portlet-title">
+														                                                    <div class="caption">Table</div>
+														                                                    <div class="tools">
+														                                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+														                                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+														                                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+														                                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+														                                                    </div>
+														                                                </div>
+														                                                <div class="portlet-body">
+														                                                    <div class="table-responsive">
+														                                                        <table class="table table-bordered">
+														                                                            <thead>
+														                                                                <tr>
+														                                                                    <th>Nombre</th>
+														                                                                    <th>Cantidad</th>
+														                                                                </tr>
+														                                                            </thead>
+														                                                            <tbody>
+														                                                                <tr>
+														                                                                    <td>Cable de acero</td>
+														                                                                    <td>25</td>
+														                                                                </tr>
+														                                                            </tbody>
+														                                                        </table>
+														                                                    </div>
+														                                                </div>
+														                                            </div>
+
+														                                        </div>
+														                                        <div class="tab-pane" id="tab_1_1_2">
+														                                            <p>I'm in Section 2. </p>
+														                                        </div>
+														                                        <div class="tab-pane" id="tab_1_1_3">
+														                                            <div class="form-group">
+														                                                <label class="control-label ">Fecha inicio</label>
+														                                                <div >
+														                                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" />
+														                                                </div>
+														                                                <div >
+														                                                    <div class="input-icon">
+														                                                        <i class="fa fa-clock-o"></i>
+														                                                        <input type="text" class="form-control timepicker timepicker-default">
+														                                                    </div>
+														                                                </div>
+														                                            </div>
+
+														                                            <div class="form-group">
+														                                                <label class="control-label">Fecha fin</label>
+														                                                <div >
+														                                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" />
+														                                                </div>
+														                                                <div >
+														                                                    <div class="input-icon "  >
+														                                                        <i class="fa fa-clock-o"></i>
+														                                                        <input type="text" class="form-control timepicker timepicker-default " >
+														                                                    </div>
+														                                                </div>
+														                                            </div>
+
+														                                            <div class="form-group">
+														                                                <label class=" control-label">Empleado</label>
+														                                                <div >
+														                                                    <input type="text" class="form-control" placeholder="Employee">
+														                                                </div>
+														                                            </div>
+														                                            <div class="form-group">
+														                                                <label class=" control-label">Coeficiente</label>
+														                                                <div >
+														                                                    <select class="form-control">
+														                                                        <option>50%</option>
+														                                                        <option>70%</option>
+														                                                    </select>
+														                                                </div>
+														                                            </div>
+														                                            <div class="portlet box blue">
+														                                                <div class="portlet-title">
+														                                                    <div class="caption">Table</div>
+														                                                    <div class="tools">
+														                                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+														                                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+														                                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+														                                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+														                                                    </div>
+														                                                </div>
+														                                                <div class="portlet-body">
+														                                                    <div class="table-responsive">
+														                                                        <table class="table table-bordered">
+														                                                            <thead>
+														                                                                <tr>
+														                                                                    <th>Nombre</th>
+														                                                                    <th>Fecha inicio</th>
+														                                                                    <th>Fecha fin</th>
+														                                                                    <th>Cantidad</th>
+														                                                                    <th>Fecha inicio</th>
+														                                                                </tr>
+														                                                            </thead>
+														                                                            <tbody>
+														                                                                <tr>
+														                                                                    <td>Cable de acero</td>
+														                                                                    <td>25/01/2016</td>
+														                                                                    <td>25/02/2016</td>
+														                                                                    <td>1</td>
+														                                                                    <td>1.5</td>
+														                                                                </tr>
+														                                                            </tbody>
+														                                                        </table>
+														                                                    </div>
+														                                                </div>
+														                                            </div>
+
+														                                        </div>
+														                                        <div class="tab-pane" id="tab_1_1_4"><p>I'm in Section 4.</p></div>
+														                                        <div class="tab-pane" id="tab_1_1_5"><p>I'm in Section 5.</p></div>
+														                                        <div class="tab-pane" id="tab_1_1_6"><p>I'm in Section 6. </p></div>
+														                                    </div>
+														                                </div>
+														  <div class="margiv-top-10">
+														                                    {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
+														                                    <a href="javascript:;" class="btn default"> CANCELAR</a>
+														                                </div>
 
 
-                              <div id="tree_1" class="tree-demo">
-                                  <ul>
-                                      <li id="name_parent">
-                                          <ul>
-                                              <li data-jstree='{ "selected" : true }'>
-                                                  <a href="javascript:;" id="name_contact">  </a>
-                                              </li>
 
-                                          </ul>
-                                      </li>
-
-                                  </ul>
-                              </div>
-
-                                <div class="tabbable-custom nav-justified">
-                                    <ul class="nav nav-tabs nav-justified">
-                                        <li class="active"><a href="#tab_1_1_1" data-toggle="tab">Producto</a></li>
-                                        <li><a href="#tab_1_1_2" data-toggle="tab">Mat.Prima</a></li>
-                                        <li><a href="#tab_1_1_3" data-toggle="tab">Servicia</a></li>
-                                        <li><a href="#tab_1_1_4" data-toggle="tab">Activo Fijo</a></li>
-                                        <li><a href="#tab_1_1_5" data-toggle="tab">Insumos</a></li>
-                                        <li><a href="#tab_1_1_6" data-toggle="tab">Serv.Contr</a></li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane active" id="tab_1_1_1">
-                                            <div class="form-group">
-                                                <label for="cantidad" class="control-label">Cantidad EJC</label>
-                                                <div >
-                                                    <input type="text" class="form-control" id="cantidad" placeholder="Quantity">
-                                                </div>
-                                            </div>
-                                            <div class="portlet box blue">
-                                                <div class="portlet-title">
-                                                    <div class="caption">Table</div>
-                                                    <div class="tools">
-                                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-                                                    </div>
-                                                </div>
-                                                <div class="portlet-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Nombre</th>
-                                                                    <th>Cantidad</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Cable de acero</td>
-                                                                    <td>25</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="tab-pane" id="tab_1_1_2">
-                                            <p>I'm in Section 2. </p>
-                                        </div>
-                                        <div class="tab-pane" id="tab_1_1_3">
-                                            <div class="form-group">
-                                                <label class="control-label ">Fecha inicio</label>
-                                                <div >
-                                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" />
-                                                </div>
-                                                <div >
-                                                    <div class="input-icon">
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <input type="text" class="form-control timepicker timepicker-default">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="control-label">Fecha fin</label>
-                                                <div >
-                                                    <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" value="" />
-                                                </div>
-                                                <div >
-                                                    <div class="input-icon "  >
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <input type="text" class="form-control timepicker timepicker-default " >
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class=" control-label">Empleado</label>
-                                                <div >
-                                                    <input type="text" class="form-control" placeholder="Employee">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class=" control-label">Coeficiente</label>
-                                                <div >
-                                                    <select class="form-control">
-                                                        <option>50%</option>
-                                                        <option>70%</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="portlet box blue">
-                                                <div class="portlet-title">
-                                                    <div class="caption">Table</div>
-                                                    <div class="tools">
-                                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-                                                    </div>
-                                                </div>
-                                                <div class="portlet-body">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Nombre</th>
-                                                                    <th>Fecha inicio</th>
-                                                                    <th>Fecha fin</th>
-                                                                    <th>Cantidad</th>
-                                                                    <th>Fecha inicio</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Cable de acero</td>
-                                                                    <td>25/01/2016</td>
-                                                                    <td>25/02/2016</td>
-                                                                    <td>1</td>
-                                                                    <td>1.5</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="tab-pane" id="tab_1_1_4"><p>I'm in Section 4.</p></div>
-                                        <div class="tab-pane" id="tab_1_1_5"><p>I'm in Section 5.</p></div>
-                                        <div class="tab-pane" id="tab_1_1_6"><p>I'm in Section 6. </p></div>
-                                    </div>
-                                </div>
-                                <div class="margiv-top-10">
-                                    {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
-                                    <a href="javascript:;" class="btn default"> CANCELAR</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -218,6 +227,8 @@
         </div>
     </div>
 </div>
+
+      @endsection
 @section('scripts')
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="{{ url() }}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
@@ -225,30 +236,10 @@
 
 
 
- {{--        <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU&callback=initMap">
-    </script> --}}
-
-         <script src="http://maps.google.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU" type="text/javascript"></script>
-        <script src="../assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
 
 
 
-           <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
+           <script src="{{ url() }}/assets/pages/scripts/tree-view-order.js" type="text/javascript"></script>
 
 
-
-       <script type="text/javascript">
-
-		$('#link_template').click(function(){
-              //console.log($('#jstree1').jstree())
-              var id_project_id_project_template = $('#id_project option:selected').val()
-              var id_project_template= id_project_id_project_template.split("-")[1]
-
-           load_tree_project_order(id_project_template)
-
-		})
-
-
-	</script>
-                    @endsection
+@stop

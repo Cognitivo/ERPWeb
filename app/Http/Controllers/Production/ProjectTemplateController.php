@@ -81,24 +81,24 @@ class ProjectTemplateController extends Controller
         foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
-            if ($value->parent == "#") {                
+            if ($value->parent == "#") {
                 $cont         = 0;
                 $array_parent = collect();
                 $id_real      = $this->insert_db($value->text, null, $project_template->getKey(), $value->data->id_item);
                 $array_parent->push(['id' => $value->id, 'id_real' => $id_real]);
             } else {
                 //dd($array_parent);
-                
+
                 //var_dump($array_parent);
                 $parent = $array_parent->where('id', $value->parent)->first();
-               
+
                 if (count($parent)) {
-                  
-                    $parent_real = $parent['id_real'];                   
+
+                    $parent_real = $parent['id_real'];
                     $id_real = $this->insert_db($value->text,$parent_real , $project_template->getKey(),$value->data->id_item);
                     $array_parent->push(['id' => $value->id, 'id_real' => $id_real]);
                     $cont++;
-                   
+
                 }
 
                 //dd($array_parent);
@@ -149,7 +149,7 @@ class ProjectTemplateController extends Controller
     public function update(Request $request, $id)
     {
 
-       
+
 
     /*    if ($request->production_order) {
             $template_detail        = ProjectTemplateDetail::find($id);
@@ -163,7 +163,7 @@ class ProjectTemplateController extends Controller
 
             return response()->json(true);
         }*/
-        
+
         $template = ProjectTemplate::find($id);
         $template->name = $request->name;
         $template->save();
@@ -237,6 +237,7 @@ class ProjectTemplateController extends Controller
 
     public function load_tree(Request $request,$id_template,$id_project)
     {
+        dd($id);
          if(isset($request->id_production_order)){
             $data = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
             ->where('id_production_order',$request->id_production_order)->select('id_order_detail as id','parent_id_order_detail as parent',DB::raw('concat(production_order_detail.name,"\t",quantity) as text'),'production_order_detail.id_item as data', 'id_item_type as type')->get();
@@ -247,7 +248,7 @@ class ProjectTemplateController extends Controller
 
          }
 
-        
+
         //dd(json_decode($data));
         foreach ($data as $item) {
             if ($item->parent == null) {

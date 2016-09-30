@@ -62,13 +62,13 @@ $(function() {
     contacts()
     items()
 
-   
+
 
     if ($('#type_load').val() == '#') {
         tree_new()
     } else {
-        //alert($('#type_load').val())
-        load_tree($('#type_load').val(),null)
+      //  alert($('#type_load').val())
+      //  load_tree($('#type_load').val(),null)
     }
 
     var parent = $('#parent_name_contact').val()
@@ -78,7 +78,7 @@ $(function() {
 
    var lat = $('#geo_lat').val()
    var lng = $('#geo_long').val()
-   var address = $('#address_contact').val() 
+   var address = $('#address_contact').val()
 
    if(lat!=undefined && lng!=undefined){
     load_gmap_contact(lat,lng,address)
@@ -215,13 +215,13 @@ function load_tree_project_order(id_template,id_project) {
     //console.log("loko")
     //
     var tree = $("#jstree").jstree(true);
-    if(aux_id!=id_template){       
+    if(aux_id!=id_template){
     if (tree != false) {
         $("#jstree").jstree("destroy");
     }
     aux_id=id_template
-    
-   
+
+
     $('#jstree').jstree({
         'core': {
             'check_callback': true,
@@ -275,7 +275,7 @@ function load_tree_project_order(id_template,id_project) {
                 success: function(msg) {},
                 error: function(msg) {}
             })
-          
+
     })*/
 }
 
@@ -315,7 +315,7 @@ function contacts() {
                 $("#id_contact").val(value).trigger("change");
 
                 load_gmap_contact(lat,lng,address)
-               
+
             }
 
 
@@ -373,11 +373,11 @@ function draw_tree_contact(parent, son) {
 })*/
 $('#id_project').on('change', function() {
 
-   
+
     var name_project = $('#id_project option:selected').text()
     get_name_project(name_project)
     var id_project_id_project_template = $('#id_project option:selected').val()
-    //var id_project_template = id_project_id_project_template.split("-")[1]    
+    //var id_project_template = id_project_id_project_template.split("-")[1]
     //load_tree_project_order(id_project_template)
 
 
@@ -415,7 +415,7 @@ function load_gmap_contact(lat,lng,address) {
     callback: function(results, status) {
         if (status == 'OK') {
           console.log(results[0])
-             // results = list of addresses at that location 
+             // results = list of addresses at that location
         }
     }
 });*/
