@@ -20,22 +20,22 @@
 	@foreach ($template as $element)
 		<tr>
 			<td>{{ $element->name }}</td>
-			<td> 
+			<td >
 			<a href="{{route('project_template.edit',$element->id_project_template )}}" class="btn btn-icon-only blue">
                                                                                 <i class="glyphicon glyphicon-pencil"> </i>
                                                                             </a>
-			
-                        <form action="{{ route('project_template.destroy',$element->id_project_template) }}" method="delete" accept-charset="utf-8" style="display: inline;">
-                         {!! csrf_field() !!}
-                        	 <button  class=" btn btn-delete red"  >
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </button>
-                        </form>
-                       
+
+																																						{!! Form::open(array('route' => array('project_template.destroy', $element->id_project_template), 'method' => 'delete')) !!}
+																																						<a  class=" btn btn-icon-only red"  >
+																																						 <i class="glyphicon glyphicon-trash"></i>
+																																				 </a>
+																																				{!! Form::close() !!}
+
+
                         </td>
 		</tr>
 	@endforeach
-		
+
 	</tbody>
 </table>
 @stop

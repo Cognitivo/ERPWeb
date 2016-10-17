@@ -24,9 +24,9 @@
 				<a href="{{route('production_line.edit',$element->id_production_line )}}" class="btn btn-icon-only blue">
                 	<i class="glyphicon glyphicon-pencil"> </i>
                 </a>
-								<a href="{{route('production_line.destroy',$element->id_production_line )}}" class="btn btn-icon-only red">
-													<i class="glyphicon glyphicon-trash"> </i>
-												</a>
+								{!! Form::open(array('route' => array('production_line.destroy', $element->id_production_line), 'method' => 'delete')) !!}
+				        <button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
+				    {!! Form::close() !!}
 
 
             </td>

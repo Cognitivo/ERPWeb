@@ -116,18 +116,19 @@ class contactsController extends Controller
     {
 
         $contact                  = new Contact;
-        $contact->fill($request->all());              
+        $contact->fill($request->all());
         $contact->id_company      = Auth::user()->id_company;
-        $contact->id_user         = Auth::user()->id_user;        
+        $contact->id_user         = Auth::user()->id_user;
         $contact->is_read         = 0;
         $contact->is_head         = 1;
+        $contact->timestamp = Carbon::now();
+        $contact->is_active = 1;
         $contact->is_customer     = 1;
         $contact->is_supplier     = 0;
         $contact->is_employee     = 0;
-        $contact->is_sales_rep    = 0;       
+        $contact->is_sales_rep    = 0;
         $contact->is_person       = $request->is_person ? 1 : 0;
-        $contact->timestamp = Carbon::now();
-        $contact->is_active = 1;
+
 
         $contact->save();
         session(['idcontact' => $contact->getKey()]);
@@ -164,11 +165,14 @@ class contactsController extends Controller
      */
     public function edit($id)
     {
-          
+
         session(['idcontact' => $id]);
         $username = Session::get('username');
         //$contacts = Contact::where('id_contact', $id)->get();
         $contacts = Contact::find($id);
+
+        if (  $contacts!=null) {
+          # code...
 
         $contact_subscription = ContactSubsciption::where('id_contact', '=', $id)->get();
           //dd($contact_subscription);
@@ -192,8 +196,11 @@ class contactsController extends Controller
         }
 
         //dd($contact_subscription[0]->Contacts->name);
-        $date= Carbon::parse($contacts->date_birth);
-        $contacts->date_birth= $date->toDateString();
+        if ($contacts->date_birth!=null) {
+          $date= Carbon::parse($contacts->date_birth);
+          $contacts->date_birth= $date->toDateString();
+        }
+
         return view('commercial/form/contact')
             ->with('contacts', $contacts)
             ->with('username', $username)
@@ -202,7 +209,7 @@ class contactsController extends Controller
             ->with('relation', $relation)
             ->with('contactrole', $contactrole)
             ->with(['contract' => $contract, 'currency' => $currency, 'bank' => $bank, 'price_list' => $price_list, 'sales_rep' => $sales_rep, 'account' => $account]);
-        //
+        }
     }
 
     /**
@@ -256,11 +263,11 @@ class contactsController extends Controller
           $contact_field_value->id_company= $contacts->id_company;
           $contact_field_value->id_user= $contacts->id_user;
           $contact_field_value->is_head=1;
-          $contact_field_value->id_contact = $contacts->id_contact; 
+          $contact_field_value->id_contact = $contacts->id_contact;
           $contact_field_value->id_field = $request->id_field;
           $contact_field_value->value = $request->account_value;
-          $contact_field_value->save();         
-          
+          $contact_field_value->save();
+
         }
 
       return redirect()->action('Commercial\contactsController@edit', [Session::get('idcontact')]);

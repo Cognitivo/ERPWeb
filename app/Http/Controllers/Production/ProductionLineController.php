@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Production;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Controller;
 use DB;
 use App\ProductionOrder;
@@ -17,6 +18,7 @@ use App\ProductionLine;
 use App\app_location;
 use Auth;
 use Carbon\Carbon;
+
 class ProductionLineController extends Controller
 {
     /**
@@ -59,6 +61,7 @@ class ProductionLineController extends Controller
       $ProductionLine->timestamp = Carbon::now();
       $ProductionLine->id_location=  $request->id_location;
       $ProductionLine->save();
+      $line= ProductionLine::all();
       return view('Production/list_production_line',compact('line'));
 
     }
@@ -115,10 +118,19 @@ class ProductionLineController extends Controller
      */
     public function destroy($id)
     {
-
+      try
+                 {
         $ProductionLine= ProductionLine::find($id);
         $ProductionLine->delete();
-      $line= ProductionLine::all();
-      return view('Production/list_production_line',compact('line'));
+
+    }
+    catch(\Illuminate\Database\QueryException $e)
+{
+ Redirect::back()->with('message', 'This is Used by Another Table.');
+
+}
+  $line= ProductionLine::all();
+  return view('Production/list_production_line',compact('line'));
+
     }
 }

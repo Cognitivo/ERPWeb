@@ -224,6 +224,8 @@ class ProjectTemplateController extends Controller
      */
     public function destroy($id)
     {
+      try
+                 {
         $detail = ProjectTemplateDetail::where('id_template_detail', $id);
 
         if ($detail->get()->count()) {
@@ -232,7 +234,12 @@ class ProjectTemplateController extends Controller
         } else {
             return null;
         }
+}
+catch(\Illuminate\Database\QueryException $e)
+{
+Redirect::back()->with('message', 'This is Used by Another Table.');
 
+}
     }
 
     public function load_tree(Request $request,$id_template,$id_project)

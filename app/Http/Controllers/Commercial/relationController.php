@@ -77,7 +77,7 @@ class relationController extends Controller
     public function store(Request $request)
     {
 
-      dd(Session::get('idcontact'));
+  
 
         $idcontact = Session::get('idcontact');
 
