@@ -174,6 +174,7 @@ class ProjectTemplateController extends Controller
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
+
         foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
@@ -244,7 +245,7 @@ Redirect::back()->with('message', 'This is Used by Another Table.');
 
     public function load_tree(Request $request,$id_template,$id_project)
     {
-        dd($id);
+
          if(isset($request->id_production_order)){
             $data = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
             ->where('id_production_order',$request->id_production_order)->select('id_order_detail as id','parent_id_order_detail as parent',DB::raw('concat(production_order_detail.name,"\t",quantity) as text'),'production_order_detail.id_item as data', 'id_item_type as type')->get();

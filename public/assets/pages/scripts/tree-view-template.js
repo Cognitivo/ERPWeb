@@ -68,7 +68,7 @@ $(function() {
         tree_new()
     } else {
       //  alert($('#type_load').val())
-      //  load_tree($('#type_load').val(),null)
+        load_tree($('#type_load').val(),null)
     }
 
     var parent = $('#parent_name_contact').val()
@@ -99,6 +99,7 @@ $("#add_task").on("click", function() {
         createNode('#' + node_select, name_node, type)
     }
 });
+
 var tree_save = new Object()
 var tree_global = []
 
@@ -157,6 +158,7 @@ function demo_delete() {
 };
 
 function demo_rename() {
+  
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     var text = $('#item').val()
