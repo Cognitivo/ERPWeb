@@ -111,14 +111,18 @@ class ComponentController extends Controller
   public function GetUserComponents(){
     $Name = Auth::user()->name;
     $UserComponents = array();
+    $Components = array();
     if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
       $Components = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
-      foreach ($Components as $Key => $ComponentKey) {
-        if(File::exists(Config::get("Paths.Components") . $ComponentKey . ".json")){
-          $ComponentName = json_decode(file_get_contents(Config::get("Paths.Components") . $ComponentKey . ".json"),true)["Caption"];
-          $UserComponents[$ComponentKey] = $ComponentName;
+      if(is_array($Components)){
+        foreach ($Components as $Key => $ComponentKey) {
+          if(File::exists(Config::get("Paths.Components") . $ComponentKey . ".json")){
+            $ComponentName = json_decode(file_get_contents(Config::get("Paths.Components") . $ComponentKey . ".json"),true)["Caption"];
+            $UserComponents[$ComponentKey] = $ComponentName;
+          }
         }
       }
+      
     }
     asort($UserComponents);
     return json_encode($UserComponents);
