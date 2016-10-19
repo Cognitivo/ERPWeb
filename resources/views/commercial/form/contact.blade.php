@@ -5,15 +5,15 @@
 
  @if(Session::has('message'))
 <div class="alert alert-danger alert-dismissable" id="result">
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>  
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
    <p id="message">
 
    {{Session::get('message')}}
 
    </p>
-   
+
 </div>
-@endif 
+@endif
 @section('content')
 
 @if(isset($contacts))
@@ -143,11 +143,11 @@
                                       <div class="form-group">
                                           <label class="control-label">CODIGO</label>
                                           @if (isset($contacts))
-                                              {!! Form::text('code', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                              {!! Form::text('code', null, ['class'=>'form-control', 'placeholder'=>'Code']) !!}
                                           @else
-                                             {!! Form::text('code', \App\Contact::last_contact()[0]->code+1, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                                             {!! Form::text('code', \App\Contact::last_contact()[0]->code+1, ['class'=>'form-control', 'placeholder'=>'Code']) !!}
                                           @endif
-                                          
+
                                       </div>
                                       <div class="form-group">
                                           <label class="control-label">ROL</label>
@@ -205,7 +205,7 @@
                                         </div>
 
                                           <div class="form-group">
-                                    
+
                                       <label class="control-label">DIRECCION</label>
                                       {!! Form::textarea('address', null, ['class'=>'form-control', 'rows'=>'3', 'placeholder'=>'Roque Centurion Miranda Nro.1625 n/ Asuncion, Paraguay']) !!}
                                   </div>
@@ -217,7 +217,7 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="tab_1_2">
-                                
+
                                 </div>
 
                                 <!-- END PERSONAL INFO TAB -->
@@ -262,7 +262,7 @@
                                 </div>
 
                                               <div class="tab-pane" id="tab_1_5">
-                                                            
+
                                                              <div class="form-group">
                                         <a href="{{ route('subscription.create') }}" class="btn btn-primary" id="create_contact">CREAR SUSBSCRIPCION</a>
                                     </div>
@@ -310,7 +310,7 @@
                         </td>
                       </tr>
                                   <input type="hidden" name="" value="{!! $total += $subscription->unit_price !!}">
-                                     
+
                               @endforeach
                           </tbody>
 
@@ -318,20 +318,20 @@
 
 
 
-                   
+
 
                      <div  align="right">
                          <h1 style="display: inline;">{{ number_format($total,0) }}</h1></div>
                 </div>
                 <div class="tab-pane" id="tab_1_6">
                                             <form role=form action="#">
-                                                
+
                                                 @if (isset($contacts))
                                                    <div class="form-group">
                                                     <a href="{{ route('tag.create') }}" class="btn btn-primary" id="create_tag">AÑADIR ETIQUETA</a>
                                                 </div>
                                                 @endif
-                                               
+
                                               <table class="table table-striped table-bordered table-hover order-column" id="sample_1">
                                                   <thead>
                                                       <tr>
@@ -365,8 +365,8 @@
                                      <input type="hidden" name="is_finance" value="1">
                                          <div class="form-group">
                                          <div  class="md-checkbox-inline">
-                                             
-                                       
+
+
                                             <div class="md-checkbox">
                                               {!! Form::checkbox('is_customer',null, null, ['class'=>'md-check', 'id'=>'chbxCustomer']) !!}
                                               <label for="chbxCustomer">
@@ -387,7 +387,7 @@
                                             </div>
                                               </div>
                                         </div>
-                                       
+
                                         <div class="form-group">
                                             <label class="control-label">CONTRATO</label>
                                             {!! Form::select('id_contract',$contract, null, ['class'=>'form-control']) !!}
@@ -418,20 +418,20 @@
                                             <label class="control-label">NUMERO DE CUENTA</label>
                                             @if (App\ContactField::get_field_value($contacts->id_contact)->get()->count())
                                     {!! Form::text('account_value',App\ContactField::get_field_value($contacts->id_contact)->get()[0]->value, ['class'=>'form-control']) !!}
-                                            @else   
-                                                                                
+                                            @else
+
                                                   {!! Form::text('account_value',null, ['class'=>'form-control']) !!}
                                             @endif
-                                          
+
                                         </div>
 
                                          <div class="margiv-top-10">
                                             {!! Form::submit( 'Guardar', ['class'=>'btn green']) !!}
-                                          
+
                                         </div>
                                 {!! Form::close() !!}
                                 @endif
-                             
+
                                 </div>
                                 <!-- END PROFILE CONTENT -->
                             </div>

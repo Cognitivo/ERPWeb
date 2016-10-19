@@ -17,9 +17,9 @@
 	        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task">
 	            <i class="icon-cloud-upload"></i>
 	        </a>
-	        {{-- <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task" >
+	       <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task" >
 	            <i class="icon-wrench"></i>
-	        </a> --}}
+	        </a>
 	        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}">
 	            <i class="icon-trash"></i>
 	        </a>
@@ -137,7 +137,7 @@
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="{{ url() }}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
-     
+
 
        <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
 

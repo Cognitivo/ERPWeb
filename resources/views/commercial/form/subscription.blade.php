@@ -99,7 +99,7 @@
                             <div class="tab-content">
                                 <!-- PERSONAL INFO TAB -->
                                 <div class="tab-pane active" id="tab_1_1">
-                                  
+
 @if (isset($contact_subscription))
    {!! Form::model($contact_subscription,['route' => ['subscription.update',$contact_subscription->id_subscription], 'method'=>'put','id'=>'form_subscription']) !!}
 @else
@@ -109,7 +109,7 @@
 
 {!! csrf_field() !!}
 
-                                               
+
 
                   <div class="form-group">
                         <label class="control-label">NOMBRE</label>
@@ -120,7 +120,7 @@
                           {!! Form::text('name_contact', null, ['id'=>'example-ajax-post','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                            <input type="hidden" name="id_contact" id="id_contact" value="">
                         @endif
-                        
+
                     </div>
                       <div class="form-group">
                         <label class="control-label">PLAN</label>
@@ -131,7 +131,7 @@
                             {!! Form::text('name_item', null, ['id'=>'example-ajax-post1','class'=>'form-control', 'placeholder'=>'Full Name']) !!}
                             <input type="hidden" name="id_item" id="id_item" value=""/>
                         @endif
-                        
+
                     </div>
 
                      <div class="form-group">
@@ -146,7 +146,7 @@
                       <label class="control-label">FECHA FIN</label>
                       {!! Form::date('end_date', null, ['class'=>'form-control', 'placeholder'=>'End Date']) !!}
                   </div>
-                   
+
 
                     <div class="margiv-top-10">
                         {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
@@ -154,7 +154,7 @@
                     </div>
                 {!! Form::close() !!}
             </div>
-            
+
             <!-- END PERSONAL INFO TAB -->
             <!-- CHANGE AVATAR TAB -->
             <div class="tab-pane" id="tab_1_2">
@@ -168,7 +168,7 @@
                     </div>
                     <!-- END PAGE CONTENT INNER -->
 
-                    
+
 
                     @endsection
 
@@ -178,10 +178,10 @@
 
     <script type="text/javascript">
 
-    $('#form_subscription').submit(function(){           
+    $('#form_subscription').submit(function(){
         $('.mask_currency').inputmask('remove');
     })
-        
+
     $(document).ready(function() {
         contacts()
         plan()
@@ -197,26 +197,26 @@
 
         getValue: function(element) {
 
-            return element.name 
+            return element.name
         },
         list: {
             onSelectItemEvent: function() {
             var value = $("#example-ajax-post").getSelectedItemData().id_contact;
-            
-          
+
+
             $("#id_contact").val(value).trigger("change");
 
-           
+
         },
             match: {
                 enabled: true
             },
-       
+
             maxNumberOfElements: 8
 
 
         },
-      
+
 
         ajaxSettings: {
             dataType: "json",
@@ -260,20 +260,20 @@ function plan(){
 
         getValue: function(element) {
 
-            return element.name 
+            return element.name
         },
         list: {
              onSelectItemEvent: function() {
             var value = $("#example-ajax-post1").getSelectedItemData().id_item;
             var price = $("#example-ajax-post1").getSelectedItemData().unit_cost;
-           
+
             $("#id_item").val(value).trigger("change");
              $('#unit_price').val(price).trigger("change");
         },
             match: {
                 enabled: true
             },
-       
+
             maxNumberOfElements: 8
 
 
