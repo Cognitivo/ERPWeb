@@ -20,22 +20,19 @@
 	@foreach ($order as $element)
 		<tr>
 			<td>{{ $element->name }}</td>
-			<td> 
+			<td>
 				<a href="{{route('production_order.edit',$element->id_production_order )}}" class="btn btn-icon-only blue">
                 	<i class="glyphicon glyphicon-pencil"> </i>
                 </a>
-			
-                <form action="{{ route('production_order.destroy',$element->id_production_order) }}" method="delete" style="display: inline;">
-                 	{!! csrf_field() !!}
-                	 <button  class=" btn btn-delete red"  >
-                    	<i class="glyphicon glyphicon-trash"></i>
-                	</button>
-                </form>
-               
+								{!! Form::open(array('route' => array('production_order.destroy', $element->id_production_order), 'method' => 'delete')) !!}
+								<button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
+						{!! Form::close() !!}
+
+
             </td>
 		</tr>
 	@endforeach
-		
+
 	</tbody>
 </table>
 @stop

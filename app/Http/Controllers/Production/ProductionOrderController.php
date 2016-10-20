@@ -23,7 +23,10 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
+
         $order = ProductionOrder::all();
+
+
         return view('Production/list_production_order', compact('order'));
     }
 
@@ -168,17 +171,22 @@ class ProductionOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         if ($request->id_project != "") {
             $id_project = explode("-", $request->id_project)[0];
 
             $project             = Project::findOrFail($id_project);
-            $project->id_contact = $request->id_contact;
-            $project->save();
+            if ($request->id_contact!=null) {
+             $project->id_contact = $request->id_contact;
+                  $project->save();
+            }
+
         }
 
         $range_date = explode("-", $request->range_date);
 
         $production_order                     = ProductionOrder::findOrFail($id);
+dd($request);
         $production_order->id_production_line = $request->id_production_line;
         $production_order->name               = $request->name;
         $production_order->timestamp          = Carbon::now();
@@ -193,12 +201,14 @@ class ProductionOrderController extends Controller
         $array_parent = collect();
         $cont         = 0;
 
-        foreach ($array as $key => $value) {
 
-            $id_project_task = $this->updateProductionOrderDetail($value->text, $value->id);
-            $this->updateTask($value->text, $id_project_task);
-          
+  if ($array != null) {
+        foreach ($array as $key => $value) {
+$this->updateProductionOrderDetail($value->text, $value->id);
+          //  $this->updateTask($value->text, $id_project_task);
+
         }
+}
 
         return redirect()->route('production_order.index');
 
@@ -212,10 +222,19 @@ class ProductionOrderController extends Controller
      */
     public function destroy($id)
     {
-      
 
-        $production_order= ProductionOrder::findOrFail($id);
-        $production_order->delete();
+      try
+                 {
+                   $production_order= ProductionOrder::findOrFail($id);
+                   $production_order->delete();
+
+    }
+    catch(\Illuminate\Database\QueryException $e)
+    {
+  //  Redirect::back()->with('message', 'This is Used by Another Table.');
+
+    }
+
 
         return redirect()->back();
     }
@@ -280,6 +299,7 @@ class ProductionOrderController extends Controller
 
     public function updateProductionOrderDetail($name, $id)
     {
+
         $array_aux                         = explode("\t", $name);
         $production_order_detail           = ProductionOrderDetail::findOrFail($id);
         $production_order_detail->name     = $array_aux[0];

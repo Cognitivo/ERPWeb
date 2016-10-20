@@ -20,19 +20,17 @@
         </div>
 
          <div class="portlet-body">
-        <div id="tree_1" class="tree-demo">
-            <ul>
-                <li id="name_parent">
-                    <ul>
-                        <li data-jstree='{ "selected" : true }'>
-                            <a href="javascript:;" id="name_contact"> </a>
-                        </li>
+					 @if (isset($production_order))
+				 	<input type="hidden" id="type_load" value="{{$production_order->id_production_order}}">
+				 					 <div id="jstree" class="tree-demo">
 
-                    </ul>
-                </li>
+				 							</div>
+				 						@else
+				 							<input type="hidden" id="type_load" value="#">
+				 					<div id="jstree" class="tree-demo" >
 
-            </ul>
-        </div>
+				 					 </div>
+				 						@endif
     </div>
     </div>
     </div>
@@ -51,12 +49,14 @@
          <div class="form-group">
 
 
-                {!! Form::textarea('address', isset($production_order)?$production_order->project->contact->address:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
+                {!! Form::textarea('address', isset($production_order)?isset($production_order->project)?$production_order->project->contact->address:null:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
 
                 @if (isset($production_order))
+								@if(isset($production_order->project))
                     {!! Form::hidden('geo_lat',$production_order->project->contact->geo_lat,['id'=>'geo_lat']) !!}
                     {!! Form::hidden('geo_long',$production_order->project->contact->geo_long,['id'=>'geo_long']) !!}
                 @endif
+								  @endif
 
                     </div>
             <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
@@ -98,9 +98,10 @@
                                     <i class="fa fa-bell-o">
                                     </i>
 
-                                     {!! Form::text('contact', isset($production_order)?$production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact']) !!}
+                                     {!! Form::text('contact', isset($production_order)?isset($production_order->project)?$production_order->project->contact->name:null:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact']) !!}
 
-                                     {!! Form::hidden('id_contact',isset($production_order)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!} {!! Form::hidden('parent_name_contact',isset($production_order)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!}
+                                     {!! Form::hidden('id_contact',isset($production_order)?isset($production_order->project)?$production_order->project->contact->id_contact:null:null,['id'=>'id_contact']) !!}
+																		  {!! Form::hidden('parent_name_contact',isset($production_order)?!is_null(isset($production_order->project)?$production_order->project->contact->parentContact:null)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!}
 
 
 
@@ -114,7 +115,7 @@
                         </label>
                         <div class="col-md-9">
                           {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
-                            {!! Form::text('reclamo', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                            {!! Form::text('name', $name, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'name']) !!}
                         </div>
                     </div>
 
@@ -162,7 +163,7 @@
                         <div class="col-md-9">
 
                          <div class="input-group">
-                            {!!  Form::select('id_project',$templates,isset($production_order)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
+                            {!!  Form::select('id_project',$templates,isset($production_order)?isset($production_order->project)?$production_order->project->id_project."-".$production_order->project->id_project_template:null:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
                             <span class="input-group-addon">
                             <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                                  <i class="fa fa-user"></i>
@@ -209,31 +210,8 @@
 
 
 
-<!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
-<div class="modal fade" id="load_template" role="basic" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" id="modal_template">
-                  <div class="actions pull-right">
-          {{--   <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task_production_order">
-                <i class="icon-cloud-upload"></i>
-            </a> --}}
-            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task_production_order" data-token="{{ csrf_token() }}">
-                <i class="icon-wrench"></i>
-            </a>
-            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}">
-                <i class="icon-trash"></i>
-            </a>
 
 
-        </div>
-               <div id='jstree' class='tree-demo' ></div>
-
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -258,50 +236,10 @@
 
 
 
-           <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
+           <script src="{{ url() }}/assets/pages/scripts/tree-view-order.js" type="text/javascript"></script>
 
 
 
-       <script type="text/javascript">
 
-		         var id_project_id_project_template = $('#id_project option:selected').val()
-              var id_project = id_project_id_project_template.split("-")[0]
-              var id_project_template= id_project_id_project_template.split("-")[1]
-
-
-        $('#link_template').click(function(){
-              //console.log($('#jstree1').jstree())
-
-                 var id_project_id_project_template = $('#id_project option:selected').val()
-              var id_project = id_project_id_project_template.split("-")[0]
-              var id_project_template= id_project_id_project_template.split("-")[1]
-
-           load_tree_project_order(id_project_template,id_project)
-
-		})
-
-
-        $(document).ready(function(){
-
-              var name_project= $('#id_project option:selected').text()
-              get_name_project(name_project)
-             if($('#id_production_order').val()!=undefined){
-            load_tree_project_order(id_project_template,id_project)
-            }
-        })
-
-
-        $('#send_production_order').click(function(){
-
-        var objtree = $('#jstree').jstree(true).get_json('#', {
-            flat: true
-        })
-        var fulltree = JSON.stringify(objtree);
-        console.log(fulltree)
-        $('#tree_save').val(fulltree)
-        })
-
-
-	</script>
 
 @stop
