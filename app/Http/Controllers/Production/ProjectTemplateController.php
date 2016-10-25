@@ -71,12 +71,15 @@ class ProjectTemplateController extends Controller
         //save project_template_detail
         $array = json_decode($request->tree_save);
 
-        //dd($array);
+       
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
         //$parent = collect();
-        foreach ($array as $key => $value) {
+        
+        if($array != null){
+
+               foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
             if ($value->parent == "#") {
@@ -103,6 +106,8 @@ class ProjectTemplateController extends Controller
             }
 
         }
+        }
+     
         // dd("ok");
         return redirect()->route('project_template.index');
         // dd($array_parent);
