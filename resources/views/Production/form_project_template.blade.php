@@ -1,4 +1,4 @@
-@extends('../../master')
+@extends('master')
 @section('title', 'Plantilla | CognitivoERP')
 @section('Title', 'Plantilla')
 

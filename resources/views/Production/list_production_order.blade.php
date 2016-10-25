@@ -5,6 +5,9 @@
 @section('content')
 
 
+
+ @include('flash::message')
+
 <div class="input-group">
 	<a href="{{ route('production_order.create') }}" title="" class="btn btn-primary">Crear Orden Trabajo</a>
 </div>
@@ -35,4 +38,10 @@
 
 	</tbody>
 </table>
+@stop
+
+@section('scripts')
+	<script type="text/javascript">
+		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+	</script>
 @stop

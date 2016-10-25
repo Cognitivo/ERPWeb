@@ -71,7 +71,9 @@ Route::resource('workarea','Commercial\workareaController');
 Route::get('load_tree/{id_template}/{id_project}','Production\ProjectTemplateController@load_tree');
 Route::get('load_order_tree/{id_order}','Production\ProductionExecutionController@load_tree');
 
+Route::delete('project_template_detail_destroy/{id}','Production\ProjectTemplateController@destroyTemplateDetail');
 Route::resource('project_template','Production\ProjectTemplateController');
+
 Route::get('timeline',function(){
   return view('Production/timeline');
 });

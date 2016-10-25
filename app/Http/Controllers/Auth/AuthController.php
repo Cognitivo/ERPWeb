@@ -72,11 +72,16 @@ class AuthController extends Controller
           $this->validate($request, [
         'name' => 'required',
         'password' => 'required',
-    ]);
+    ]);         
+
+
     if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceOf Security_User) {
+
              Auth::login($user);
+
              return redirect()->intended('/');
         }
+         
         $errors = ["message"=>"The Credentials are Incorrect"];
         return redirect()->back()->withErrors($errors)->withInput(Input::except('password'));
     }

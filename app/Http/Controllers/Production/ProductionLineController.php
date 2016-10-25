@@ -2,22 +2,13 @@
 
 namespace App\Http\Controllers\Production;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use Illuminate\Support\Facades\Redirect;
+use App\AppLocation;
 use App\Http\Controllers\Controller;
-use DB;
-use App\ProductionOrder;
-use App\Contact;
-use App\ProjectTemplate;
-use App\ProjectTag;
-use App\Project;
-use App\ProjectTask;
 use App\ProductionLine;
-use App\app_location;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductionLineController extends Controller
 {
@@ -28,8 +19,8 @@ class ProductionLineController extends Controller
      */
     public function index()
     {
-        $line= ProductionLine::all();
-        return view('Production/list_production_line',compact('line'));
+        $line = ProductionLine::all();
+        return view('Production/list_production_line', compact('line'));
     }
 
     /**
@@ -39,8 +30,9 @@ class ProductionLineController extends Controller
      */
     public function create()
     {
-  $applocation=app_location::where('id_company', Auth::user()->id_company)->lists('name', 'id_location');
-  return view('Production/form_production_line',compact('applocation'));
+        $applocation = AppLocation::where('id_company', Auth::user()->id_company)->lists('name', 'id_location');
+
+        return view('Production/form_production_line', compact('applocation'));
 
     }
 
@@ -52,17 +44,17 @@ class ProductionLineController extends Controller
      */
     public function store(Request $request)
     {
-      $ProductionLine= new ProductionLine;
-      $ProductionLine->id_company      = Auth::user()->id_company;
-      $ProductionLine->id_user         = Auth::user()->id_user;
-      $ProductionLine->is_read         = 0;
-      $ProductionLine->is_head         = 1;
-      $ProductionLine->name       = $request->name;
-      $ProductionLine->timestamp = Carbon::now();
-      $ProductionLine->id_location=  $request->id_location;
-      $ProductionLine->save();
-      $line= ProductionLine::all();
-      return view('Production/list_production_line',compact('line'));
+        $ProductionLine              = new ProductionLine;
+        $ProductionLine->id_company  = Auth::user()->id_company;
+        $ProductionLine->id_user     = Auth::user()->id_user;
+        $ProductionLine->is_read     = 0;
+        $ProductionLine->is_head     = 1;
+        $ProductionLine->name        = $request->name;
+        $ProductionLine->timestamp   = Carbon::now();
+        $ProductionLine->id_location = $request->id_location;
+        $ProductionLine->save();
+        $line = ProductionLine::all();
+        return view('Production/list_production_line', compact('line'));
 
     }
 
@@ -74,9 +66,9 @@ class ProductionLineController extends Controller
      */
     public function show($id)
     {
-      $line= ProductionLine::all();
+        $line = ProductionLine::all();
 
-      return view('Production/list_production_line',compact('line'));
+        return view('Production/list_production_line', compact('line'));
     }
 
     /**
@@ -87,10 +79,11 @@ class ProductionLineController extends Controller
      */
     public function edit($id)
     {
-      $line= ProductionLine::find($id);
+        $line = ProductionLine::find($id);
 
-      $applocation=app_location::where('id_company', Auth::user()->id_company)->lists('name', 'id_location');
-    return view('Production/form_production_line',compact('line','applocation'));
+        $applocation = AppLocation::where('id_company', Auth::user()->id_company)->lists('name', 'id_location');
+        
+        return view('Production/form_production_line', compact('line', 'applocation'));
     }
 
     /**
@@ -102,12 +95,12 @@ class ProductionLineController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $ProductionLine= ProductionLine::find($id);
-      $ProductionLine->name       = $request->name;
-      $ProductionLine->id_location=  $request->id_location;
-      $ProductionLine->save();
-        $line= ProductionLine::all();
-      return view('Production/list_production_line',compact('line'));
+        $ProductionLine              = ProductionLine::find($id);
+        $ProductionLine->name        = $request->name;
+        $ProductionLine->id_location = $request->id_location;
+        $ProductionLine->save();
+        $line = ProductionLine::all();
+        return view('Production/list_production_line', compact('line'));
     }
 
     /**
@@ -118,19 +111,25 @@ class ProductionLineController extends Controller
      */
     public function destroy($id)
     {
-      try
-                 {
-        $ProductionLine= ProductionLine::find($id);
-        $ProductionLine->delete();
 
-    }
-    catch(\Illuminate\Database\QueryException $e)
-{
- Redirect::back()->with('message', 'This is Used by Another Table.');
+        $ProductionLine = ProductionLine::find($id);
 
-}
-  $line= ProductionLine::all();
-  return view('Production/list_production_line',compact('line'));
+        try
+        {
+
+            $ProductionLine->delete();
+
+              flash('Operación realizada con éxito','success');
+
+            return redirect()->back();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            flash('No se puede eliminar!','danger');
+
+            return redirect()->back();
+
+        }
 
     }
 }

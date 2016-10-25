@@ -141,7 +141,7 @@ function demo_delete() {
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     $.ajax({
-        url: '/project_template/' + sel[0],
+        url: '/project_template_detail_destroy/' + sel[0],
         type: 'post',
         data: {
             _method: 'delete',
