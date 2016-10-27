@@ -1,1 +1,1 @@
-{"Caption":"Average Quantity Per Invoice ","Type":"kpi","Unit":"","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"AvgQuantityPerInv.sql","Dimension":"Small"}
+{"Caption":"Average Quantity Per Invoice ","Type":"kpi","Unit":"","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"AvgQuantityPerInv.sql","Dimensions":"Small","Value":"AvgQuantity"}

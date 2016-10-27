@@ -27,7 +27,6 @@ function handleComponents(startdate,enddate) {
             var data = JSON.parse(Response);
             $.each(data, function(key, value) {
               $.get("./component/" + key + "/" + startdate + "/" + enddate, function(Response) {
-                console.log(Response);
                   if (Response.Type.toLowerCase() == "kpi") {
                       handleKPI(Response);
                   } else if (Response.Type.toLowerCase() == "piechart") {
