@@ -20,5 +20,5 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 Route::group(['middleware' => 'isloggedin'], function () {
   Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
-  Route::get('/', 'dashboardcontroller@index');
+  Route::get('/', 'dashboardController@index');
 });
