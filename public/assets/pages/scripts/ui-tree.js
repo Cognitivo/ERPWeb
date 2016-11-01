@@ -117,7 +117,8 @@ var UITree = function () {
                             "icon": "fa fa-check icon-state-success",
                             "state": {
                                 "disabled": true
-                            }
+                            },
+                            "children": false
                         }, {
                             "text": "Sub Nodes",
                             "icon": "fa fa-folder icon-state-danger",
@@ -158,6 +159,7 @@ var UITree = function () {
                 "check_callback" : true,
                 'data' : {
                     'url' : function (node) {
+
                       return '../demo/jstree_ajax_data.php';
                     },
                     'data' : function (node) {

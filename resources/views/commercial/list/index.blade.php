@@ -1,0 +1,61 @@
+
+
+@extends('../../master')
+@section('title', 'Contacts | CognitivoERP')
+@section('Title', 'Contacts')
+
+@section('content')
+    <div class="portlet light ">
+        <div class="portlet-title">
+            <div class="caption font-dark">
+
+            </div>
+            <div class="tools"></div>
+        </div>
+        <div class="portlet-body">
+          <div class="form-group">
+              <a href="{{ route('contacts.create') }}" class="btn btn-primary" id="create_contact">CREAR CONTACTO</a>
+          </div>
+            <table class="table table-hover table-light" id="sample_1">
+                <thead>
+                    <tr>
+                        <th>FECHA</th>
+                        <th>NOMBRE</th>
+                        <th>RUC</th>
+                        <th>DIRECCION</th>
+                        <th>TELEFONO</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                  @foreach($contacts as $item)
+                    @if ($item->is_active === 1)
+                        <tr>
+                    @else
+                        <tr style="background-color:pink;">
+                    @endif
+                            <td>
+                                {{ date('F d, Y', strtotime($item->timestamp)) }}
+                            </td>
+                            <td>
+                                <a href="{{route('contacts.edit',$item->id_contact)}}">{{$item->name}}</a>
+                            </td>
+                            <td>
+                                {{$item->gov_code}}
+                            </td>
+                            <td>
+                                {{$item->address}}
+                            </td>
+                            <td>
+                                {{$item->telephone}}
+                            </td>
+                        </tr>
+                    @endforeach
+
+
+                </tbody>
+            </table>
+                  {!! $contacts->render() !!}
+        </div>
+    </div>
+@endsection

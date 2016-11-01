@@ -27,9 +27,15 @@ var FormInputMask = function () {
         $("#mask_decimal").inputmask('decimal', {
             rightAlignNumerics: false
         }); //disables the right alignment of the decimal input
-        $("#mask_currency").inputmask('€ 999.999.999,99', {
-            numericInput: true
-        }); //123456  =>  € ___.__1.234,56
+        $(".mask_currency").inputmask("numeric", {
+    radixPoint: ".",
+    groupSeparator: ",",
+    digits: 2,
+    autoGroup: true,
+    //prefix: '', //No Space, this will truncate the first character
+    rightAlign: false,
+    oncleared: function(){self.Value('')}
+    }); //123456  =>  € ___.__1.234,56
 
         $("#mask_currency2").inputmask('€ 999,999,999.99', {
             numericInput: true,

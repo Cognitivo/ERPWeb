@@ -1,0 +1,1 @@
+{"Caption":"Total Margin per Branch","Type":"BarChart","Unit":"USD","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"TotMarperBra.sql","Dimensions":"Medium","Label":"branch","Series":[{"Name":"Margin","Column":"margin","Color":"#F3A6A4"}]}

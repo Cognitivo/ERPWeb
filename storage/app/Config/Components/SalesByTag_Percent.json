@@ -1,0 +1,11 @@
+{
+    "SqlFile": "SalesByTag_Percent.sql",
+    "Type": "PieChart",
+    "Dimensions": "6,6",
+    "Caption": "Tags as Percentage of Sales",
+    "Label": "Tag",
+    "PieValues": "Percentage",
+    "Parameters":"StartDate,EndDate",
+    "Module": "Sales",
+    "Description":""
+}

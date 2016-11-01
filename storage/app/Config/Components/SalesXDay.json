@@ -1,0 +1,17 @@
+{
+    "SqlFile": "SalesXDay.sql",
+    "Type": "BarChart",
+    "Dimensions": "3,3",
+    "Caption": "Sales per Day",
+    "Label": "Date",
+    "Series": [{
+        "Id": "Sales",
+        "Name": "Total Sales",
+        "Column": "Sales",
+        "NumberPrefix": "$",
+        "Color": "#FC4A1A"
+    }],
+    "Parameters":"StartDate,EndDate",
+    "Module": "sales",
+    "Description":""
+}

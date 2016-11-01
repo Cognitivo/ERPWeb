@@ -1,0 +1,16 @@
+{
+	"Caption":"Pending Sales Receipts",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Pending Sales Receipts",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"PenSalRec.sql",
+	"Dimensions":"Medium",
+	"Label":"name",
+	"Series":[
+		{"Id":"PendingAmount",
+		"Name":"Pending Amount",
+		"Column":"pendiente",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

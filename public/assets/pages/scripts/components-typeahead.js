@@ -20,17 +20,17 @@ var ComponentsTypeahead = function () {
         numbers.initialize();
          
         // instantiate the typeahead UI
-        if (App.isRTL()) {
+      /*  if (App.isRTL()) {
           $('#typeahead_example_1').attr("dir", "rtl");  
         }
         $('#typeahead_example_1').typeahead(null, {
           displayKey: 'num',
           hint: (App.isRTL() ? false : true),
           source: numbers.ttAdapter()
-        });
+        });*/
 
         // Example #2
-        var countries = new Bloodhound({
+      /*  var countries = new Bloodhound({
           datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.name); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           limit: 10,
@@ -52,13 +52,13 @@ var ComponentsTypeahead = function () {
           displayKey: 'name',
           hint: (App.isRTL() ? false : true),
           source: countries.ttAdapter()
-        });
+        });*/
 
         // Example #3
         var custom = new Bloodhound({
           datumTokenizer: function(d) { return d.tokens; },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
-          remote: '../demo/typeahead_custom.php?query=%QUERY'
+          remote: '/get_contacts?query='+$('#typeahead_example_3').val()
         });
          
         custom.initialize();
@@ -68,20 +68,18 @@ var ComponentsTypeahead = function () {
         }  
         $('#typeahead_example_3').typeahead(null, {
           name: 'datypeahead_example_3',
-          displayKey: 'value',
+          display: 'name',
           source: custom.ttAdapter(),
-          hint: (App.isRTL() ? false : true),
+         hint: (App.isRTL() ? false : true),
           templates: {
             suggestion: Handlebars.compile([
               '<div class="media">',
                     '<div class="pull-left">',
-                        '<div class="media-object">',
-                            '<img src="{{img}}" width="50" height="50"/>',
-                        '</div>',
+                        
                     '</div>',
                     '<div class="media-body">',
-                        '<h4 class="media-heading">{{value}}</h4>',
-                        '<p>{{desc}}</p>',
+                        '<h4 class="media-heading">{{name}}</h4>',
+                       
                     '</div>',
               '</div>',
             ].join(''))
@@ -90,7 +88,7 @@ var ComponentsTypeahead = function () {
 
         // Example #4
 
-        var nba = new Bloodhound({
+       /* var nba = new Bloodhound({
           datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.team); },
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           prefetch: '../demo/typeahead_nba.json'
@@ -127,11 +125,11 @@ var ComponentsTypeahead = function () {
           templates: {
                 header: '<h3>NHL Teams</h3>'
           }
-        });
+        });*/
 
     }
 
-    var handleTwitterTypeaheadModal = function() {
+    /*var handleTwitterTypeaheadModal = function() {
 
         // Example #1
         // instantiate the bloodhound suggestion engine
@@ -259,13 +257,13 @@ var ComponentsTypeahead = function () {
           }
         });
 
-    }
+    }*/
 
     return {
         //main function to initiate the module
         init: function () {
             handleTwitterTypeahead();
-            handleTwitterTypeaheadModal();
+           // handleTwitterTypeaheadModal();
         }
     };
 

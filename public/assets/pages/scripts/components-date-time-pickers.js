@@ -48,8 +48,10 @@ var ComponentsDateTimePickers = function () {
             return;
         }
 
-        $('#defaultrange').daterangepicker({
+         $('#defaultrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
+                 timePicker: true,
+                 timePickerIncrement: 30,
                 format: 'MM/DD/YYYY',
                 separator: ' to ',
                 startDate: moment().subtract('days', 29),
@@ -68,11 +70,29 @@ var ComponentsDateTimePickers = function () {
             function (start, end) {
                 $('#defaultrange input').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             }
-        );        
+        );
+            
+            //eduardo
+         $('.defaultrange').daterangepicker({
+            timePicker: true,
+            timePicker24Hour: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'DD/MM/YYYY H:mm'
+        }               
+        },
+          function (start, end) {
+                $('.defaultrange input').val(start.format('DD/MM/YYYY H:mm') + ' - ' + end.format('DD/MM/YYYY H:mm'));
+            }   
+        );
+
+
+                
 
         $('#defaultrange_modal').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                format: 'MM/DD/YYYY',
+                format: 'MM/DD/YYYY ',
+
                 separator: ' to ',
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
@@ -94,10 +114,10 @@ var ComponentsDateTimePickers = function () {
 
         $('#reportrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                startDate: moment().subtract('days', 29),
+                startDate: moment().startOf("year"),
                 endDate: moment(),
-                minDate: '01/01/2012',
-                maxDate: '12/31/2014',
+                minDate: '01/01/1950',
+                maxDate: moment(),
                 dateLimit: {
                     days: 60
                 },
@@ -107,17 +127,14 @@ var ComponentsDateTimePickers = function () {
                 timePickerIncrement: 1,
                 timePicker12Hour: true,
                 ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                    'Last 7 Days': [moment().subtract('days', 6), moment()],
-                    'Last 30 Days': [moment().subtract('days', 29), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-                },
+                    'Last Week': [moment().subtract('days', 6), moment()],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
+                    'Last Year': [moment().subtract('year', 1).startOf('year'), moment().subtract('year', 1).endOf('year')]
+                    },
                 buttonClasses: ['btn'],
                 applyClass: 'green',
                 cancelClass: 'default',
-                format: 'MM/DD/YYYY',
+                format: 'DD/MM/YYYY',
                 separator: ' to ',
                 locale: {
                     applyLabel: 'Apply',
@@ -131,10 +148,13 @@ var ComponentsDateTimePickers = function () {
             },
             function (start, end) {
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                handleComponents(start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'));
             }
         );
         //Set the initial state of the picker label
-        $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+         $('#reportrange span').html(moment().startOf("year").format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+         //$('.defaultrange input').val(moment().subtract(29,'days').format('DD/MM/YYYY') + ' - ' + moment().format('DD/MM/YYYY')); 
+
     }
 
     var handleDatetimePicker = function () {
