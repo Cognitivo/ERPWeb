@@ -1,0 +1,1 @@
+{"Caption":"Margin per category","Type":"BarChart","Unit":"USD","Module":"","Description":"","Parameters":"StartDate,EndDate","SqlFile":"Marpercat.sql","Dimensions":"Medium","Label":"category","Series":[{"Name":"Margin","Column":"margin","Color":"#4ABDAC"}]}

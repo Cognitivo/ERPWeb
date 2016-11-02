@@ -67,8 +67,13 @@ $(function() {
     if ($('#type_load').val() == '#') {
         tree_new()
     } else {
+<<<<<<< HEAD
       //  alert($('#type_load').val())
       //  load_tree($('#type_load').val(),null)
+=======
+
+        load_tree($('#type_load').val(),null)
+>>>>>>> f2ac716bbad346966af20ae3ee26d4bd171ea781
     }
 
     var parent = $('#parent_name_contact').val()
@@ -99,6 +104,7 @@ $("#add_task").on("click", function() {
         createNode('#' + node_select, name_node, type)
     }
 });
+
 var tree_save = new Object()
 var tree_global = []
 
@@ -140,7 +146,7 @@ function demo_delete() {
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     $.ajax({
-        url: '/project_template/' + sel[0],
+        url: '/project_template_detail_destroy/' + sel[0],
         type: 'post',
         data: {
             _method: 'delete',
@@ -157,6 +163,7 @@ function demo_delete() {
 };
 
 function demo_rename() {
+  
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     var text = $('#item').val()

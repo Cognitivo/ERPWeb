@@ -3,7 +3,7 @@
 @section('Title', 'Orden Trabajo')
 
 @section('css')
-	 <link href="{{ url() }}/assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
+   <link href="{{ url() }}/assets/global/plugins/jstree/dist/themes/default/style.min.css" rel="stylesheet" type="text/css" />
 @stop
 
 @section('content')
@@ -243,7 +243,7 @@
 
 
 @section('scripts')
-	<!-- BEGIN PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script src="{{ url() }}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>       
         <!-- END PAGE LEVEL PLUGINS -->
 
@@ -263,8 +263,8 @@
 
 
        <script type="text/javascript">
-		
-		         var id_project_id_project_template = $('#id_project option:selected').val()
+    
+             var id_project_id_project_template = $('#id_project option:selected').val()
               var id_project = id_project_id_project_template.split("-")[0]  
               var id_project_template= id_project_id_project_template.split("-")[1] 
          
@@ -278,7 +278,7 @@
 
            load_tree_project_order(id_project_template,id_project)
    
-		})
+    })
 
 
         $(document).ready(function(){
@@ -302,10 +302,6 @@
         })
 
 
-	</script>
+  </script>
 
 @stop
-
-
-
-

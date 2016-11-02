@@ -1,0 +1,1 @@
+{"Caption":"Sales Per Branch","Type":"BarChart","Unit":"","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"SalPerBra.sql","Dimensions":"Medium","Label":"branch","Series":[{"Name":"Sales","Column":"sales","Color":"#07889B"}]}

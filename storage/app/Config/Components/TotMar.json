@@ -1,0 +1,1 @@
+{"Caption":"Total Margin","Type":"kpi","Unit":"USD","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"TotMar.sql","Dimensions":"Small","Value":"TotalMargin"}

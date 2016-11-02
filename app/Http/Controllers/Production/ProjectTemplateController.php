@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Production;
 
 use App\Http\Controllers\Controller;
+use App\ProductionOrderDetail;
 use App\Project;
 use App\ProjectTemplate;
 use App\ProjectTemplateDetail;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-
-use App\ProductionOrderDetail;
 
 class ProjectTemplateController extends Controller
 {
@@ -43,8 +42,7 @@ class ProjectTemplateController extends Controller
      */
     public function store(Request $request)
     {
-           //dd($request->all());
-           //dd(json_decode($request->tree_save));
+        
         //save template
         $project_template                 = new ProjectTemplate;
         $project_template->name           = $request->name;
@@ -73,12 +71,15 @@ class ProjectTemplateController extends Controller
         //save project_template_detail
         $array = json_decode($request->tree_save);
 
-        //dd($array);
+       
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
         //$parent = collect();
-        foreach ($array as $key => $value) {
+        
+        if($array != null){
+
+               foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
             if ($value->parent == "#") {
@@ -95,7 +96,7 @@ class ProjectTemplateController extends Controller
                 if (count($parent)) {
 
                     $parent_real = $parent['id_real'];
-                    $id_real = $this->insert_db($value->text,$parent_real , $project_template->getKey(),$value->data->id_item);
+                    $id_real     = $this->insert_db($value->text, $parent_real, $project_template->getKey(), $value->data->id_item);
                     $array_parent->push(['id' => $value->id, 'id_real' => $id_real]);
                     $cont++;
 
@@ -105,7 +106,9 @@ class ProjectTemplateController extends Controller
             }
 
         }
-       // dd("ok");
+        }
+     
+        // dd("ok");
         return redirect()->route('project_template.index');
         // dd($array_parent);
 
@@ -149,22 +152,20 @@ class ProjectTemplateController extends Controller
     public function update(Request $request, $id)
     {
 
+        /*    if ($request->production_order) {
+        $template_detail        = ProjectTemplateDetail::find($id);
+        $array_split_name_value = explode("\t", $request->text);
 
+        $template_detail->item_description = $array_split_name_value[0];
 
-    /*    if ($request->production_order) {
-            $template_detail        = ProjectTemplateDetail::find($id);
-            $array_split_name_value = explode("\t", $request->text);
+        //$template_detail->unit_value = count($array_split_name_value) > 1 ? $array_split_name_value[1] : 0;
 
-            $template_detail->item_description = $array_split_name_value[0];
+        $template_detail->save();
 
-            //$template_detail->unit_value = count($array_split_name_value) > 1 ? $array_split_name_value[1] : 0;
-
-            $template_detail->save();
-
-            return response()->json(true);
+        return response()->json(true);
         }*/
 
-        $template = ProjectTemplate::find($id);
+        $template       = ProjectTemplate::find($id);
         $template->name = $request->name;
         $template->save();
 
@@ -174,6 +175,7 @@ class ProjectTemplateController extends Controller
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
+
         foreach ($array as $key => $value) {
             //array_push($array_result,array('id'=>$value->id,'parentid'=>$value->parent,'name'=>$value->text));
             // $array_result->push();
@@ -224,37 +226,51 @@ class ProjectTemplateController extends Controller
      */
     public function destroy($id)
     {
-      try
-                 {
-        $detail = ProjectTemplateDetail::where('id_template_detail', $id);
+       
+        $template = ProjectTemplate::find($id); 
 
-        if ($detail->get()->count()) {
-            $detail->delete();
-            return "ok";
-        } else {
-            return null;
+        try
+        {
+            $template->delete();
+
+              flash('Operación realizada con éxito','success');
+
+            return redirect()->back();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            flash('No se puede eliminar!','danger');
+
+            return redirect()->back();
+
         }
-}
-catch(\Illuminate\Database\QueryException $e)
-{
-Redirect::back()->with('message', 'This is Used by Another Table.');
-
-}
     }
 
-    public function load_tree(Request $request,$id_template,$id_project)
+
+    public function destroyTemplateDetail($id)
     {
-        dd($id);
-         if(isset($request->id_production_order)){
+         $detail = ProjectTemplateDetail::find($id);
+
+         if(isset($detail)){
+
+            $detail->delete();
+         }         
+
+         return "true"; 
+    }
+
+    public function load_tree(Request $request, $id_template, $id_project)
+    {
+
+        if (isset($request->id_production_order)) {
             $data = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
-            ->where('id_production_order',$request->id_production_order)->select('id_order_detail as id','parent_id_order_detail as parent',DB::raw('concat(production_order_detail.name,"\t",quantity) as text'),'production_order_detail.id_item as data', 'id_item_type as type')->get();
-         }else{
+                ->where('id_production_order', $request->id_production_order)->select('id_order_detail as id', 'parent_id_order_detail as parent', DB::raw('concat(production_order_detail.name,"\t",quantity) as text'), 'production_order_detail.id_item as data', 'id_item_type as type')->get();
+        } else {
             $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
-            ->where('id_project_template', $id_template)
-            ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",0) as text') , 'project_template_detail.id_item as data', 'id_item_type as type')->get();
+                ->where('id_project_template', $id_template)
+                ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",0) as text'), 'project_template_detail.id_item as data', 'id_item_type as type')->get();
 
-         }
-
+        }
 
         //dd(json_decode($data));
         foreach ($data as $item) {

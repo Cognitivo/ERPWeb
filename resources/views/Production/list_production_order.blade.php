@@ -5,6 +5,9 @@
 @section('content')
 
 
+
+ @include('flash::message')
+
 <div class="input-group">
 	<a href="{{ route('production_order.create') }}" title="" class="btn btn-primary">Crear Orden Trabajo</a>
 </div>
@@ -20,22 +23,25 @@
 	@foreach ($order as $element)
 		<tr>
 			<td>{{ $element->name }}</td>
-			<td> 
+			<td>
 				<a href="{{route('production_order.edit',$element->id_production_order )}}" class="btn btn-icon-only blue">
                 	<i class="glyphicon glyphicon-pencil"> </i>
                 </a>
-			
-                <form action="{{ route('production_order.destroy',$element->id_production_order) }}" method="delete" style="display: inline;">
-                 	{!! csrf_field() !!}
-                	 <button  class=" btn btn-delete red"  >
-                    	<i class="glyphicon glyphicon-trash"></i>
-                	</button>
-                </form>
-               
+								{!! Form::open(array('route' => array('production_order.destroy', $element->id_production_order), 'method' => 'delete')) !!}
+								<button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
+						{!! Form::close() !!}
+
+
             </td>
 		</tr>
 	@endforeach
-		
+
 	</tbody>
 </table>
+@stop
+
+@section('scripts')
+	<script type="text/javascript">
+		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+	</script>
 @stop

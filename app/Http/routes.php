@@ -68,10 +68,17 @@ Route::resource('workarea','Commercial\workareaController');
 //End
 
 
+
+Route::group(['middleware' => 'isloggedin'], function () {
+  Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
+  Route::get('/', 'dashboardController@index');
+=======
 Route::get('load_tree/{id_template}/{id_project}','Production\ProjectTemplateController@load_tree');
 Route::get('load_order_tree/{id_order}','Production\ProductionExecutionController@load_tree');
 
+Route::delete('project_template_detail_destroy/{id}','Production\ProjectTemplateController@destroyTemplateDetail');
 Route::resource('project_template','Production\ProjectTemplateController');
+
 Route::get('timeline',function(){
   return view('Production/timeline');
 });
@@ -83,4 +90,5 @@ Route::get('delete_item/{id}','Production\TimelineController@destroy');
 Route::resource('production_order','Production\ProductionOrderController');
 Route::resource('production_line','Production\ProductionLineController');
 Route::resource('production_execustion','Production\ProductionExecutionController');
+
 });

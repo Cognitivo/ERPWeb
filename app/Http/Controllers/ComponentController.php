@@ -111,14 +111,18 @@ class ComponentController extends Controller
   public function GetUserComponents(){
     $Name = Auth::user()->name;
     $UserComponents = array();
+    $Components = array();
     if(File::exists(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json")){
       $Components = json_decode(file_get_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",true),true);
-      foreach ($Components as $Key => $ComponentKey) {
-        if(File::exists(Config::get("Paths.Components") . $ComponentKey . ".json")){
-          $ComponentName = json_decode(file_get_contents(Config::get("Paths.Components") . $ComponentKey . ".json"),true)["Caption"];
-          $UserComponents[$ComponentKey] = $ComponentName;
+      if(is_array($Components)){
+        foreach ($Components as $Key => $ComponentKey) {
+          if(File::exists(Config::get("Paths.Components") . $ComponentKey . ".json")){
+            $ComponentName = json_decode(file_get_contents(Config::get("Paths.Components") . $ComponentKey . ".json"),true)["Caption"];
+            $UserComponents[$ComponentKey] = $ComponentName;
+          }
         }
       }
+      
     }
     asort($UserComponents);
     return json_encode($UserComponents);
@@ -173,6 +177,7 @@ class ComponentController extends Controller
   }
   public function CreateComponent(Request $request){
     $Component = array();
+    $Value = "";
     $KeyElem = explode(" ", $request->input("name"));
     foreach ($KeyElem as $index => $value) {
       $KeyElem[$index] = substr($value,0,3);
@@ -185,19 +190,26 @@ class ComponentController extends Controller
       $Matches[$key] = ltrim($value,"@");
     }
     $Parameters = implode(",",$Matches);
+    $Result=preg_split('/as/',$request->input("query"));
+    if(count($Result)>1){
+      $Result_split=explode(' ',$Result[1]);
+      $Value = trim($Result_split[1]);
+    }
+
     $Component["Caption"] = $request->input("name");
     $Component["Type"] = $request->input("type");
     $Component["Unit"] = $request->input("unit");
     $Component["Module"] = $request->input("module");
     $Component["Description"] = $request->input("description");
     $Component["Parameters"] = $Parameters;
+    $Component["Value"] = $Value;
     $Component["SqlFile"] = $Key . ".sql";
     switch(strtolower($request->input("type"))){
       case "kpi":
-        $Component["Dimension"] = "Small";
+        $Component["Dimensions"] = "Small";
         break;
       case "barchart":
-        $Component["Dimension"] = "Medium";
+        $Component["Dimensions"] = "Medium";
         $Component["Label"] = $request->input("xaxis");
         $Component["Series"][0]["Id"] = $request->input("yaxis");
         $Component["Series"][0]["Name"] = $request->input("yaxiscaption");
@@ -205,7 +217,7 @@ class ComponentController extends Controller
         $Component["Series"][0]["Color"] = $request->input("yaxiscolor");
         break;
       case "piechart":
-        $Component["Dimension"] = "Medium";
+        $Component["Dimensions"] = "Medium";
         $Component["Label"] = $request->input("label");
         $Component["PieValues"] = $request->input("pievalues");
         break;

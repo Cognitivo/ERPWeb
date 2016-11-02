@@ -23,7 +23,9 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
+
         $order = ProductionOrder::all();
+
         return view('Production/list_production_order', compact('order'));
     }
 
@@ -168,22 +170,33 @@ class ProductionOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         if ($request->id_project != "") {
+
             $id_project = explode("-", $request->id_project)[0];
 
-            $project             = Project::findOrFail($id_project);
+            $project = Project::findOrFail($id_project);
+
             $project->id_contact = $request->id_contact;
+
             $project->save();
+
         }
 
         $range_date = explode("-", $request->range_date);
 
-        $production_order                     = ProductionOrder::findOrFail($id);
+        $production_order = ProductionOrder::findOrFail($id);
+
         $production_order->id_production_line = $request->id_production_line;
-        $production_order->name               = $request->name;
-        $production_order->timestamp          = Carbon::now();
-        $production_order->start_date_est     = Controller::convertDate($range_date[0]);
-        $production_order->end_date_est       = Controller::convertDate($range_date[1]);
+
+        $production_order->name = $request->name;
+
+        $production_order->timestamp = Carbon::now();
+
+        $production_order->start_date_est = Controller::convertDate($range_date[0]);
+
+        $production_order->end_date_est = Controller::convertDate($range_date[1]);
+
         $production_order->save();
 
         $array = json_decode($request->tree_save);
@@ -193,11 +206,12 @@ class ProductionOrderController extends Controller
         $array_parent = collect();
         $cont         = 0;
 
-        foreach ($array as $key => $value) {
+        if ($array != null) {
+            foreach ($array as $key => $value) {
+                $this->updateProductionOrderDetail($value->text, $value->id);
+                //  $this->updateTask($value->text, $id_project_task);
 
-            $id_project_task = $this->updateProductionOrderDetail($value->text, $value->id);
-            $this->updateTask($value->text, $id_project_task);
-          
+            }
         }
 
         return redirect()->route('production_order.index');
@@ -212,12 +226,26 @@ class ProductionOrderController extends Controller
      */
     public function destroy($id)
     {
+
+        $production_order = ProductionOrder::findOrFail($id);
+
       
 
-        $production_order= ProductionOrder::findOrFail($id);
-        $production_order->delete();
+        try {
 
-        return redirect()->back();
+            $production_order->delete();
+
+            flash('Operación realizada con éxito','success');
+
+            return redirect()->back();
+
+        } catch (\Illuminate\Database\QueryException $e) {
+
+            flash('No se puede eliminar!','danger');
+
+            return redirect()->back();
+        }
+
     }
 
     public function insertTask($name, $parent, $item, $id_project)
@@ -280,6 +308,7 @@ class ProductionOrderController extends Controller
 
     public function updateProductionOrderDetail($name, $id)
     {
+
         $array_aux                         = explode("\t", $name);
         $production_order_detail           = ProductionOrderDetail::findOrFail($id);
         $production_order_detail->name     = $array_aux[0];
