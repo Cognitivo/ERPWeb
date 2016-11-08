@@ -67,8 +67,13 @@ $(function() {
     if ($('#type_load').val() == '#') {
         tree_new()
     } else {
+<<<<<<< HEAD
+      //  alert($('#type_load').val())
+      //  load_tree($('#type_load').val(),null)
+=======
 
         load_tree($('#type_load').val(),null)
+>>>>>>> f2ac716bbad346966af20ae3ee26d4bd171ea781
     }
 
     var parent = $('#parent_name_contact').val()

@@ -66,27 +66,44 @@ Route::group(['middleware' => 'auth'], function () {
 //End
 
     Route::get('load_tree/{id_template}/{id_project}', 'Production\ProjectTemplateController@load_tree');
+
     Route::get('load_order_tree/{id_order}', 'Production\ProductionExecutionController@load_tree');
 
     Route::delete('project_template_detail_destroy/{id}', 'Production\ProjectTemplateController@destroyTemplateDetail');
+    
     Route::resource('project_template', 'Production\ProjectTemplateController');
 
     Route::get('timeline', function () {
         return view('Production/timeline');
     });
+
     Route::get('get_timeline', 'Production\TimelineController@show');
+
     Route::get('update_timeline/{id}', 'Production\TimelineController@update');
+
     Route::get('store_timeline', 'Production\TimelineController@store');
+
     Route::get('delete_item/{id}', 'Production\TimelineController@destroy');
+
 //Production Order
     Route::resource('production_order', 'Production\ProductionOrderController');
+
     Route::resource('production_line', 'Production\ProductionLineController');
+
     Route::resource('production_execustion', 'Production\ProductionExecutionController');
 });
+
+
+//Route::group(['middleware' => 'isloggedin'], function () {
+  //Route::get('kpi/{Key}/{StartDate}/{EndDate}', 'kpiController@Execute_KPI');
+  //Route::get('/', 'dashboardController@index');
+
+
 
 //Api Apps
 
 Route::post('api/auth/login', 'Auth\AuthController@postLogin');
+
 Route::get('api/auth/logout', 'Auth\AuthController@getLogout');
 
 Route::get('api', function () {
@@ -101,6 +118,7 @@ Route::get('api', function () {
 
 });
 
+
 Route::group(['middleware' => 'auth'], function () {
 
 Route::get('api/production_line', 'Production\ProductionLineController@index');
@@ -110,6 +128,7 @@ Route::get('api/production_order/{id_production_line}', 'Production\ProductionOr
 Route::get('api/production_order_detail/{id_production_order}', 'Production\ProductionOrderController@productionOrderDetail');
 
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
+
 
 });
 
