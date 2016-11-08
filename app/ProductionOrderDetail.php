@@ -9,9 +9,17 @@ class ProductionOrderDetail extends Model
     public $primaryKey='id_order_detail';
     protected $table='production_order_detail';
     public $timestamps = false;
-    public function productionLine()
-    {
-        // hasMany(RelatedModel, foreignKeyOnRelatedModel = productionOrder_id, localKey = id)
-        return $this->belongsTo(ProductionLine::class, 'id_production_line');
-    }
+
+
+
+  /**
+   * ProductionOrderDetail belongs to ProductionOrder.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function productionOrder()
+  {
+  	// belongsTo(RelatedModel, foreignKey = productionOrder_id, keyOnRelatedModel = id)
+  	return $this->belongsTo(ProductionOrder::class,'id_production_order');
+  }
 }

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Security_User;
-use Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use Illuminate\Http\Request;
+use App\Security_User;
 use Auth;
+use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Http\Request;
 use Input;
-
-
+use Validator;
 
 class AuthController extends Controller
 {
@@ -24,7 +22,7 @@ class AuthController extends Controller
     | authentication of existing users. By default, this controller uses
     | a simple trait to add these behaviors. Why don't you explore it?
     |
-    */
+     */
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     protected $redirectPath = '/';
@@ -47,8 +45,8 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'name'     => 'required|max:255',
+            'email'    => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -62,33 +60,71 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
     }
 
-    public function postLogin(Request $request){
-          $this->validate($request, [
-        'name' => 'required',
-        'password' => 'required',
-    ]);         
+    public function postLogin(Request $request)
+    {
 
+        //Api
+        if ($request->ajax) {
 
-    if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceOf Security_User) {
+            if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceof Security_User) {
 
-             Auth::login($user);
+                Auth::login($user);
 
-             return redirect()->intended('/');
+                return response()->json(['message' => true, 'user' => Auth::user()]);
+
+            } else {
+
+                $rules = [
+                    'email'    => 'required|email',
+                    'password' => 'required',
+                ];
+
+                $messages = [
+                    'email.required'    => 'El campo email es requerido',
+                    'email.email'       => 'El formato de email es incorrecto',
+                    'password.required' => 'El campo password es requerido',
+                ];
+
+                $validator = Validator::make($request->all(), $rules, $messages);
+
+                return response()->json(['validator' => $validator->errors()->all(), 'message' => 'Error al iniciar sesión']);
+
+            }
+
         }
-         
-        $errors = ["message"=>"The Credentials are Incorrect"];
+
+        $this->validate($request, [
+            'name'     => 'required',
+            'password' => 'required',
+        ]);
+
+        if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceof Security_User) {
+
+            Auth::login($user);
+
+            return redirect()->intended('/');
+        }
+
+        $errors = ["message" => "The Credentials are Incorrect"];
         return redirect()->back()->withErrors($errors)->withInput(Input::except('password'));
     }
 
     public function getLogout(Request $request)
     {
+
         \Session::flush();
+        
+        if($request->ajax){
+
+             return response()->json(['message'=>true]);
+        }
+        
         return redirect('auth/login');
     }
 }

@@ -319,4 +319,35 @@ class ProductionOrderController extends Controller
 
     }
 
+
+//Api Methods
+
+    public function productionOrderByLine($id_line)
+    {
+
+       $production_orders = ProductionOrder::where('id_production_line',$id_line)->get();      
+
+       return response()->json($production_orders);
+
+    }
+
+     public function productionOrderDetail($id_order)
+    {
+       
+       $production_order_detail = ProductionOrderDetail::join('items','items.id_item','=','production_order_detail.id_item')
+
+       ->leftJoin('production_execution','production_execution.id_production_order','=','production_order_detail.id_production_order')
+
+       ->leftJoin('production_execution_detail','production_execution_detail.id_order_detail','=','production_order_detail.id_order_detail')
+       
+       ->where('production_order_detail.id_production_order',$id_order)
+
+       ->where('id_item_type','!=','5')
+       
+       ->select('production_order_detail.*','items.id_item_type',\DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'),'production_execution.id_production_execution')->get();      
+
+       return response()->json($production_order_detail);
+
+    }
+
 }

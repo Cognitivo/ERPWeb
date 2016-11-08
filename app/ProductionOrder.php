@@ -33,4 +33,10 @@ class ProductionOrder extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = productionOrder_id, localKey = id)
         return $this->hasMany(ProductionOrderDdetail::class, 'id_production_order');
     }
+
+      public function productionLine()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = productionOrder_id, localKey = id)
+        return $this->belongsTo(ProductionLine::class, 'id_production_line');
+    }
 }

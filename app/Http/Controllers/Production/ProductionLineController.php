@@ -17,9 +17,15 @@ class ProductionLineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $line = ProductionLine::all();
+        $line = ProductionLine::all();        
+
+        if($request->ajax){
+
+            return response()->json($line);
+        }
+
         return view('Production/list_production_line', compact('line'));
     }
 
