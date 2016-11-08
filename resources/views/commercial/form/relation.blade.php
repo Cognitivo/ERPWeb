@@ -4,8 +4,8 @@
 @section('Title', 'Contacts')
 
 @section('content')
-@if(isset($relation))
-{!! Form::model($contacts,['route' => ['relation.update',$relation->id_contact], 'method'=>'put']) !!}
+@if(isset($contacts))
+{!! Form::model($contacts,['route' => ['relation.update',$contacts], 'method'=>'put']) !!}
 @else
     {!! Form::open(array('route'=> 'relation.store','class'=>'form-horizontal')) !!}
 @endif
