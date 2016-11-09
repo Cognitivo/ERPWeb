@@ -135,9 +135,21 @@ class TimelineController extends Controller
     {  
        
         $production_order= ProductionOrder::find($id);
-        $production_order->delete();
 
-        return response()->json(true);
+
+        try {
+
+            $production_order->delete();
+            return response()->json(true);
+              
+        } catch (\Illuminate\Database\QueryException $e) {
+
+           return response()->json(false);
+           
+        }
+       
+
+      
     }
 
     public function date_format($date){

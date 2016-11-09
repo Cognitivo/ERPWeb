@@ -178,7 +178,15 @@
            $.ajax({
            	url:'/delete_item/'+item.id,
            	   	success: function(result){
-             	           	
+             	   
+                 if(result != "true"){
+
+                  alert("no se puede elimar")
+                  callback(null)
+                 }else{
+
+                  callback(item); // confirm deletion
+                 }        	
              	},
            		error: function (err) {
       
@@ -192,7 +200,7 @@
 
            })
 
-          callback(item); // confirm deletion
+          
         }
         else {
           callback(null); // cancel deletion

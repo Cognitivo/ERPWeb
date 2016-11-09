@@ -152,9 +152,9 @@
                                                 <li class="">
                                                     <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
                                                 </li>
-                                                <li class="">
+                                                {{-- <li class="">
                                                     <a href="#" class="nav-link">Execustion de Trabajo</a>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">

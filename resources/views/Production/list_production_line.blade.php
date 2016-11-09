@@ -22,7 +22,7 @@
 			<td>{{ $element->name }}</td>
 			<td>
 				<a href="{{route('production_line.edit',$element->id_production_line )}}" class="btn btn-icon-only blue">
-<<<<<<< HEAD
+
                 	<i class="glyphicon glyphicon-pencil"> </i>
                 </a>
 								{!! Form::open(array('route' => array('production_line.destroy', $element->id_production_line), 'method' => 'delete')) !!}
@@ -31,14 +31,14 @@
 
 
             </td>
-=======
-					<i class="glyphicon glyphicon-pencil"> </i>
+
+		{{-- 			<i class="glyphicon glyphicon-pencil"> </i>
 				</a>
 				{!! Form::open(array('route' => array('production_line.destroy', $element->id_production_line), 'method' => 'delete')) !!}
 				<button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
 				{!! Form::close() !!}
-			</td>
->>>>>>> f2ac716bbad346966af20ae3ee26d4bd171ea781
+			</td> --}}
+
 		</tr>
 		@endforeach
 	</tbody>

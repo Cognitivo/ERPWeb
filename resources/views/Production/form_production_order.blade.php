@@ -48,17 +48,17 @@
             </div>
         </div>
         <div class="portlet-body">
-         <div class="form-group">                     
+          <div class="form-group">                     
                        
                          
-                {!! Form::textarea('address', isset($production_order)?$production_order->project->contact->address:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
+                {!! Form::textarea('address', isset($production_order->project)? $production_order->project->contact->address:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
 
-                @if (isset($production_order))
+                @if (isset($production_order->project))
                     {!! Form::hidden('geo_lat',$production_order->project->contact->geo_lat,['id'=>'geo_lat']) !!}
                     {!! Form::hidden('geo_long',$production_order->project->contact->geo_long,['id'=>'geo_long']) !!}
                 @endif
                         
-                    </div>
+                    </div> 
             <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
             <div id="gmap_geo" class="gmaps"> </div>
         </div>
@@ -98,13 +98,14 @@
                                     <i class="fa fa-bell-o">
                                     </i>
 
-                                     {!! Form::text('contact', isset($production_order)?$production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact']) !!}
+                                     {!! Form::text('contact', isset($production_order->project)?$production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact']) !!}
 
-                                     {!! Form::hidden('id_contact',isset($production_order)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!} {!! Form::hidden('parent_name_contact',isset($production_order)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!} 
+                                     {!! Form::hidden('id_contact',isset($production_order->project)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!} 
+                                     {!! Form::hidden('parent_name_contact',isset($production_order->project)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!} 
 
                                                                   
                                    
-                                </div>
+                                </div> 
                             </div>
                         </div>
 
@@ -162,7 +163,7 @@
                         <div class="col-md-9">
 
                          <div class="input-group">
-                            {!!  Form::select('id_project',$templates,isset($production_order)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
+                            {!!  Form::select('id_project',$templates,isset($production_order->project)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
                             <span class="input-group-addon">
                             <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                                  <i class="fa fa-user"></i>
