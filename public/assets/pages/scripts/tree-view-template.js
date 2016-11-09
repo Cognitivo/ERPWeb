@@ -21,6 +21,13 @@ function tree_new() {
         } else {
             _selectedNodeId = _data.node.id;
         }
+    }).on("delete_node.jstree", function(e, _data) {
+         var objtree = $('#jstree').jstree(true).get_json('#', {
+            flat: true
+        })
+        var fulltree = JSON.stringify(objtree);
+        //console.log(fulltree)
+        $('#tree_save').val(fulltree)
     }).jstree();
 }
 
@@ -56,6 +63,13 @@ function load_tree(id_template,id_project) {
         } else {
             _selectedNodeId = _data.node.id;
         }
+    }).on("delete_node.jstree", function(e, _data) {
+         var objtree = $('#jstree').jstree(true).get_json('#', {
+            flat: true
+        })
+        var fulltree = JSON.stringify(objtree);
+        //console.log(fulltree)
+        $('#tree_save').val(fulltree)
     }).jstree();
 }
 $(function() {
