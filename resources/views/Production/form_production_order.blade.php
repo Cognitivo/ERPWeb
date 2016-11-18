@@ -166,7 +166,7 @@
                             {!!  Form::select('id_project',$templates,isset($production_order->project)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
                             <span class="input-group-addon">
                             <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
-                                 <i class="fa fa-user"></i>
+                                 Asignar Cantidades
                             </a>
                                
                             </span>
@@ -211,27 +211,52 @@
   
 
 <!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
-<div class="modal fade" id="load_template" role="basic" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="load_template" role="basic" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-full">
         <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title">Asignar Cantidades</h4>
+          </div>
             <div class="modal-body" id="modal_template">
                   <div class="actions pull-right">
-          {{--   <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task_production_order">
+             <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task_production_order" title="Añadir">
                 <i class="icon-cloud-upload"></i>
-            </a> --}}
-            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task_production_order" data-token="{{ csrf_token() }}">
-                <i class="icon-wrench"></i>
+            </a> 
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task_production_order" data-token="{{ csrf_token() }}" title="Editar">
+                <i class="fa fa-edit"></i>
             </a>
-            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}">
+            <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}" title="Eliminar">
                 <i class="icon-trash"></i>
-            </a>
+            </a> 
 
 
         </div>
-               <div id='jstree' class='tree-demo' ></div>
+
+        <div class="scroller" style="height:500px" data-always-visible="1" data-rail-visible1="1">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Tareas</h4>
+                  
+                </div>
+                <div class="col-md-8">
+                   
+                 <div id='jstree' class='tree-demo' ></div>
+                </div>
+            </div>
+        </div>
+
+
+        
+          
               
                 
             </div>
+          <div class="modal-footer">
+              <button type="button" class="btn dark btn-outline" data-dismiss="modal">Guardar</button>
+              
+          </div>
+               
         </div>
     </div>
 </div>

@@ -84,7 +84,7 @@ class contactsController extends Controller
         $contact_tag = ContactTag::where('id_contact', '=', $id)->get();
         $contactrole = ContactRole::where('id_company', Auth::user()->id_company)->where('is_active',1)->lists('name', 'id_contact_role');
 
-        $contract   = \DB::table('app_contract')->lists('name', 'id_contract');
+        $contract   = \DB::table('app_contract')->orderBy('is_default','desc')->lists('name', 'id_contract');
         $currency   = \DB::table('app_currency')->lists('name', 'id_currency');
         $bank       = \DB::table('app_bank')->lists('name', 'id_bank');
         $price_list = \DB::table('item_price_list')->lists('name', 'id_price_list');

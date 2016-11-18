@@ -28,10 +28,10 @@ class ProductionOrder extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function productionOrderDdetail()
+    public function productionOrderDetail()
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = productionOrder_id, localKey = id)
-        return $this->hasMany(ProductionOrderDdetail::class, 'id_production_order');
+        return $this->hasMany(ProductionOrderDetail::class, 'id_production_order');
     }
 
       public function productionLine()

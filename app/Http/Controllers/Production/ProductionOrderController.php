@@ -83,6 +83,7 @@ class ProductionOrderController extends Controller
         $production_order->is_read            = 1;
         $production_order->start_date_est     = Controller::convertDate($range_date[0]);
         $production_order->end_date_est       = Controller::convertDate($range_date[1]);
+        $production_order->status             = 1;
         $production_order->save();
 
         $array = json_decode($request->tree_save);
@@ -99,7 +100,9 @@ class ProductionOrderController extends Controller
                 $array_parent    = collect();
                 $id_project_task = $this->insertTask($value->text, null, $value->data->id_item, $id_project);
                 $id_real         = $this->insertProductionOrderDetail($value->text, null, $production_order->getKey(), $value->data->id_item, $id_project_task);
+
                 $array_parent->push(['id' => $value->id, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
+                
             } else {
                 //dd($array_parent);
 
@@ -229,19 +232,17 @@ class ProductionOrderController extends Controller
 
         $production_order = ProductionOrder::findOrFail($id);
 
-      
-
         try {
 
             $production_order->delete();
 
-            flash('Operación realizada con éxito','success');
+            flash('Operación realizada con éxito', 'success');
 
             return redirect()->back();
 
         } catch (\Illuminate\Database\QueryException $e) {
 
-            flash('No se puede eliminar!','danger');
+            flash('No se puede eliminar!', 'danger');
 
             return redirect()->back();
         }
@@ -319,34 +320,55 @@ class ProductionOrderController extends Controller
 
     }
 
-
 //Api Methods
 
     public function productionOrderByLine($id_line)
     {
 
-       $production_orders = ProductionOrder::where('id_production_line',$id_line)->get();      
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->get();
 
-       return response()->json($production_orders);
+        return response()->json($production_orders);
 
     }
 
-     public function productionOrderDetail($id_order)
+    public function productionOrderDetail($id_order)
     {
+
+        $production_order_detail = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
+
+            ->leftJoin('production_execution', 'production_execution.id_production_order', '=', 'production_order_detail.id_production_order')
+
+            ->leftJoin('production_execution_detail', 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
+
+            ->where('production_order_detail.id_production_order', $id_order)
+
+            ->where('id_item_type', '!=', '5')
+
+            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'), 'production_execution.id_production_execution')->get();
+
+        return response()->json($production_order_detail);
+
+    }
+
+    public function changeStatusApproved($id)
+    {
+
+        $production_order = ProductionOrder::findOrFail($id);
+
+        $production_order_detail = $production_order->productionOrderDetail()->get();
        
-       $production_order_detail = ProductionOrderDetail::join('items','items.id_item','=','production_order_detail.id_item')
+        foreach ($production_order_detail as $key => $value) {
+            $value->status = 2;
+            $value->save();
+            //$value->update(['status' => 2]);
 
-       ->leftJoin('production_execution','production_execution.id_production_order','=','production_order_detail.id_production_order')
+        }
+        //dd("ok");
+        $production_order->status = 2;
 
-       ->leftJoin('production_execution_detail','production_execution_detail.id_order_detail','=','production_order_detail.id_order_detail')
-       
-       ->where('production_order_detail.id_production_order',$id_order)
+        $production_order->save();
 
-       ->where('id_item_type','!=','5')
-       
-       ->select('production_order_detail.*','items.id_item_type',\DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'),'production_execution.id_production_execution')->get();      
-
-       return response()->json($production_order_detail);
+        return redirect()->back();
 
     }
 

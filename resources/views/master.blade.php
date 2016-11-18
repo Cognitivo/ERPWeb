@@ -139,6 +139,16 @@
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
+                                            <a href="javascript:;"> Proyectos
+                                                <span class="arrow"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li class="">
+                                                    <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="/timeline"> Producción
                                                 <span class="arrow"></span>
                                             </a>
@@ -157,16 +167,7 @@
                                                 </li> --}}
                                             </ul>
                                         </li>
-                                        <li class="menu-dropdown classic-menu-dropdown ">
-                                            <a href="javascript:;"> Proyectos
-                                                <span class="arrow"></span>
-                                            </a>
-                                            <ul class="dropdown-menu pull-left">
-                                                <li class="">
-                                                    <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                                 <!-- END MEGA MENU -->
