@@ -18,7 +18,10 @@ class ProductionExecutionController extends Controller
      */
     public function index()
     {
-        //
+        $execution = ProductionExecution::all();
+
+        //dd($execution[0]->detail()->get());
+        return view('Production/list_production_execution', compact('execution'));
     }
 
     /**

@@ -10,9 +10,12 @@ use App\ProductionOrderDetail;
 use App\Project;
 use App\ProjectTag;
 use App\ProjectTask;
+use App\ProjectTemplate;
+use Auth;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductionOrderController extends Controller
 {
@@ -102,7 +105,7 @@ class ProductionOrderController extends Controller
                 $id_real         = $this->insertProductionOrderDetail($value->text, null, $production_order->getKey(), $value->data->id_item, $id_project_task);
 
                 $array_parent->push(['id' => $value->id, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
-                
+
             } else {
                 //dd($array_parent);
 
@@ -128,6 +131,180 @@ class ProductionOrderController extends Controller
         return redirect()->route('production_order.index');
     }
 
+    public function storeOTExcel(Request $request)
+    {
+        //leer archivo
+        $results = Excel::load($request->file, function ($reader) {
+
+        })->get();
+
+        foreach ($results as $key => $value) {
+
+            //buscar linea de produccion, si no existe crear
+            $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
+           
+
+            if ($production_line != null) {
+
+                $id_production_line = $production_line->id_production_line;
+
+            } else {
+
+                $id_production_line = $this->storePL($value->linea_trabajo);
+
+            }
+            //insertar cliente y contacto cliente es padre de contacto
+
+            $client = Contact::where('code', $value->codcliente)->first();
+
+            if ($client == null) {
+
+                $id_parent = $this->storeContact($value);
+
+                $id_contact = $this->storeContact($value, $id_parent);
+
+            } else {
+
+                $id_contact = $this->storeContact($value, $client->id_contact);
+            }
+            //buscar plantilla si no existe insertar platilla y poyecto
+            $template = ProjectTemplate::where('name', $value->tipotrabajo)->first();
+
+            if ($template != null) {
+
+                $id_project = $this->storeTemplateProject($value->tipotrabajo,$id_contact,$template->id_project_template);
+
+            } else {
+
+                $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact);
+
+            }
+
+            //insertar OT
+            $production_order = ProductionOrder::where('work_number', $value->solicitud)->first();
+
+            if ($production_order == null) {
+
+                $this->storeOT($value, $id_project, $id_production_line);
+            }
+
+        }
+
+        return redirect()->back();
+    }
+
+    public function storePL($name)
+    {
+
+        $production_line = new ProductionLine;
+
+        $production_line->id_location = 1;
+
+        $production_line->name = $name;
+
+        $production_line->id_company = Auth::user()->id_company;
+
+        $production_line->id_user = Auth::user()->id_user;
+
+        $production_line->is_head = 1;
+
+        $production_line->is_read = 1;
+
+        $production_line->timestamp = Carbon::now();
+
+        $production_line->save();
+
+        return $production_line->getKey();
+    }
+
+    public function storeContact($request, $parent = null)
+    {
+
+        $client = new Contact;
+
+        $client->id_company      = Auth::user()->id_company;
+        $client->id_user         = Auth::user()->id_user;
+        $client->is_read         = 0;
+        $client->is_head         = 1;
+        $client->timestamp       = Carbon::now();
+        $client->is_active       = 1;
+        $client->is_customer     = 1;
+        $client->is_supplier     = 0;
+        $client->is_employee     = 0;
+        $client->is_sales_rep    = 0;
+        $client->is_person       = 1;
+        $client->id_contact_role = 1;
+
+        if ($parent == null) {
+            $client->code    = $request->codcliente;
+            $client->name    = $request->cliente;
+            $client->address = $request->direccion;
+
+        } else {
+            $client->name = $request->contacto;
+        }
+
+        $client->parent_id_contact = $parent;
+        $client->save();
+
+        return $client->getKey();
+    }
+
+    public function storeTemplateProject($name, $id_contact,$id_project_template = null)
+    {
+
+        if($id_project_template == null){
+
+        $project_template                 = new ProjectTemplate;
+        $project_template->name           = $name;
+        $project_template->id_item_output = 1;
+        $project_template->id_company     = 1;
+        $project_template->id_user        = 1;
+        $project_template->is_active      = 1;
+        $project_template->is_head        = 1;
+        $project_template->is_read        = 1;
+        $project_template->timestamp      = Carbon::now();
+        $project_template->save();
+        
+        }
+        
+
+        $project                      = new Project;
+        $project->id_project_template = $id_project_template == null ? $project_template->getKey() : $id_project_template;
+        $project->id_contact = $id_contact;
+        $project->name                = $name;
+        $project->priority            = 1;
+        $project->id_company          = 1;
+        $project->id_user             = 1;
+        $project->is_active           = 1;
+        $project->is_head             = 1;
+        $project->is_read             = 1;
+        $project->timestamp           = Carbon::now();
+        $project->save();
+
+        return $project->getKey();
+    }
+
+    public function storeOT($request, $id_project, $id_production_line)
+    {
+        $production_order                     = new ProductionOrder;
+        $production_order->id_production_line = $id_production_line;
+        $production_order->id_project         = $id_project;
+        $production_order->name               = $request->tipotrabajo;
+        $production_order->trans_date         = Carbon::now();
+        $production_order->id_company         = 1;
+        $production_order->id_branch          = 1;
+        $production_order->id_terminal        = 1;
+        $production_order->id_user            = 1;
+        $production_order->is_head            = 1;
+        $production_order->timestamp          = Carbon::now();
+        $production_order->is_head            = 1;
+        $production_order->is_read            = 1;
+        $production_order->status             = 1;
+        $production_order->work_number        = $request->solicitud;
+        $production_order->save();
+    }
+
     /**
      * Display the specified resource.
      *
@@ -148,7 +325,7 @@ class ProductionOrderController extends Controller
     public function edit($id)
     {
         $production_order = ProductionOrder::findOrFail($id);
-
+        //dd($production_order);
         $start_date = new Carbon($production_order->start_date_est);
         $end_date   = new Carbon($production_order->end_date_est);
 
@@ -356,7 +533,7 @@ class ProductionOrderController extends Controller
         $production_order = ProductionOrder::findOrFail($id);
 
         $production_order_detail = $production_order->productionOrderDetail()->get();
-       
+
         foreach ($production_order_detail as $key => $value) {
             $value->status = 2;
             $value->save();

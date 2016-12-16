@@ -87,11 +87,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Production Order
     Route::get('approved_production_order/{id}','Production\ProductionOrderController@changeStatusApproved');
+    Route::post('store_file_production_order','Production\ProductionOrderController@storeOTExcel');
     Route::resource('production_order', 'Production\ProductionOrderController');
 
     Route::resource('production_line', 'Production\ProductionLineController');
 
-    Route::resource('production_execustion', 'Production\ProductionExecutionController');
+    Route::resource('production_execution', 'Production\ProductionExecutionController');
 });
 
 

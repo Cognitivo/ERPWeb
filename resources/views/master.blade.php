@@ -162,9 +162,9 @@
                                                 <li class="">
                                                     <a href="{{ route('production_order.index') }}" class="nav-link">Ordenes de Trabajo</a>
                                                 </li>
-                                                {{-- <li class="">
-                                                    <a href="#" class="nav-link">Execustion de Trabajo</a>
-                                                </li> --}}
+                                                 <li class="">
+                                                    <a href="{{ route('production_execution.index') }}" class="nav-link">Ejecuciones</a>
+                                                </li> 
                                             </ul>
                                         </li>
                                         
