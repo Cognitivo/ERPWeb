@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\ProductionExecution;
 use App\ProductionExecutionDetail;
 use App\ProductionOrder;
+use App\ProductionOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -94,9 +95,13 @@ class ProductionExecutionController extends Controller
 
     public function saveUpdate(Request $request)
     {
-        //return response()->json($request->all());
+        
 
         $production_order = ProductionOrder::find($request->id_production_order);
+
+        
+            //return response()->json($request->all());
+            
 
         if ($request->id_production_execution != null) {
 
@@ -116,6 +121,8 @@ class ProductionExecutionController extends Controller
                     ['quantity' => $request->quantity_excution,
 
                         'timestamp' => Carbon::now()]);
+
+
 
             } else {
 
@@ -147,11 +154,14 @@ class ProductionExecutionController extends Controller
 
                 $production_execution_detail->is_read = 1;
 
+                $production_execution_detail->id_item = $request->id_item;
+
                 $production_execution_detail->save();
 
             }
 
-            return response()->json("ok");
+            return response()->json($production_execution->getKey());
+            
         } else {
 
             //insert
@@ -206,10 +216,39 @@ class ProductionExecutionController extends Controller
 
             $production_execution_detail->is_read = 1;
 
+            $production_execution_detail->id_item = $request->id_item;
+
             $production_execution_detail->save();
+
+              /*$production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($production_order->id_production_order)->get();*/
+
+            return response()->json($production_execution->getKey());
 
         }
 
-        return response()->json(true);
+      
+    }
+
+    public function approveExcecution($id)
+    {
+
+        $production_execution = ProductionExecution::find($id);
+
+        if($production_execution != null){
+
+            $production_execution->status = 2;
+
+            $production_execution->save();
+
+            $production_order = ProductionOrder::find($production_execution->getKey());
+
+            $production_order->status = 3;
+
+            $production_order->save();
+
+             return response()->json("ok");
+        }
+
+       return response()->json("no");
     }
 }

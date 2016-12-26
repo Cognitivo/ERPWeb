@@ -121,7 +121,6 @@ Route::get('api', function () {
 });
 
 
-Route::group(['middleware' => 'auth'], function () {
 
 Route::get('api/production_line', 'Production\ProductionLineController@index');
 
@@ -131,7 +130,6 @@ Route::get('api/production_order_detail/{id_production_order}', 'Production\Prod
 
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
 
-
-});
+Route::get('api/approved_production_execution/{id}','Production\ProductionExecutionController@approveExcecution');
 
 
