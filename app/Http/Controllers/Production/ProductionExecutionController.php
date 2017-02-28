@@ -95,13 +95,13 @@ class ProductionExecutionController extends Controller
 
     public function saveUpdate(Request $request)
     {
-        
+
 
         $production_order = ProductionOrder::find($request->id_production_order);
 
-        
+
             //return response()->json($request->all());
-            
+
 
         if ($request->id_production_execution != null) {
 
@@ -161,14 +161,14 @@ class ProductionExecutionController extends Controller
             }
 
             return response()->json($production_execution->getKey());
-            
+
         } else {
 
             //insert
 
             $production_execution = new ProductionExecution;
 
-            $production_execution_detail = new ProductionExecutionDetail;
+
 
             $production_execution->id_production_order = $request->id_production_order;
 
@@ -190,6 +190,7 @@ class ProductionExecutionController extends Controller
 
             $production_execution->save();
 
+           $production_execution_detail = new ProductionExecutionDetail;
             $production_execution_detail->id_production_execution = $production_execution->getKey();
 
             $production_execution_detail->id_order_detail = $request->id_order_detail;
@@ -226,7 +227,7 @@ class ProductionExecutionController extends Controller
 
         }
 
-      
+
     }
 
     public function approveExcecution($id)
@@ -250,5 +251,69 @@ class ProductionExecutionController extends Controller
         }
 
        return response()->json("no");
+    }
+    public function api_approve(Request $request)
+    {
+
+
+          $transactions = [];
+
+          $collect = collect();
+
+          if ($request->Transactions != []) {
+
+              $transactions = $request->Transactions;
+
+              $collect = collect($transactions);
+
+              Log::info($collect->toJson());
+
+          }
+
+          $array_transactions = json_decode($collect->toJson());
+
+          /**
+           * si existe integracion insertar transacciones
+           */
+
+
+
+
+
+
+                $production_execution_detail = new ProductionExecutionDetail;
+
+
+                 $production_execution_detail->id_order_detail = $array_transactions->id_order_detail;
+
+                 $production_execution_detail->quantity = $array_transactions->quantity_excution;
+
+                 $production_execution_detail->start_date = $array_transactions->start_date_est;
+
+                 $production_execution_detail->end_date = $array_transactions->end_date_est;
+
+                 $production_execution_detail->unit_cost = 0;
+
+                 $production_execution_detail->is_input = 1;
+
+                 $production_execution_detail->trans_date = Carbon::now();
+
+                 $production_execution_detail->timestamp = Carbon::now();
+
+                 $production_execution_detail->id_company = 1;
+
+                 $production_execution_detail->id_user = 1;
+
+                 $production_execution_detail->is_head = 1;
+
+                 $production_execution_detail->is_read = 1;
+
+                 $production_execution_detail->id_item = $array_transactions->id_item;
+
+                 $production_execution_detail->save();
+
+
+              return response()->json(['message' => 'transactions ok']);
+
     }
 }

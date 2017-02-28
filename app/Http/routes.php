@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('load_order_tree/{id_order}', 'Production\ProductionExecutionController@load_tree');
 
     Route::delete('project_template_detail_destroy/{id}', 'Production\ProjectTemplateController@destroyTemplateDetail');
-    
+
     Route::resource('project_template', 'Production\ProjectTemplateController');
 
     Route::get('timeline', function () {
@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_line', 'Production\ProductionLineController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');
+
+    Route::post('api/transactions', 'Production\ProductionExecutionController@api_approve');
 });
 
 
@@ -131,5 +133,3 @@ Route::get('api/production_order_detail/{id_production_order}', 'Production\Prod
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
 
 Route::get('api/approved_production_execution/{id}','Production\ProductionExecutionController@approveExcecution');
-
-
