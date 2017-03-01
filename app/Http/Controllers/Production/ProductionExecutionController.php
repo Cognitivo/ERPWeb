@@ -7,6 +7,9 @@ use App\ProductionExecution;
 use App\ProductionExecutionDetail;
 use App\ProductionOrder;
 use App\ProductionOrderDetail;
+use App\Item;
+use App\Item_Product;
+use App\ProductionOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -272,14 +275,6 @@ class ProductionExecutionController extends Controller
 
           $array_transactions = json_decode($collect->toJson());
 
-          /**
-           * si existe integracion insertar transacciones
-           */
-
-
-
-
-
 
                 $production_execution_detail = new ProductionExecutionDetail;
 
@@ -294,7 +289,7 @@ class ProductionExecutionController extends Controller
 
                  $production_execution_detail->unit_cost = 0;
 
-                 $production_execution_detail->is_input = 1;
+                 $production_execution_detail->is_input = $array_transactions->is_input;
 
                  $production_execution_detail->trans_date = Carbon::now();
 
@@ -311,6 +306,49 @@ class ProductionExecutionController extends Controller
                  $production_execution_detail->id_item = $array_transactions->id_item;
 
                  $production_execution_detail->save();
+
+                $item=Item::where('id_item','=',$array_transactions->id_item)->first();
+                if (isset($item)) {
+                    if ($item->id_item_type==1 || $item->id_item_type==2 ||  $item->id_item_type==6 )
+                    {
+                          $item_product=Item_Product::where('id_item','=',$array_transactions->id_item)->first();
+                          $orderdetail=ProductionOrderDetail::where('id_order_detail','=',$array_transactions->id_order_detail)->first();
+                          $order=ProductionOrder::where('id_production_order','=',$orderdetail->id_order_detail)->first();
+                          $line=productionLine::where('id_production_line','=',ProductionOrder->id_production_line)->first();
+                          if (isset($item_product)) {
+                            if ($array_transactions->is_input) {
+                              if ($array_transactions->quantity_excution>0) {
+                                $sql ='select
+                                  loc.id_location as LocationID,
+                                  loc.name as Location,
+                                  parent.id_movement as MovementID,
+                                  parent.trans_date as TransDate, parent.expire_date,parent.code,
+                                  parent.credit - if( sum(child.debit) > 0, sum(child.debit), 0 ) as QtyBalance,
+                                  (select sum(unit_value) from item_movement_value as parent_val where id_movement = parent.id_movement) as Cost
+
+                                  from item_movement as parent
+                                  inner join app_location as loc on parent.id_location = loc.id_location
+                                  left join item_movement as child on child.parent_id_movement = parent.id_movement
+
+                                  where parent.id_location='.strval($line->id_location)' and parent.id_item_product = '.strval($item_product->id_item_product)' and parent.status = 2 and parent.debit = 0
+                                  group by parent.id_movement
+                                  order by parent.trans_date';
+                                // $instocklist=  DB::select($sql);
+                                $item_movement = new ItemMovement;
+                                $item_movement->comment = Comment;
+                                $item_movement->id_item_product = $item_product->id_item_product;
+                                $item_movement->debit = $array_transactions->quantity_excution;
+                                $item_movement->credit = 0;
+                                $item_movement->status = 3;
+                                //Check for Better Code.
+                                $item_movement->id_location = $line->id_location;
+                                $item_movement->save();
+                              }
+                            }
+
+                          }
+                    }
+                }
 
 
               return response()->json(['message' => 'transactions ok']);
