@@ -9,7 +9,6 @@ use App\ProductionOrder;
 use App\ProductionOrderDetail;
 use App\Item;
 use App\Item_Product;
-use App\ProductionOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -314,7 +313,7 @@ class ProductionExecutionController extends Controller
                           $item_product=Item_Product::where('id_item','=',$array_transactions->id_item)->first();
                           $orderdetail=ProductionOrderDetail::where('id_order_detail','=',$array_transactions->id_order_detail)->first();
                           $order=ProductionOrder::where('id_production_order','=',$orderdetail->id_order_detail)->first();
-                          $line=productionLine::where('id_production_line','=',ProductionOrder->id_production_line)->first();
+                          $line=productionLine::where('id_production_line','=',$order->id_production_line)->first();
                           if (isset($item_product)) {
                             if ($array_transactions->is_input) {
                               if ($array_transactions->quantity_excution>0) {
@@ -330,7 +329,7 @@ class ProductionExecutionController extends Controller
                                   inner join app_location as loc on parent.id_location = loc.id_location
                                   left join item_movement as child on child.parent_id_movement = parent.id_movement
 
-                                  where parent.id_location='.strval($line->id_location)' and parent.id_item_product = '.strval($item_product->id_item_product)' and parent.status = 2 and parent.debit = 0
+                                  where parent.id_location='.strval($line->id_location).' and parent.id_item_product = '.strval($item_product->id_item_product).' and parent.status = 2 and parent.debit = 0
                                   group by parent.id_movement
                                   order by parent.trans_date';
                                 // $instocklist=  DB::select($sql);
