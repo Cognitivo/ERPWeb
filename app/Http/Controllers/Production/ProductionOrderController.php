@@ -136,52 +136,53 @@ class ProductionOrderController extends Controller
         })->get();
 
         foreach ($results as $key => $value) {
+            //verificar si el estado es asignado para insertar
+            if (strpos(strtolower(trim($value->estado)), 'asig')) {                
+                //buscar linea de produccion, si no existe crear
+                $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
 
-            //buscar linea de produccion, si no existe crear
-            $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
+                if ($production_line != null) {
 
-            if ($production_line != null) {
+                    $id_production_line = $production_line->id_production_line;
 
-                $id_production_line = $production_line->id_production_line;
+                } else {
 
-            } else {
+                    $id_production_line = $this->storePL($value->linea_trabajo);
 
-                $id_production_line = $this->storePL($value->linea_trabajo);
+                }
+                //insertar cliente y contacto cliente es padre de contacto
 
-            }
-            //insertar cliente y contacto cliente es padre de contacto
+                $client = Contact::where('code', $value->codcliente)->first();
 
-            $client = Contact::where('code', $value->codcliente)->first();
+                if ($client == null) {
 
-            if ($client == null) {
+                    $id_parent = $this->storeContact($value);
 
-                $id_parent = $this->storeContact($value);
+                    $id_contact = $this->storeContact($value, $id_parent);
 
-                $id_contact = $this->storeContact($value, $id_parent);
+                } else {
 
-            } else {
+                    $id_contact = $this->storeContact($value, $client->id_contact);
+                }
+                //buscar plantilla si no existe insertar platilla y proyecto
+                $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
 
-                $id_contact = $this->storeContact($value, $client->id_contact);
-            }
-            //buscar plantilla si no existe insertar platilla y proyecto
-            $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
+                if ($template != null) {
 
-            if ($template != null) {
+                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact, $template->id_project_template);
 
-                $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact, $template->id_project_template);
+                } else {
 
-            } else {
+                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact);
 
-                $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact);
+                }
 
-            }
+                //insertar OT
+                $production_order = ProductionOrder::where('work_number', $value->solicitud)->first();
 
-            //insertar OT
-            $production_order = ProductionOrder::where('work_number', $value->solicitud)->first();
-
-            if ($production_order == null) {
-
-                $this->storeOT($value, $id_project, $id_production_line);
+                if ($production_order == null) {
+                    $this->storeOT($value, $id_project, $id_production_line);
+                }
             }
 
         }
