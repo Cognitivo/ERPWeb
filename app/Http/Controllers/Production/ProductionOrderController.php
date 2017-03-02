@@ -107,9 +107,7 @@ class ProductionOrderController extends Controller
                 $array_parent->push(['id' => $value->id, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
 
             } else {
-                //dd($array_parent);
 
-                //var_dump($array_parent);
                 $parent = $array_parent->where('id', $value->parent)->first();
 
                 if (count($parent)) {
@@ -123,7 +121,6 @@ class ProductionOrderController extends Controller
 
                 }
 
-                //dd($array_parent);
             }
 
         }
@@ -142,7 +139,6 @@ class ProductionOrderController extends Controller
 
             //buscar linea de produccion, si no existe crear
             $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
-           
 
             if ($production_line != null) {
 
@@ -167,12 +163,12 @@ class ProductionOrderController extends Controller
 
                 $id_contact = $this->storeContact($value, $client->id_contact);
             }
-            //buscar plantilla si no existe insertar platilla y poyecto
-            $template = ProjectTemplate::where('name', $value->tipotrabajo)->first();
+            //buscar plantilla si no existe insertar platilla y proyecto
+            $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
 
             if ($template != null) {
 
-                $id_project = $this->storeTemplateProject($value->tipotrabajo,$id_contact,$template->id_project_template);
+                $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact, $template->id_project_template);
 
             } else {
 
@@ -250,28 +246,45 @@ class ProductionOrderController extends Controller
         return $client->getKey();
     }
 
-    public function storeTemplateProject($name, $id_contact,$id_project_template = null)
+    public function storeTemplateProject($name, $id_contact, $id_project_template = null)
     {
 
-        if($id_project_template == null){
+        if ($id_project_template == null) {
 
-        $project_template                 = new ProjectTemplate;
-        $project_template->name           = $name;
-        $project_template->id_item_output = 1;
-        $project_template->id_company     = 1;
-        $project_template->id_user        = 1;
-        $project_template->is_active      = 1;
-        $project_template->is_head        = 1;
-        $project_template->is_read        = 1;
-        $project_template->timestamp      = Carbon::now();
-        $project_template->save();
-        
+            $project_template                 = new ProjectTemplate;
+            $project_template->name           = $name;
+            $project_template->id_item_output = 1;
+            $project_template->id_company     = 1;
+            $project_template->id_user        = 1;
+            $project_template->is_active      = 1;
+            $project_template->is_head        = 1;
+            $project_template->is_read        = 1;
+            $project_template->timestamp      = Carbon::now();
+            $project_template->save();
+
+            $project                      = new Project;
+            $project->id_project_template = $project_template->getKey();
+            $project->id_contact          = $id_contact;
+            $project->name                = $name;
+            $project->priority            = 1;
+            $project->id_company          = 1;
+            $project->id_user             = 1;
+            $project->is_active           = 1;
+            $project->is_head             = 1;
+            $project->is_read             = 1;
+            $project->timestamp           = Carbon::now();
+            $project->save();
+            return $project->getKey();
         }
-        
+        $project = Project::where('id_project_template', $id_project_template)->first();
+
+        if ($project) {
+            return $project->getKey();
+        }
 
         $project                      = new Project;
-        $project->id_project_template = $id_project_template == null ? $project_template->getKey() : $id_project_template;
-        $project->id_contact = $id_contact;
+        $project->id_project_template = $id_project_template;
+        $project->id_contact          = $id_contact;
         $project->name                = $name;
         $project->priority            = 1;
         $project->id_company          = 1;
@@ -281,7 +294,6 @@ class ProductionOrderController extends Controller
         $project->is_read             = 1;
         $project->timestamp           = Carbon::now();
         $project->save();
-
         return $project->getKey();
     }
 
@@ -388,9 +400,37 @@ class ProductionOrderController extends Controller
 
         if ($array != null) {
             foreach ($array as $key => $value) {
-                $this->updateProductionOrderDetail($value->text, $value->id);
-                //  $this->updateTask($value->text, $id_project_task);
 
+                $production_order_detail = ProductionOrderDetail::find($value->id);
+
+                if ($production_order_detail) {
+
+                    $this->updateProductionOrderDetail($value->text, $production_order_detail);
+                    //  $this->updateTask($value->text, $id_project_task);
+
+                } else {
+
+                    if ($value->parent == "#") {
+                        $cont            = 0;
+                        $array_parent    = collect();
+                        $id_project_task = $this->insertTask($value->text, null, $value->data->id_item, $id_project);
+                        $id_real         = $this->insertProductionOrderDetail($value->text, null, $production_order->getKey(), $value->data->id_item, $id_project_task);
+                        $array_parent->push(['id' => $value->id, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
+
+                    } else {
+
+                        $parent = $array_parent->where('id', $value->parent)->first();
+
+                        if (count($parent)) {
+                            $parent_real      = $parent['id_real'];
+                            $parent_real_task = $parent['id_real_task'];
+                            $id_project_task  = $this->insertTask($value->text, $parent_real_task, $value->data->id_item, $id_project);
+                            $id_real          = $this->insertProductionOrderDetail($value->text, $parent_real, $production_order->getKey(), $value->data->id_item, $id_project_task);
+                            $array_parent->push(['id' => $value->id, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
+                            $cont++;
+                        }
+                    }
+                }
             }
         }
 
@@ -484,11 +524,10 @@ class ProductionOrderController extends Controller
         return $production_order_detail->getKey();
     }
 
-    public function updateProductionOrderDetail($name, $id)
+    public function updateProductionOrderDetail($name, $production_order_detail)
     {
 
         $array_aux                         = explode("\t", $name);
-        $production_order_detail           = ProductionOrderDetail::findOrFail($id);
         $production_order_detail->name     = $array_aux[0];
         $production_order_detail->quantity = count($array_aux) > 1 ? $array_aux[1] : 0;
         $production_order_detail->save();
@@ -502,7 +541,7 @@ class ProductionOrderController extends Controller
     public function productionOrderByLine($id_line)
     {
 
-        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status','=',2)->get();
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status', '=', 2)->get();
 
         return response()->json($production_orders);
 
