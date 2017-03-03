@@ -169,6 +169,24 @@ class ProjectTemplateController extends Controller
         $template->name = $request->name;
         $template->save();
 
+        //verificar si plantilla tiene proyecto sino tiene crearlo
+        $projects = $template->projects()->first();
+
+        if(!projects){
+            //save project
+        $project                      = new Project;
+        $project->id_project_template = $template->getKey();
+        $project->name                = $template->name;
+        $project->priority            = 1;
+        $project->id_company          = 1;
+        $project->id_user             = 1;
+        $project->is_active           = 1;
+        $project->is_head             = 1;
+        $project->is_read             = 1;
+        $project->timestamp           = Carbon::now();
+        $project->save();
+        }
+
         $array = json_decode($request->tree_save);
 
         //dd($array);

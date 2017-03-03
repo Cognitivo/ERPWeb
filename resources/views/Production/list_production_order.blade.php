@@ -16,7 +16,7 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>Nombre</th>
+			<th>OT</th>
 			<th>Total</th>
 			<th>Estado</th>
 			<th>Acciones</th>
@@ -26,7 +26,7 @@
 	@foreach ($order as $element)
 	
 		<tr>
-			<td>{{ $element->name }}</td>
+			<td>{{ $element->work_number }}</td>
 			<td>
 
 			@if ($element->productionOrderDetail()->get()->count())

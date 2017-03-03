@@ -137,7 +137,7 @@ class ProductionOrderController extends Controller
 
         foreach ($results as $key => $value) {
             //verificar si el estado es asignado para insertar
-            if (strpos(strtolower(trim($value->estado)), 'asig')) {                
+            if (strpos(strtolower(trim($value->estado)), 'asig')) {
                 //buscar linea de produccion, si no existe crear
                 $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
 
@@ -154,7 +154,7 @@ class ProductionOrderController extends Controller
 
                 $client = Contact::where('code', $value->codcliente)->first();
 
-                if ($client == null) {
+                if (!$client) {
 
                     $id_parent = $this->storeContact($value);
 
@@ -239,6 +239,7 @@ class ProductionOrderController extends Controller
 
         } else {
             $client->name = $request->contacto;
+            //verificar direccion de cliente si no existe crear en una nueva direccion para el contacto
         }
 
         $client->parent_id_contact = $parent;
@@ -263,28 +264,9 @@ class ProductionOrderController extends Controller
             $project_template->timestamp      = Carbon::now();
             $project_template->save();
 
-            $project                      = new Project;
-            $project->id_project_template = $project_template->getKey();
-            $project->id_contact          = $id_contact;
-            $project->name                = $name;
-            $project->priority            = 1;
-            $project->id_company          = 1;
-            $project->id_user             = 1;
-            $project->is_active           = 1;
-            $project->is_head             = 1;
-            $project->is_read             = 1;
-            $project->timestamp           = Carbon::now();
-            $project->save();
-            return $project->getKey();
         }
-        $project = Project::where('id_project_template', $id_project_template)->first();
-
-        if ($project) {
-            return $project->getKey();
-        }
-
         $project                      = new Project;
-        $project->id_project_template = $id_project_template;
+        $project->id_project_template = $id_project_template != null ? $id_project_template : $project_template->getKey();
         $project->id_contact          = $id_contact;
         $project->name                = $name;
         $project->priority            = 1;

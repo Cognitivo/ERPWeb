@@ -19,22 +19,22 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-		
-		@foreach ($execution as $item)
+			
+			@foreach ($execution as $item)
 			<div class="portlet box blue-hoki">
 				<div class="portlet-title">
 					<div class="caption">
-					
-						{{ $item->productionOrder->name }}
 						
-					
+						{{ $item->name }}
+						
+						
 					</div>
 					<div class="tools">
 						@if ($item->status == 2)
-			<span class="label label-sm label-success">Terminado</span>	
-			@else
-			<span class="label label-sm label-danger">Pendiente</span>	
-			@endif 
+						<span class="label label-sm label-success">Aprobado</span>
+						@else
+						<span class="label label-sm label-danger">Ejecutado</span>
+						@endif
 						<a href="javascript:;" class="expand" data-original-title="" title=""> </a>
 						{{-- <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
 						<a href="javascript:;" class="reload" data-original-title="" title=""> </a> --}}
@@ -42,24 +42,22 @@
 					</div>
 				</div>
 				<div class="portlet-body" style="display: none;">
-				<div class="row">
-							<div class="col-md-6">Nombre</div>
-							<div class="col-md-3">Cantidad Estimada</div>
-							<div class="col-md-3">Cantidad Ejecutada</div>
-
-						</div>
-					@foreach ($item->detail()->get() as $element)
-						
-						<div class="row"> 
+					<div class="row">
+						<div class="col-md-6">Nombre</div>
+						<div class="col-md-3">Cantidad Estimada</div>
+						<div class="col-md-3">Cantidad Ejecutada</div>
+					</div>
+					@foreach ($item->productionExecutions()->get() as $element)
+					
+					<div class="row">
 						<div class="col-md-6"><h5>{{  $element->item->name  }}</h5></div>
-						<div class="col-md-3"><h5>{{  $element->productionOrderDetail->quantity  }}</h5></div>  
-						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>  
-						</div>
+						<div class="col-md-3"><h5>{{  $element->productionOrderDetail->quantity  }}</h5></div>
+						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
+					</div>
 					@endforeach
-
 				</div>
 			</div>
-		@endforeach	
+			@endforeach
 			
 			
 		</div>

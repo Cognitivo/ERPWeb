@@ -39,4 +39,12 @@ class ProductionOrder extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = productionOrder_id, localKey = id)
         return $this->belongsTo(ProductionLine::class, 'id_production_line');
     }
+
+     /**
+     * Get all of the production execution detail.
+     */
+    public function productionExecutions()
+    {
+        return $this->hasManyThrough('App\ProductionExecutionDetail', 'App\ProductionOrderDetail','id_production_order','id_order_detail','id_execution_detail');
+    }
 }

@@ -71,7 +71,7 @@
           <div class="form-group">
             <label class="control-label col-md-3">Número OT</label>
             <div class="col-md-9">
-              <p class="form-control-static">  </p>
+              <p class="form-control-static"> {{isset($production_order) ? $production_order->work_number : ""}} </p>
             </div>
           </div>
           <div class="form-group">
