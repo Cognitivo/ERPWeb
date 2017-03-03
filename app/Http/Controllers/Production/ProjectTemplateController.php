@@ -171,8 +171,8 @@ class ProjectTemplateController extends Controller
 
         //verificar si plantilla tiene proyecto sino tiene crearlo
         $projects = $template->projects()->first();
-
-        if(!projects){
+       
+        if(!$projects){
             //save project
         $project                      = new Project;
         $project->id_project_template = $template->getKey();
