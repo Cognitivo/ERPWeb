@@ -19,12 +19,12 @@ class ProductionLineController extends Controller
      */
     public function index(Request $request)
     {
-        $line = ProductionLine::all();        
+        $line = ProductionLine::all();
 
-        if($request->ajax){
+      /*    if($request->ajax){*/
 
             return response()->json($line);
-        }
+      /*   }*/
 
         return view('Production/list_production_line', compact('line'));
     }
@@ -88,7 +88,7 @@ class ProductionLineController extends Controller
         $line = ProductionLine::find($id);
 
         $applocation = AppLocation::where('id_company', Auth::user()->id_company)->lists('name', 'id_location');
-        
+
         return view('Production/form_production_line', compact('line', 'applocation'));
     }
 

@@ -70,10 +70,10 @@ class ProductionOrderDetail extends Model
      */
     public function scopeGetProductionOrderDetail($query, $id_order)
     {
-        
+
         return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
 
-            ->leftJoin('production_execution', 'production_execution.id_production_order', '=', 'production_order_detail.id_production_order')
+
 
             ->leftJoin('production_execution_detail', 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
 
@@ -81,6 +81,6 @@ class ProductionOrderDetail extends Model
 
             ->where('id_item_type', '!=', '5')
 
-            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'), 'production_execution.id_production_execution');
+            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'));
     }
 }
