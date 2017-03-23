@@ -524,7 +524,7 @@ class ProductionOrderController extends Controller
     public function productionOrderByLine($id_line)
     {
 
-        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status', '=', 2)->get();
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->get();
 
         return response()->json($production_orders);
 

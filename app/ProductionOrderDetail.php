@@ -62,6 +62,7 @@ class ProductionOrderDetail extends Model
 
     }
 
+
     /**
      * Query scope getProductionOrderDetail.
      *
@@ -79,7 +80,7 @@ class ProductionOrderDetail extends Model
 
             ->where('production_order_detail.id_production_order', $id_order)
 
-            ->where('id_item_type', '!=', '5')
+
 
             ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'));
     }
