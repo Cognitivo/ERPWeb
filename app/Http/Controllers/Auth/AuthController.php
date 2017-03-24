@@ -119,12 +119,26 @@ class AuthController extends Controller
     {
 
         \Session::flush();
-        
+
         if($request->ajax){
 
              return response()->json(['message'=>true]);
         }
-        
+
         return redirect('auth/login');
+    }
+    public function Login($username,$password)
+    {
+
+      if (($user = Security_User::where(['name' =>$username, 'password' => $password ])->first()) instanceof Security_User) {
+
+          Auth::login($user);
+
+          return response()->json(['true']);
+
+      }
+      else {
+            return response()->json([false]);
+      }
     }
 }

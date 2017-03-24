@@ -27,14 +27,6 @@
 
 		<tr>
 			<td>{{ $element->work_number }}</td>
-	<!--	<td>
-
-			@if ($element->productionOrderDetail()->get()->count())
-
-					{{App\ProductionOrderDetail::TotalProductionOrder($element->id_production_order)}}
-			@endif
-
-    </td>-->
 			<td>
 			@if ($element->status == 2)
 				Aprobado
