@@ -32,6 +32,7 @@ class ProductionOrderDetail extends Model
         return $this->belongsTo(Items::class, 'id_item');
     }
 
+
     /**
      * Query scope TotalProductionOrder.
      *

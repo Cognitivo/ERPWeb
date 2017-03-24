@@ -21,7 +21,8 @@ class ProductionExecutionController extends Controller
      */
     public function index()
     {
-        $execution = ProductionOrder::whereIn('status',[2,4])->get();         
+        $execution = ProductionOrder::whereIn('status',[2,4])->get();
+      
         return view('Production/list_production_execution', compact('execution'));
     }
 

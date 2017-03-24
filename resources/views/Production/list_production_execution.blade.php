@@ -19,15 +19,15 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-			
+
 			@foreach ($execution as $item)
 			<div class="portlet box blue-hoki">
 				<div class="portlet-title">
 					<div class="caption">
-						
+
 						{{ $item->name }}
-						
-						
+
+
 					</div>
 					<div class="tools">
 						@if ($item->status == 2)
@@ -45,21 +45,21 @@
 					<div class="row">
 						<div class="col-md-6">Nombre</div>
 						<div class="col-md-3">Cantidad Estimada</div>
-						<div class="col-md-3">Cantidad Ejecutada</div>
+						
 					</div>
-					@foreach ($item->productionExecutions()->get() as $element)
-					
+					@foreach ($item->productionOrderDetail()->get() as $element)
+
 					<div class="row">
 						<div class="col-md-6"><h5>{{  $element->item->name  }}</h5></div>
-						<div class="col-md-3"><h5>{{  $element->productionOrderDetail->quantity  }}</h5></div>
 						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
+
 					</div>
 					@endforeach
 				</div>
 			</div>
 			@endforeach
-			
-			
+
+
 		</div>
 	</div>
 </div>
