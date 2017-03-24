@@ -134,7 +134,7 @@
                                                         <h5>Contacto Principal</h5>
                                                      <h3><b>{{ $contacts->parentContact->name }}</b></h3>
                                                 @endif
-                                          
+
                                             <div class="form-group">
                                                 <label class="control-label">CODIGO</label>
                                                 @if (isset($contacts))
@@ -201,7 +201,7 @@
                                                     </div>
                                                     <div class="margiv-top-10">
                                                         {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
-                                                        <a href="javascript:;" class="btn default"> CANCELAR</a>
+                                                        <a href={{route('contacts.index')}} class="btn default"> CANCELAR</a>
                                                     </div>
                                                 </form>
                                             </div>
@@ -210,7 +210,7 @@
                                             <!-- END PERSONAL INFO TAB -->
                                             <!-- CHANGE AVATAR TAB -->
                                             <div class="tab-pane" id="tab_1_3">
-                                               
+
                                                     <div class="form-group">
                                                         <a href="{{ route('relation.create') }}" class="btn btn-primary" id="create_contact">CREAR RELACION</a>
                                                     </div>
