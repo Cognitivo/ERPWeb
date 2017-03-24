@@ -21,12 +21,21 @@ class ProductionLineController extends Controller
     {
         $line = ProductionLine::all();
 
-      /*    if($request->ajax){*/
+          if($request->ajax){
 
             return response()->json($line);
-      /*   }*/
+         }
 
         return view('Production/list_production_line', compact('line'));
+    }
+
+    public function getproductionline()
+    {
+        $line = ProductionLine::all();
+
+
+            return response()->json($line);
+
     }
 
     /**

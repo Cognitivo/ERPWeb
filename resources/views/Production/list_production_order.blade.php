@@ -24,25 +24,25 @@
 	</thead>
 	<tbody>
 	@foreach ($order as $element)
-	
+
 		<tr>
 			<td>{{ $element->work_number }}</td>
-			<td>
+	<!--	<td>
 
 			@if ($element->productionOrderDetail()->get()->count())
-			
+
 					{{App\ProductionOrderDetail::TotalProductionOrder($element->id_production_order)}}
-			@endif			
-			
-			</td>
-			<td> 
+			@endif
+
+    </td>-->
+			<td>
 			@if ($element->status == 2)
 				Aprobado
 			@elseif($element->status == 4)
 			Terminado
 			@else
-			Pendiente	
-			@endif 
+			Pendiente
+			@endif
 			</td>
 			<td>
 				<a href="{{route('production_order.edit',$element->id_production_order )}}" class="btn btn-icon-only blue">
@@ -52,12 +52,12 @@
 								<button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
 						{!! Form::close() !!}
 
-						
+
 						@if ($element->status == 1)
 							 <a href="{{ url('approved_production_order',$element->id_production_order) }}" class="btn purple">
                 <i class="fa fa-file-o"></i> Aprobar </a>
 						@endif
-               
+
 
             </td>
 
@@ -79,24 +79,24 @@
       </div>
      	 <form action="{{url('store_file_production_order')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
       <div class="modal-body">
-        
+
       	  {!! csrf_field() !!}
       	<div class="form-group">
       		<label for="" class="control-label col-md-3">Archivo</label>
       		<div class="col-md-7">
       			<input type="file" name="file" class="form-control" id="" placeholder="Input field">
       		</div>
-      		
+
       	</div>
-      
-      	
-      
+
+
+
       </div>
       <div class="modal-footer">
 
-      	<button type="submit" class="btn btn-primary">Guardar</button>    
+      	<button type="submit" class="btn btn-primary">Guardar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       
+
       </div>
         </form>
     </div><!-- /.modal-content -->

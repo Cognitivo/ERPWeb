@@ -94,9 +94,7 @@
 	                        <button class="btn green" type="submit">
 	                            Submit
 	                        </button>
-	                        <button class="btn default" type="button">
-	                            Cancel
-	                        </button>
+	                          <a href="{{route('project_template.index')}}" class="btn default"> CANCELAR</a>
 	                    </div>
 	                </div>
 	            </div>

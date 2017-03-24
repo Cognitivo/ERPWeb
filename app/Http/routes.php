@@ -124,7 +124,7 @@ Route::get('api', function () {
 
 
 
-Route::get('api/production_line', 'Production\ProductionLineController@index');
+Route::get('api/production_line', 'Production\ProductionLineController@getproductionline');
 
 Route::get('api/production_order/{id_production_line}', 'Production\ProductionOrderController@productionOrderByLine');
 
