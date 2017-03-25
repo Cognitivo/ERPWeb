@@ -17,7 +17,7 @@
 	<thead>
 		<tr>
 			<th>OT</th>
-			<th>Total</th>
+			<th>Name</th>
 			<th>Estado</th>
 			<th>Acciones</th>
 		</tr>
@@ -27,6 +27,7 @@
 
 		<tr>
 			<td>{{ $element->work_number }}</td>
+      	<td>{{ $element->name }}</td>
 			<td>
 			@if ($element->status == 2)
 				Aprobado
