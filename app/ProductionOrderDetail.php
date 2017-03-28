@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductionOrderDetail extends Model
 {
     public $primaryKey = 'id_order_detail';
+
     protected $table   = 'production_order_detail';
     public $timestamps = false;
 
@@ -62,7 +63,11 @@ class ProductionOrderDetail extends Model
         return $query->where('id_production_order', $id_production_order)->where('status', 1)->get();
 
     }
+    public function ProductionExecutionDetail()
+    {
+        return $this->hasOne('App\ProductionExecutionDetail','id_order_detail','id_order_detail');
 
+    }
 
     /**
      * Query scope getProductionOrderDetail.

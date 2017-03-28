@@ -9,7 +9,7 @@ class ProductionExecutionDetail extends Model
      public $primaryKey = 'id_execution_detail';
     protected $table   = 'production_execution_detail';
     public $timestamps = false;
-
+  protected $fillable=['quantity'];
 
     /**
      * ProductionExecutionDetail belongs to Item.
@@ -27,9 +27,5 @@ class ProductionExecutionDetail extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function productionOrderDetail()
-    {
-    	// belongsTo(RelatedModel, foreignKey = productionOrderDeta_id, keyOnRelatedModel = id)
-    	return $this->belongsTo(ProductionOrderDetail::class,'id_order_detail');
-    }
+    
 }

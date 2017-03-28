@@ -45,13 +45,17 @@
 					<div class="row">
 						<div class="col-md-6">Nombre</div>
 						<div class="col-md-3">Cantidad Estimada</div>
-						
+							<div class="col-md-3">Cantidad Executed</div>
+
 					</div>
 					@foreach ($item->productionOrderDetail()->get() as $element)
 
 					<div class="row">
+
 						<div class="col-md-6"><h5>{{  $element->item->name  }}</h5></div>
 						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
+						<div class="col-md-3"><h5>{{ isset($element->ProductionExecutionDetail->quantity) ? $element->ProductionExecutionDetail->quantity : '0'  }}</h5></div>
+
 
 					</div>
 					@endforeach
