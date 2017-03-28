@@ -57,12 +57,14 @@ function load_tree(id_template,id_project) {
         //console.log(fulltree)
         $('#tree_save').val(fulltree)
     }).on("select_node.jstree", function(e, _data) {
+
         if (_selectedNodeId === _data.node.id) {
             _data.instance.deselect_node(_data.node);
             _selectedNodeId = "";
         } else {
             _selectedNodeId = _data.node.id;
         }
+
     }).on("delete_node.jstree", function(e, _data) {
          var objtree = $('#jstree').jstree(true).get_json('#', {
             flat: true
@@ -172,7 +174,7 @@ function demo_delete() {
 };
 
 function demo_rename() {
-  
+
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     var text = $('#item').val()

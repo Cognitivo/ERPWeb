@@ -138,7 +138,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="menu-dropdown classic-menu-dropdown ">
+                                    <!--    <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="javascript:;"> Proyectos
                                                 <span class="arrow"></span>
                                             </a>
@@ -147,7 +147,7 @@
                                                     <a href="{{ route('project_template.index') }}" class="nav-link">Plantillas</a>
                                                 </li>
                                             </ul>
-                                        </li>
+                                        </li>-->
                                         <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="/timeline"> Producción
                                                 <span class="arrow"></span>
@@ -164,10 +164,10 @@
                                                 </li>
                                                  <li class="">
                                                     <a href="{{ route('production_execution.index') }}" class="nav-link">Ejecuciones</a>
-                                                </li> 
+                                                </li>
                                             </ul>
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                                 <!-- END MEGA MENU -->

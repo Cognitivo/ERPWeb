@@ -42,7 +42,7 @@ class ProjectTemplateController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         //save template
         $project_template                 = new ProjectTemplate;
         $project_template->name           = $request->name;
@@ -71,12 +71,12 @@ class ProjectTemplateController extends Controller
         //save project_template_detail
         $array = json_decode($request->tree_save);
 
-       
+
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
         //$parent = collect();
-        
+
         if($array != null){
 
                foreach ($array as $key => $value) {
@@ -107,7 +107,7 @@ class ProjectTemplateController extends Controller
 
         }
         }
-     
+
         // dd("ok");
         return redirect()->route('project_template.index');
         // dd($array_parent);
@@ -171,7 +171,7 @@ class ProjectTemplateController extends Controller
 
         //verificar si plantilla tiene proyecto sino tiene crearlo
         $projects = $template->projects()->first();
-       
+
         if(!$projects){
             //save project
         $project                      = new Project;
@@ -244,8 +244,8 @@ class ProjectTemplateController extends Controller
      */
     public function destroy($id)
     {
-       
-        $template = ProjectTemplate::find($id); 
+
+        $template = ProjectTemplate::find($id);
 
         try
         {
@@ -272,9 +272,9 @@ class ProjectTemplateController extends Controller
          if(isset($detail)){
 
             $detail->delete();
-         }         
+         }
 
-         return "true"; 
+         return "true";
     }
 
     public function load_tree(Request $request, $id_template, $id_project)
@@ -282,12 +282,12 @@ class ProjectTemplateController extends Controller
 
         if (isset($request->id_production_order)) {
             $data = ProductionOrderDetail::join('items', 'items.id_item', '=', 'production_order_detail.id_item')
-                ->where('id_production_order', $request->id_production_order)->select('id_order_detail as id', 'parent_id_order_detail as parent', DB::raw('concat(production_order_detail.name,"\t",quantity) as text'), 'production_order_detail.id_item as data', 'id_item_type as type')->get();
+                ->where('id_production_order', $request->id_production_order)->select('id_order_detail as id', 'parent_id_order_detail as parent', DB::raw('concat(production_order_detail.name,"\t",quantity) as text,quantity'), 'production_order_detail.id_item as data', 'id_item_type as type')->get();
             if( !$data->count()){
                 $data = $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
                 ->where('id_project_template', $id_template)
                 ->select('id_template_detail as id', 'parent_id_template_detail as parent', DB::raw('concat(item_description,"\t",0) as text'), 'project_template_detail.id_item as data', 'id_item_type as type')->get();
-            }    
+            }
         } else {
             $data = ProjectTemplateDetail::join('items', 'items.id_item', '=', 'project_template_detail.id_item')
                 ->where('id_project_template', $id_template)

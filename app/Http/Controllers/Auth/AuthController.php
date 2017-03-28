@@ -134,7 +134,7 @@ class AuthController extends Controller
 
           Auth::login($user);
 
-          return response()->json(['true']);
+          return response()->json([true]);
 
       }
       else {
