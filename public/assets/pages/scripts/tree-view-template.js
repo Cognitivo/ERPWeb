@@ -263,7 +263,7 @@ function load_tree_project_order(id_template,id_project) {
         })
         var fulltree = JSON.stringify(objtree);
         //console.log(fulltree)
-        $('#tree_save').val(fulltree)
+      //  $('#tree_save').val(fulltree)
     }).on("select_node.jstree", function(e, _data) {
         if (_selectedNodeId === _data.node.id) {
             _data.instance.deselect_node(_data.node);
@@ -271,6 +271,7 @@ function load_tree_project_order(id_template,id_project) {
         } else {
             _selectedNodeId = _data.node.id;
         }
+            $('#load_template').dialog('open');
     }).jstree();
 
   }
@@ -304,7 +305,9 @@ function demo_rename_production_order() {
         return false;
     }
     sel = sel[0];
-    ref.edit(sel);
+
+  //  ref.edit(sel);
+
 
 };
 $('#update_task_production_order').click(function() {

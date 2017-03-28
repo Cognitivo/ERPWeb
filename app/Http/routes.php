@@ -90,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('approved_production_order/{id}','Production\ProductionOrderController@changeStatusApproved');
     Route::post('store_file_production_order','Production\ProductionOrderController@storeOTExcel');
     Route::resource('production_order', 'Production\ProductionOrderController');
+    Route::resource('production_order_detail', 'Production\ProductionOrderDetailController');
 
     Route::resource('production_line', 'Production\ProductionLineController');
 

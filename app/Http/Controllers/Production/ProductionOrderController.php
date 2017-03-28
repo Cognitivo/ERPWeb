@@ -332,8 +332,8 @@ class ProductionOrderController extends Controller
         //$templates->prepend('', '');
         $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
         $production_line = ProductionLine::all()->lists('name', 'id_production_line');
-
-        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order']));
+      $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
+        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
     }
 
     /**

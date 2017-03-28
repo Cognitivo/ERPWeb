@@ -70,6 +70,30 @@ class ProductionOrderDetailController extends Controller
         //
     }
 
+    public function update(Request $request, $id)
+    {
+        $ProductionOrderDetail            = ProductionOrderDetail::find($id);
+        $ProductionOrderDetail->name        = $request->name;
+        $ProductionOrderDetail->quantity = $request->quantity;
+        $ProductionOrderDetail->save();
+        $production_order = ProductionOrder::findOrFail($ProductionOrderDetail->id_production_order);
+        //dd($production_order);
+        $start_date = new Carbon($production_order->start_date_est);
+        $end_date   = new Carbon($production_order->end_date_est);
+
+        $production_order->start_date_est = $start_date->format('d/m/Y H:i');
+        $production_order->end_date_est   = $end_date->format('d/m/Y H:i');
+
+        $contacts  = Contact::all()->lists('name', 'id_contact');
+        $templates = Project::whereNotNull('id_project_template')->select(DB::raw('name,concat(id_project,"-",id_project_template) as id_project_id_project_template'))->lists('name', 'id_project_id_project_template');
+        //$templates->prepend('', '');
+        $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
+        $production_line = ProductionLine::all()->lists('name', 'id_production_line');
+        $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($ProductionOrderDetail->id_production_order)->get();
+        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -83,6 +107,17 @@ class ProductionOrderDetailController extends Controller
       $ProductionOrderDetail->quantity=$request->quantity;
       $ProductionOrderDetail->save();
           return response()->json($ProductionOrderDetail);
+      }
+
+
+
+    }
+    public function edit($id)
+    {
+        $order_detail = ProductionOrderDetail::findOrFail($id);
+      if (isset($order_detail)) {
+      return view('Production/form_production_order_detail', compact('order_detail'));
+
       }
 
 
