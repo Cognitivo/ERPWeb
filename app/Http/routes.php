@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('delete_item/{id}', 'Production\TimelineController@destroy');
 
-//Production Order
+   //Production Order
     Route::get('approved_production_order/{id}','Production\ProductionOrderController@changeStatusApproved');
     Route::post('store_file_production_order','Production\ProductionOrderController@storeOTExcel');
     Route::resource('production_order', 'Production\ProductionOrderController');

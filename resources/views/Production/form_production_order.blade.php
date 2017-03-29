@@ -96,7 +96,7 @@
             </label>
             <div class="col-md-9">
               {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
-              {!! Form::text('reclamo', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+              {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
             </div>
           </div>
           {{--  <div class="form-group">
@@ -130,23 +130,24 @@
               {!!  Form::select('id_production_line',$production_line,null,['class'=> 'form-control' ,'id'=>'id_production_line']) !!}
             </div>
           </div>
-          <div class="form-group">
+          <!--   <div class="form-group">
             <label class="col-md-3 control-label">
               Tipo Trabajo
             </label>
             <div class="col-md-9">
               <div class="input-group">
                 {!!  Form::select('id_project',$templates,isset($production_order->project)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
+                -->
             <!--    <span class="input-group-addon">
                   <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                     Asignar Cantidades
                   </a>
 
                 </span>-->
-              </div>
+              <!--  </div>
             </div>
             <input type="hidden" name="name" id="name_production_order">
-          </div>
+          </div>-->
         </div>
         <table class="table table-hover">
         	<thead>

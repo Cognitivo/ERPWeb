@@ -42,12 +42,11 @@ class ProductionOrderController extends Controller
 
         $contacts  = Contact::all()->lists('name', 'id_contact');
         $templates = Project::whereNotNull('id_project_template')->select(DB::raw('name,concat(id_project,"-",id_project_template) as id_project_id_project_template'))->lists('name', 'id_project_id_project_template');
-        $templates->prepend('', '');
+        $templates->prepend('','');
         $project_tags = ProjectTag::all()->lists('name', 'id_tag');
-
         $production_line = ProductionLine::all()->lists('name', 'id_production_line');
-
-        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line']));
+        $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail(0)->get();
+        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line','production_order_detail']));
 
     }
 
