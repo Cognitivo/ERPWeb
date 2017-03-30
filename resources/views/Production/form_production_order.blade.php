@@ -130,24 +130,34 @@
               {!!  Form::select('id_production_line',$production_line,null,['class'=> 'form-control' ,'id'=>'id_production_line']) !!}
             </div>
           </div>
-          <!--   <div class="form-group">
+           <div class="form-group">
             <label class="col-md-3 control-label">
               Tipo Trabajo
             </label>
             <div class="col-md-9">
               <div class="input-group">
-                {!!  Form::select('id_project',$templates,isset($production_order->project)?$production_order->project->id_project."-".$production_order->project->id_project_template:null,['class'=> 'form-control' ,'id'=>'id_project']) !!}
-                -->
+              {!!  Form::select('project->id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
+
             <!--    <span class="input-group-addon">
                   <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                     Asignar Cantidades
                   </a>
 
                 </span>-->
-              <!--  </div>
+            </div>
             </div>
             <input type="hidden" name="name" id="name_production_order">
-          </div>-->
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+              <button class="btn green" type="submit" id="send_production_order">
+              Submit
+              </button>
+             <a href="{{route('production_order.index')}}" class="btn default"> CANCELAR</a>
+            </div>
+          </div>
         </div>
         <table class="table table-hover">
         	<thead>
@@ -186,18 +196,7 @@
         	</tbody>
         </table>
 
-        <div class="form-actions">
-          <div class="row">
-            <div class="col-md-offset-3 col-md-9">
-              <button class="btn green" type="submit" id="send_production_order">
-              Submit
-              </button>
-              <button class="btn default" type="button">
-              Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+
 
         <input type="hidden" name="tree_save" id="tree_save">
 

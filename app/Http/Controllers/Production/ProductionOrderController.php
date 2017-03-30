@@ -41,8 +41,8 @@ class ProductionOrderController extends Controller
     {
 
         $contacts  = Contact::all()->lists('name', 'id_contact');
-        $templates = Project::whereNotNull('id_project_template')->select(DB::raw('name,concat(id_project,"-",id_project_template) as id_project_id_project_template'))->lists('name', 'id_project_id_project_template');
-        $templates->prepend('','');
+        $templates = ProjectTemplate::all()->lists('name', 'id_project_template');;
+
         $project_tags = ProjectTag::all()->lists('name', 'id_tag');
         $production_line = ProductionLine::all()->lists('name', 'id_production_line');
         $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail(0)->get();
@@ -61,9 +61,11 @@ class ProductionOrderController extends Controller
         //dd($request->all());
         $id_project = null;
         if ($request->id_project != "") {
+          dd($request->id_project);
             $id_project = explode("-", $request->id_project)[0];
 
             $project             = Project::findOrFail($id_project);
+           $project->id_project_template=$request->id_project_template;
             $project->id_contact = $request->id_contact;
             $project->save();
         }
@@ -327,8 +329,7 @@ class ProductionOrderController extends Controller
         $production_order->end_date_est   = $end_date->format('d/m/Y H:i');
 
         $contacts  = Contact::all()->lists('name', 'id_contact');
-        $templates = Project::whereNotNull('id_project_template')->select(DB::raw('name,concat(id_project,"-",id_project_template) as id_project_id_project_template'))->lists('name', 'id_project_id_project_template');
-        //$templates->prepend('', '');
+      $templates = ProjectTemplate::all()->lists('name', 'id_project_template');
         $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
         $production_line = ProductionLine::all()->lists('name', 'id_production_line');
       $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
@@ -345,21 +346,23 @@ class ProductionOrderController extends Controller
     public function update(Request $request, $id)
     {
 
-        if ($request->id_project != "") {
+    
+        $range_date = explode("-", $request->range_date);
 
-            $id_project = explode("-", $request->id_project)[0];
+        $production_order = ProductionOrder::findOrFail($id);
 
-            $project = Project::findOrFail($id_project);
+        if ($production_order->id_project != "") {
+
+
+
+            $project = Project::findOrFail($production_order->id_project );
 
             $project->id_contact = $request->id_contact;
+               $project->id_project_template=$request->id_project_template;
 
             $project->save();
 
         }
-
-        $range_date = explode("-", $request->range_date);
-
-        $production_order = ProductionOrder::findOrFail($id);
 
         $production_order->id_production_line = $request->id_production_line;
 
