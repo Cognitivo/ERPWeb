@@ -136,8 +136,9 @@
             </label>
             <div class="col-md-9">
               <div class="input-group">
-              {!!  Form::select('project->id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
+              {!!  Form::select('id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
 
+             <a href="{{route('production_order.edit','0')}}" class="btn default"> Load</a>
             <!--    <span class="input-group-addon">
                   <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
                     Asignar Cantidades

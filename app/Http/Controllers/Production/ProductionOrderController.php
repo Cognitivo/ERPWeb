@@ -318,23 +318,47 @@ class ProductionOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        $production_order = ProductionOrder::findOrFail($id);
+        //if ($id!='0') {
+          session()->put('id',$id);
+          $production_order = ProductionOrder::findOrFail($id);
+          //dd($production_order);
+          $start_date = new Carbon($production_order->start_date_est);
+          $end_date   = new Carbon($production_order->end_date_est);
+
+          $production_order->start_date_est = $start_date->format('d/m/Y H:i');
+          $production_order->end_date_est   = $end_date->format('d/m/Y H:i');
+
+          $contacts  = Contact::all()->lists('name', 'id_contact');
+        $templates = ProjectTemplate::all()->lists('name', 'id_project_template');
+          $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
+          $production_line = ProductionLine::all()->lists('name', 'id_production_line');
+        $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
+          return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
+      //  }
+    //    else {
+
+    //    $id=session()->get('id');
+    //    $production_order = ProductionOrder::findOrFail($id);
         //dd($production_order);
-        $start_date = new Carbon($production_order->start_date_est);
-        $end_date   = new Carbon($production_order->end_date_est);
+    //    $start_date = new Carbon($production_order->start_date_est);
+    //    $end_date   = new Carbon($production_order->end_date_est);
 
-        $production_order->start_date_est = $start_date->format('d/m/Y H:i');
-        $production_order->end_date_est   = $end_date->format('d/m/Y H:i');
+    //    $production_order->start_date_est = $start_date->format('d/m/Y H:i');
+    //    $production_order->end_date_est   = $end_date->format('d/m/Y H:i');
 
-        $contacts  = Contact::all()->lists('name', 'id_contact');
-      $templates = ProjectTemplate::all()->lists('name', 'id_project_template');
-        $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
-        $production_line = ProductionLine::all()->lists('name', 'id_production_line');
-      $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
-        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
+    //    $contacts  = Contact::all()->lists('name', 'id_contact');
+    //  $templates = ProjectTemplate::all()->lists('name', 'id_project_template');
+    //    $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
+    //    $production_line = ProductionLine::all()->lists('name', 'id_production_line');
+    //  $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
+
+    //    return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
+      //  }
+
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -346,7 +370,7 @@ class ProductionOrderController extends Controller
     public function update(Request $request, $id)
     {
 
-    
+
         $range_date = explode("-", $request->range_date);
 
         $production_order = ProductionOrder::findOrFail($id);
