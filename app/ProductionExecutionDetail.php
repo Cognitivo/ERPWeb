@@ -22,10 +22,16 @@ class ProductionExecutionDetail extends Model
     	return $this->belongsTo(Items::class,'id_item');
     }
 
+    public function ProductionOrderDetail()
+    {
+    	// belongsTo(RelatedModel, foreignKey = item_id, keyOnRelatedModel = id)
+    	return $this->belongsTo(ProductionOrderDetail::class,'id_order_detail');
+    }
+
     /**
      * ProductionExecutionDetail belongs to ProductionOrderDeta.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    
+
 }

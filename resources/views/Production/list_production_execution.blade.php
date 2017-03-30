@@ -55,7 +55,7 @@
 						<div class="col-md-6"><h5>{{  $element->item->name  }}</h5></div>
 						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
 						<div class="col-md-3"><h5>{{ isset($element->ProductionExecutionDetail->quantity) ? $element->ProductionExecutionDetail->quantity : '0'  }}</h5></div>
-
+          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}" class="btn btn-icon-only blue"></a></h5></div>
 
 					</div>
 					@endforeach

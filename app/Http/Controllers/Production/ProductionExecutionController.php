@@ -67,7 +67,8 @@ class ProductionExecutionController extends Controller
      */
     public function edit($id)
     {
-        //
+      $production_execution_detail=ProductionExecutionDetail::where('id_execution_detail','=',$id)->first();
+        return view('Production/form_production_execustion_detail', compact('production_execution_detail'));
     }
 
     /**
@@ -79,7 +80,11 @@ class ProductionExecutionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $production_execution_detail              = ProductionExecutionDetail::find($id);
+      $production_execution_detail->quantity        = $request->quantity;
+      $production_execution_detail->save();
+      $execution = ProductionOrder::whereIn('status',[2,4])->get();
+      return view('Production/list_production_execution', compact('execution'));
     }
 
     /**
