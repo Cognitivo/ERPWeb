@@ -130,25 +130,7 @@
               {!!  Form::select('id_production_line',$production_line,null,['class'=> 'form-control' ,'id'=>'id_production_line']) !!}
             </div>
           </div>
-           <div class="form-group">
-            <label class="col-md-3 control-label">
-              Tipo Trabajo
-            </label>
-            <div class="col-md-9">
-              <div class="input-group">
-              {!!  Form::select('id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
 
-             <a href="{{route('production_order.edit','0')}}" class="btn default"> Load</a>
-            <!--    <span class="input-group-addon">
-                  <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
-                    Asignar Cantidades
-                  </a>
-
-                </span>-->
-            </div>
-            </div>
-            <input type="hidden" name="name" id="name_production_order">
-          </div>
         </div>
         <div class="form-actions">
           <div class="row">
@@ -202,6 +184,31 @@
         <input type="hidden" name="tree_save" id="tree_save">
 
         {!! Form::close() !!}
+        <div class="form-group">
+         <label class="col-md-3 control-label">
+           Tipo Trabajo
+         </label>
+         <div class="col-md-9">
+           <div class="input-group">
+             <form action="{{url('store_template_production_order')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
+                 {!! csrf_field() !!}
+                 {!!  Form::select('id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
+              <button type="submit" class="btn btn-primary">Guardar</button>
+
+              </form>
+
+
+         <!--    <span class="input-group-addon">
+               <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
+                 Asignar Cantidades
+               </a>
+
+             </span>-->
+         </div>
+         </div>
+         <input type="hidden" name="name" id="name_production_order">
+       </div>
+
       </div>
     </div>
   </div>
