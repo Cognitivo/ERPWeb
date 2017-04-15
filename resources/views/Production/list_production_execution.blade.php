@@ -48,18 +48,36 @@
 							<div class="col-md-3">Cantidad Executed</div>
 
 					</div>
+					<form action="{{url('api/approve_execustion')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
 					@foreach ($item->productionOrderDetail()->get() as $element)
 
 					<div class="row">
 
-						<div class="col-md-6"><h5>{{  $element->item->name  }}</h5></div>
+						<div class="col-md-6"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
 						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
 						<div class="col-md-3"><h5>{{ isset($element->ProductionExecutionDetail->quantity) ? $element->ProductionExecutionDetail->quantity : '0'  }}</h5></div>
-          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}" class="btn btn-icon-only blue"></a></h5></div>
+						@if ( isset($element->ProductionExecutionDetail))
+          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}" class="btn btn-icon-only blue">edit</a></h5></div>
+            @endif
+						@if ( isset($element->ProductionExecutionDetail))
+          	<div class="col-md-3">
+
+
+
+						 {!! csrf_field() !!}
+           <input type="hidden" id="production" value="{{$item}}">
+
+					 <button type="submit" class="btn btn-primary">Guardar</button>
+
+
+
 
 					</div>
+				    @endif
+								</div>
 					@endforeach
-				</div>
+
+					</form>
 			</div>
 			@endforeach
 

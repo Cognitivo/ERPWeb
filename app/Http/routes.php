@@ -98,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_execution', 'Production\ProductionExecutionController');
 
     Route::post('api/transactions', 'Production\ProductionExecutionController@api_approve');
+      Route::post('api/approve_execustion', 'Production\ProductionExecutionController@approve_execustion');
 });
 
 
