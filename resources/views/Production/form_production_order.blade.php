@@ -193,7 +193,7 @@
              <form action="{{url('store_template_production_order')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
                  {!! csrf_field() !!}
                  {!!  Form::select('id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
-              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="submit" class="btn btn-primary">Generate Template</button>
 
               </form>
 

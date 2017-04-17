@@ -30,8 +30,18 @@
 
 					</div>
 					<div class="tools">
-						@if ($item->status == 2)
+						@if ($item->status == 1)
+						<span class="label label-sm label-success">Pending</span>
+						@elseif ($item->status == 2)
 						<span class="label label-sm label-success">Aprobado</span>
+						@elseif ($item->status == 3)
+						<span class="label label-sm label-success">InProcess</span>
+						@elseif ($item->status == 4)
+						<span class="label label-sm label-success">Executed</span>
+						@elseif ($item->status == 5)
+						<span class="label label-sm label-success">QA-check</span>
+						@elseif ($item->status == 6)
+						<span class="label label-sm label-success">Qa-rejected</span>
 						@else
 						<span class="label label-sm label-danger">Ejecutado</span>
 						@endif
@@ -57,7 +67,7 @@
 						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
 						<div class="col-md-3"><h5>{{ isset($element->ProductionExecutionDetail->quantity) ? $element->ProductionExecutionDetail->quantity : '0'  }}</h5></div>
 						@if ( isset($element->ProductionExecutionDetail))
-          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}" class="btn btn-icon-only blue">edit</a></h5></div>
+          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}">edit</a></h5></div>
             @endif
 						@if ( isset($element->ProductionExecutionDetail))
           	<div class="col-md-3">
@@ -67,7 +77,7 @@
 						 {!! csrf_field() !!}
            <input type="hidden" id="production" value="{{$item}}">
 
-					 <button type="submit" class="btn btn-primary">Guardar</button>
+					 <button type="submit" class="btn btn-primary">Aprobar</button>
 
 
 
