@@ -655,7 +655,7 @@ class ProductionOrderController extends Controller
                           $production_order_detail->trans_date             = Carbon::now();
                           $production_order_detail->parent_id_order_detail = null;
                           $production_order_detail->save();
-                        
+
                           }
                           foreach ($child as  $detailchild)
                           {
@@ -703,7 +703,12 @@ class ProductionOrderController extends Controller
                     }
         }
       }
-
+      $contacts  = Contact::all()->lists('name', 'id_contact');
+      $templates = ProjectTemplate::all()->lists('name', 'id_project_template');
+      $project_tags    = ProjectTag::all()->lists('name', 'id_tag');
+      $production_line = ProductionLine::all()->lists('name', 'id_production_line');
+      $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id_production_order)->get();
+      return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order','production_order_detail']));
     }
 
 }

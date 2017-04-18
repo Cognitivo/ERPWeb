@@ -184,6 +184,7 @@
         <input type="hidden" name="tree_save" id="tree_save">
 
         {!! Form::close() !!}
+
         <div class="form-group">
          <label class="col-md-3 control-label">
            Tipo Trabajo
