@@ -116,6 +116,7 @@ class ProductionOrderDetailController extends Controller
     {
         $order_detail = ProductionOrderDetail::findOrFail($id);
       if (isset($order_detail)) {
+
       return view('Production/form_production_order_detail', compact('order_detail'));
 
       }
