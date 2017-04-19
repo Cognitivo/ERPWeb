@@ -72,6 +72,7 @@ class ProductionOrderDetailController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $ProductionOrderDetail            = ProductionOrderDetail::find($id);
         $ProductionOrderDetail->name        = $request->name;
         $ProductionOrderDetail->quantity = $request->quantity;
@@ -114,12 +115,12 @@ class ProductionOrderDetailController extends Controller
     }
     public function edit($id)
     {
-        $order_detail = ProductionOrderDetail::findOrFail($id);
-      if (isset($order_detail)) {
+      $production_execution_detail=ProductionOrderDetail::where('id_order_detail','=',$id)->first();
 
-      return view('Production/form_production_order_detail', compact('order_detail'));
 
-      }
+      return view('Production/form_production_order_detail', compact('production_execution_detail'));
+
+
 
 
 

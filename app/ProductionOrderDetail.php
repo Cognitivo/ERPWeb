@@ -10,6 +10,7 @@ class ProductionOrderDetail extends Model
 
     protected $table   = 'production_order_detail';
     public $timestamps = false;
+      protected $fillable=['quantity'];
 
     /**
      * ProductionOrderDetail belongs to ProductionOrder.
