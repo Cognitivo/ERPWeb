@@ -19,15 +19,11 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-
 			@foreach ($execution as $item)
 			<div class="portlet box blue-hoki">
 				<div class="portlet-title">
 					<div class="caption">
-
 						{{ $item->name }}
-
-
 					</div>
 					<div class="tools">
 						@if ($item->status == 1)
@@ -55,46 +51,53 @@
 					<div class="row">
 						<div class="col-md-6">Nombre</div>
 						<div class="col-md-3">Cantidad Estimada</div>
-							<div class="col-md-3">Cantidad Executed</div>
-
+						<div class="col-md-3">Cantidad Executed</div>
 					</div>
 					<form action="{{url('api/approve_execustion')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
-					@foreach ($item->productionOrderDetail()->get() as $element)
-
-					<div class="row">
-
-						<div class="col-md-6"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
-						<div class="col-md-3"><h5>{{  $element->quantity  }}</h5></div>
-						<div class="col-md-3"><h5>{{ isset($element->ProductionExecutionDetail->quantity) ? $element->ProductionExecutionDetail->quantity : '0'  }}</h5></div>
-						@if ( isset($element->ProductionExecutionDetail))
-          	<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}">edit</a></h5></div>
-            @endif
-						@if ( isset($element->ProductionExecutionDetail))
-          	<div class="col-md-3">
-
-
-
-						 {!! csrf_field() !!}
-           <input type="hidden" id="production" value="{{$item}}">
-
-					 <button type="submit" class="btn btn-primary">Aprobar</button>
-
-
-
-
-					</div>
-				    @endif
-								</div>
-					@endforeach
-
+						@foreach ($item->productionOrderDetail()->get() as $element)
+						<div class="row">
+							<div class="col-md-6"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
+							<div class="col-md-3"><h5>{{  intval($element->quantity)  }}</h5></div>
+							<div class="col-md-3"><h5>
+								@if(isset($element->ProductionExecutionDetail))
+								<a href="#" class="quantity_execution" data-pk="{{$element->ProductionExecutionDetail->id_execution_detail}}">
+									{{ isset($element->ProductionExecutionDetail->quantity) ? intval($element->ProductionExecutionDetail->quantity) : '0'  }}
+								</a>
+								@else
+								0
+								@endif
+								
+							</h5></div>
+							@if ( isset($element->ProductionExecutionDetail))
+							<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}">edit</a></h5></div>
+							@endif
+							@if ( isset($element->ProductionExecutionDetail))
+							<div class="col-md-3">
+								{!! csrf_field() !!}
+								<input type="hidden" id="production" value="{{$item}}">
+								<button type="submit" class="btn btn-primary">Aprobar</button>
+							</div>
+							@endif
+						</div>
+						@endforeach
 					</form>
+				</div>
+				@endforeach
 			</div>
-			@endforeach
-
-
 		</div>
 	</div>
-</div>
-@endsection
-@section('scripts')
-@stop
+	@endsection
+	@section('scripts')
+	<script type="text/javascript">
+		
+		$.ajaxSetup({
+	headers: {
+	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	}
+	});
+	$('.quantity_execution').editable({
+	url: '/update_production_execution_detail',
+	
+	});
+	</script>>
+	@stop

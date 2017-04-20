@@ -166,12 +166,12 @@
         			Pendiente
         			@endif
         			</td>
-              	<td>{{ $element->quantity }}</td>
-                <td>
-                <a href="{{route('production_order_detail.edit',$element->id_order_detail )}}" class="btn btn-icon-only blue">
+              	<td><a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
+               {{--  <td>
+                <a href="#" data-id = "{{$element->id}}"  class="btn btn-icon-only blue" data-toggle="modal" data-target="#modal_edit_detail">
                           <i class="glyphicon glyphicon-pencil"> </i>
                         </a>
-</td>
+</td> --}}
 
         		</tr>
         	@endforeach
@@ -213,6 +213,9 @@
       </div>
     </div>
   </div>
+
+
+
 
   <!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
   <div class="modal fade" id="load_template" role="basic" aria-hidden="true" tabindex="-1">
@@ -274,18 +277,18 @@
   <script src="{{ url() }}/assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
 
 
-  <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
+ <!--  <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script> -->
 
   <script type="text/javascript">
-
+/*
   var id_project_id_project_template = $('#id_project option:selected').val()
   var id_project = id_project_id_project_template.split("-")[0]
-  var id_project_template= id_project_id_project_template.split("-")[1]
+  var id_project_template= id_project_id_project_template.split("-")[1]*/
 
-  $('#link_template').click(function(){
+  //$('#link_template').click(function(){
   //console.log($('#jstree1').jstree())
 
-  var id_project_id_project_template = $('#id_project option:selected').val()
+  /*var id_project_id_project_template = $('#id_project option:selected').val()
   var id_project = id_project_id_project_template.split("-")[0]
   var id_project_template= id_project_id_project_template.split("-")[1]
   load_tree_project_order(id_project_template,id_project)
@@ -305,6 +308,24 @@
   var fulltree = JSON.stringify(objtree);
   console.log(fulltree)
   $('#tree_save').val(fulltree)
-  })
+  })*/
   </script>
+
+
+  <script>
+
+  $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+});
+  $('.quantity').editable({
+
+            url: '/update_production_order_detail',         
+           
+        });
+
+  </script>
+
+  
   @stop

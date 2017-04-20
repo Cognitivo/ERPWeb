@@ -93,12 +93,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_order', 'Production\ProductionOrderController');
     Route::resource('production_order_detail', 'Production\ProductionOrderDetailController');
 
+    Route::post('update_production_order_detail','Production\ProductionOrderDetailController@updateProductionOrderDetail');
+
     Route::resource('production_line', 'Production\ProductionLineController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');
 
     Route::post('api/transactions', 'Production\ProductionExecutionController@api_approve');
       Route::post('api/approve_execustion', 'Production\ProductionExecutionController@approve_execustion');
+
+      Route::post('update_production_execution_detail','Production\ProductionExecutionController@updateProductionExecutionDetail');
 });
 
 

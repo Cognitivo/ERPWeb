@@ -413,4 +413,17 @@ class ProductionExecutionController extends Controller
               return response()->json(['message' => 'transactions ok']);
 
     }
+
+
+     public function updateProductionExecutionDetail(Request $request)
+    {
+       
+            $production_order_detail = ProductionExecutionDetail::find($request->pk);
+
+            if($production_order_detail){
+
+                $production_order_detail->quantity = $request->value;
+                $production_order_detail->save();
+            }
+    }
 }

@@ -133,5 +133,16 @@ class ProductionOrderDetailController extends Controller
         return response()->json($ProductionOrderDetail);
     }
 
+    public function updateProductionOrderDetail(Request $request)
+    {
+       
+            $production_order_detail = ProductionOrderDetail::find($request->pk);
+
+            if($production_order_detail){
+
+                $production_order_detail->quantity = $request->value;
+                $production_order_detail->save();
+            }
+    }
 
 }
