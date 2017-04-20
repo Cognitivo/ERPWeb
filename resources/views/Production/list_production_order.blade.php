@@ -16,8 +16,8 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>OT</th>
-			<th>Name</th>
+			<th>Nº de O.T.</th>
+			<th>Nombre</th>
 			<th>Estado</th>
 			<th>Acciones</th>
 		</tr>
@@ -88,7 +88,7 @@
       <div class="modal-footer">
 
       	<button type="submit" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 
       </div>
         </form>

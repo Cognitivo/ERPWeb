@@ -112,7 +112,7 @@
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown  ">
-                                            <a href="javascript:;"> Statistics
+                                            <a href="javascript:;"> Estadísticas
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
@@ -125,19 +125,19 @@
                                             </ul>
                                         </li>
                                         <li class="menu-dropdown classic-menu-dropdown ">
-                                            <a href="javascript:;"> Commercial
+                                            <a href="javascript:;"> Contactos
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                                 <li class="">
-                                                    <a href="{{url()}}/customers" class="nav-link">Customers</a>
+                                                    <a href="{{url()}}/customers" class="nav-link">Clientes</a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="{{url()}}/suppliers" class="nav-link">Suppliers</a>
+                                                    <a href="{{url()}}/suppliers" class="nav-link">Proveedores</a>
                                                 </li>
                                                 <hr/>
                                                 <li class="">
-                                                    <a href="{{ route('contacts.index') }}" class="nav-link">Contacts</a>
+                                                    <a href="{{ route('contacts.index') }}" class="nav-link">Contactos</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -244,7 +244,7 @@
                     <!-- END PRE-FOOTER -->
                     <!-- BEGIN INNER FOOTER -->
                     <div class="page-footer">
-                        <div class="container"> 2016 &copy; Cognitivo</div>
+                        <div class="container"> 2017 &copy; Cognitivo</div>
                     </div>
                     <div class="scroll-to-top">
                         <i class="icon-arrow-up"></i>
