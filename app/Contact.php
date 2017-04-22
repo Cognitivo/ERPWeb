@@ -58,4 +58,15 @@ class Contact extends Model
         // belongsTo(RelatedModel, foreignKey = parentContact_id, keyOnRelatedModel = id)
         return $this->belongsTo(Contact::class,'parent_id_contact');
     }
+
+    /**
+     * Contact has many Projects.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function projects()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = contact_id, localKey = id)
+        return $this->hasMany(Project::class,'id_contact');
+    }
 }

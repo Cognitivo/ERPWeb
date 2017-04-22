@@ -81,9 +81,11 @@
     orientation: 'both',
     editable: true,
     groupEditable: true,
-    start: new Date(data.range_date[0].mini),
-    end: new Date(data.range_date[0].maxi),
-
+   
+     margin: {
+      item: 10, // minimal margin between items
+      axis: 5   // minimal margin between items and the axis
+    },
 
     onAdd: function (item, callback) {
 
