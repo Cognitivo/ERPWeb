@@ -75,7 +75,7 @@ class TimelineController extends Controller
         $production_line = \DB::table('production_line')->select('production_line.id_production_line as id',
             'production_line.name as content')->get();
 
-        $production_order = \DB::table('production_order')->select('id_production_order as id', 'name as content', \DB::raw('start_date_est as start'), \DB::raw('end_date_est as end'), 'production_order.id_production_line as group')->where('production_order.status',2)->get();
+        $production_order = \DB::table('production_order')->select('id_production_order as id','status', 'name as content', \DB::raw('start_date_est as start'), \DB::raw('end_date_est as end'), 'production_order.id_production_line as group')->whereIn('production_order.status',[2,3])->get();
 
         $range_date = \DB::table('production_order')->select(\DB::raw('date(max(trans_date)) as maxi, date(min(trans_date)) as mini'))->get();
 

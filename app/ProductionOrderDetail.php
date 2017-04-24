@@ -3,14 +3,45 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class ProductionOrderDetail extends Model
 {
     public $primaryKey = 'id_order_detail';
 
     protected $table   = 'production_order_detail';
     public $timestamps = false;
-      protected $fillable=['quantity'];
+      protected $fillable=['quantity','start_date_est','end_date_est'];
+
+    public function getStartDateEstAttribute($value)
+    {
+        if($value){
+             return Carbon::createFromFormat('Y-m-d H:i:s',$value)->format('d/m/Y H:i:s');
+        }
+       
+    }
+
+    public function setStartDateEstAttribute($value)
+    {
+        if(!is_object($value)){
+             $this->attributes['start_date_est'] = Carbon::createFromFormat('Y-m-d H:i:s',$value);
+        }else
+             $this->attributes['start_date_est'] = $value;
+    }
+
+    public function setEndDateEstAttribute($value)
+    {
+        if(!is_object($value)){
+                $this->attributes['end_date_est'] = Carbon::createFromFormat('Y-m-d H:i:s',$value);
+            }else
+            $this->attributes['end_date_est'] = $value;
+        }
+
+
+    public function getEndDateEstAttribute($value)
+    {
+        if($value)
+        return Carbon::createFromFormat('Y-m-d H:i:s',$value)->format('d/m/Y H:i:s');
+    }
 
     /**
      * ProductionOrderDetail belongs to ProductionOrder.

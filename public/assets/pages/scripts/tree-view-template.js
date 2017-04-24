@@ -5,7 +5,7 @@ function tree_new() {
         "core": {
             // so that create works
             "check_callback": true
-                //"data": data
+            //"data": data
         },
         "types": {
             "file": {
@@ -22,7 +22,7 @@ function tree_new() {
             _selectedNodeId = _data.node.id;
         }
     }).on("delete_node.jstree", function(e, _data) {
-         var objtree = $('#jstree').jstree(true).get_json('#', {
+        var objtree = $('#jstree').jstree(true).get_json('#', {
             flat: true
         })
         var fulltree = JSON.stringify(objtree);
@@ -31,13 +31,13 @@ function tree_new() {
     }).jstree();
 }
 
-function load_tree(id_template,id_project) {
+function load_tree(id_template, id_project) {
     //console.log(id)
     $('#jstree').jstree({
         'core': {
             'check_callback': true,
             'data': {
-                "url": "/load_tree/" + id_template + "/" +id_project,
+                "url": "/load_tree/" + id_template + "/" + id_project,
                 "dataType": "json"
             },
         },
@@ -57,16 +57,14 @@ function load_tree(id_template,id_project) {
         //console.log(fulltree)
         $('#tree_save').val(fulltree)
     }).on("select_node.jstree", function(e, _data) {
-
         if (_selectedNodeId === _data.node.id) {
             _data.instance.deselect_node(_data.node);
             _selectedNodeId = "";
         } else {
             _selectedNodeId = _data.node.id;
         }
-
     }).on("delete_node.jstree", function(e, _data) {
-         var objtree = $('#jstree').jstree(true).get_json('#', {
+        var objtree = $('#jstree').jstree(true).get_json('#', {
             flat: true
         })
         var fulltree = JSON.stringify(objtree);
@@ -77,31 +75,20 @@ function load_tree(id_template,id_project) {
 $(function() {
     contacts()
     items()
-
-
-
     if ($('#type_load').val() == '#') {
         tree_new()
     } else {
-        load_tree($('#type_load').val(),null)
-
+        load_tree($('#type_load').val(), null)
     }
-
     var parent = $('#parent_name_contact').val()
-    var son =$('#contact').val()
-
-   draw_tree_contact(parent,son)
-
-   var lat = $('#geo_lat').val()
-   var lng = $('#geo_long').val()
-   var address = $('#address_contact').val()
-
-   if(lat!=undefined && lng!=undefined){
-    load_gmap_contact(lat,lng,address)
-   }
-
-
-
+    var son = $('#contact').val()
+    draw_tree_contact(parent, son)
+    var lat = $('#geo_lat').val()
+    var lng = $('#geo_long').val()
+    var address = $('#address_contact').val()
+    if (lat != undefined && lng != undefined) {
+        load_gmap_contact(lat, lng, address)
+    }
 });
 $("#add_task").on("click", function() {
     var node_select = $('#jstree').jstree('get_selected')[0]
@@ -115,7 +102,6 @@ $("#add_task").on("click", function() {
         createNode('#' + node_select, name_node, type)
     }
 });
-
 var tree_save = new Object()
 var tree_global = []
 
@@ -142,7 +128,7 @@ function createNode(parent, text, type) {
     })
     var fulltree = JSON.stringify(objtree);
     $('#tree_save').val(fulltree)
-        //console.log(fulltree)
+    //console.log(fulltree)
 }
 $("#remove_task").on('click', function() {
     demo_delete()
@@ -174,7 +160,6 @@ function demo_delete() {
 };
 
 function demo_rename() {
-
     var ref = $('#jstree').jstree(true),
         sel = ref.get_selected();
     var text = $('#item').val()
@@ -218,7 +203,7 @@ function items() {
             return data;
         },
         requestDelay: 500
-            //theme: "square"
+        //theme: "square"
     };
     $("#item").easyAutocomplete(options);
 }
@@ -228,55 +213,53 @@ function items() {
         }
       }); */
 //Production Order
-var aux_id=null
-function load_tree_project_order(id_template,id_project) {
+var aux_id = null
+
+function load_tree_project_order(id_template, id_project) {
     //console.log("loko")
     //
     var tree = $("#jstree").jstree(true);
-    if(aux_id!=id_template){
-    if (tree != false) {
-        $("#jstree").jstree("destroy");
-    }
-    aux_id=id_template
-
-
-    $('#jstree').jstree({
-        'core': {
-            'check_callback': true,
-            'data': {
-                "url": "/load_tree/" + id_template + "/" +id_project,
-                "dataType": "json",
-                "data": {'id_production_order': $('#id_production_order').val()}
-            },
-        },
-        "types": {
-            "file": {
-                "icon": "fa fa-file icon-state-warning",
-                "valid_children": []
-            }
-        },
-        "plugins": ["state", "types"]
-    }).bind("loaded.jstree", function(event, data) {
-        data.instance.open_all();
-        var objtree = $('#jstree').jstree(true).get_json('#', {
-            flat: true
-        })
-        var fulltree = JSON.stringify(objtree);
-        //console.log(fulltree)
-      //  $('#tree_save').val(fulltree)
-    }).on("select_node.jstree", function(e, _data) {
-        if (_selectedNodeId === _data.node.id) {
-            _data.instance.deselect_node(_data.node);
-            _selectedNodeId = "";
-        } else {
-            _selectedNodeId = _data.node.id;
+    if (aux_id != id_template) {
+        if (tree != false) {
+            $("#jstree").jstree("destroy");
         }
+        aux_id = id_template
+        $('#jstree').jstree({
+            'core': {
+                'check_callback': true,
+                'data': {
+                    "url": "/load_tree/" + id_template + "/" + id_project,
+                    "dataType": "json",
+                    "data": {
+                        'id_production_order': $('#id_production_order').val()
+                    }
+                },
+            },
+            "types": {
+                "file": {
+                    "icon": "fa fa-file icon-state-warning",
+                    "valid_children": []
+                }
+            },
+            "plugins": ["state", "types"]
+        }).bind("loaded.jstree", function(event, data) {
+            data.instance.open_all();
+            var objtree = $('#jstree').jstree(true).get_json('#', {
+                flat: true
+            })
+            var fulltree = JSON.stringify(objtree);
+            //console.log(fulltree)
+            //  $('#tree_save').val(fulltree)
+        }).on("select_node.jstree", function(e, _data) {
+            if (_selectedNodeId === _data.node.id) {
+                _data.instance.deselect_node(_data.node);
+                _selectedNodeId = "";
+            } else {
+                _selectedNodeId = _data.node.id;
+            }
             $('#load_template').dialog('open');
-    }).jstree();
-
-  }
-
-
+        }).jstree();
+    }
     /*on('rename_node.jstree', function(e, data) {
         var token = $("#update_task_production_order").data('token');
         var ref = $('#jstree').jstree(true)
@@ -305,17 +288,13 @@ function demo_rename_production_order() {
         return false;
     }
     sel = sel[0];
-
-  //  ref.edit(sel);
-
-
+    //  ref.edit(sel);
 };
 $('#update_task_production_order').click(function() {
     demo_rename_production_order()
 })
 
 function contacts() {
-
     var options = {
         url: function(phrase) {
             var frase = $("#contact").val();
@@ -326,20 +305,22 @@ function contacts() {
         },
         list: {
             onSelectItemEvent: function() {
+                var contact = $("#contact").getSelectedItemData()
                 var value = $("#contact").getSelectedItemData().id_contact;
                 var name_contact = $("#contact").getSelectedItemData().name;
                 var name_parent = $('#contact').getSelectedItemData().parent_name;
                 var lat = $("#contact").getSelectedItemData().geo_lat;
                 var lng = $("#contact").getSelectedItemData().geo_long;
-                var address = $("#contact").getSelectedItemData().address;
+                if (contact.parent_id_contact == null) {
+                    var address = $("#contact").getSelectedItemData().address;
+                } else {
+                    var address = $("#contact").getSelectedItemData().address_parent;
+                }
                 draw_tree_contact(name_parent, name_contact)
                 $("#id_contact").val(value).trigger("change");
-
-                load_gmap_contact(lat,lng,address)
-
+                console.log(address)
+                load_gmap_contact(lat, lng, address)
             }
-
-
         },
         ajaxSettings: {
             dataType: "json",
@@ -360,7 +341,7 @@ function contacts() {
             return data;
         },
         requestDelay: 500
-            //theme: "square"
+        //theme: "square"
     };
     $("#contact").easyAutocomplete(options);
 }
@@ -385,52 +366,46 @@ function draw_tree_contact(parent, son) {
         }
     });
 };
-
-
 //get name project
 /*$(document).ready(function(){
   var name_project= $('#id_project option:selected').text()
   get_name_project(name_project)
 })*/
 $('#id_project').on('change', function() {
-
-
     var name_project = $('#id_project option:selected').text()
     get_name_project(name_project)
     var id_project_id_project_template = $('#id_project option:selected').val()
     //var id_project_template = id_project_id_project_template.split("-")[1]
     //load_tree_project_order(id_project_template)
-
-
 })
 
 function get_name_project(name) {
     $('#name_production_order').val(name)
 }
 
-
-function load_gmap_contact(lat,lng,address) {
-   $('#address_contact').val(address).trigger('change')
-                var map;
-                map = new GMaps({
-                    div: '#gmap_geo',
-                    lat: lat,
-                    lng: lng
-                });
-                /*  map.addMarker({
-                      lat: lat,
-                      lng: lng,
-                      title: 'Lima',
-                      details: {
-                          database_id: 42,
-                          author: 'HPNeo'
-                      },
-                      click: function(e) {
-                          if (console.log) console.log(e);
-                          alert('You clicked in this marker');
-                      }
-                  });*/
-                /*               GMaps.geocode({
+function load_gmap_contact(lat, lng, address) {
+    
+    $('#address_contact').val(address).trigger('change')
+    var map;
+    map = new GMaps({
+        div: '#gmap_geo',
+        lat: lat,
+        lng: lng
+    });
+    /*  map.addMarker({
+          lat: lat,
+          lng: lng,
+          title: 'Lima',
+          details: {
+              database_id: 42,
+              author: 'HPNeo'
+          },
+          click: function(e) {
+              if (console.log) console.log(e);
+              alert('You clicked in this marker');
+          }
+      });*/
+    /*               GMaps.geocode({
     lat: lat,
     lng: lng,
     callback: function(results, status) {
@@ -440,17 +415,57 @@ function load_gmap_contact(lat,lng,address) {
         }
     }
 });*/
-                GMaps.geocode({
-                    address: address.trim(),
-                    callback: function(results, status) {
-                        if (status == 'OK') {
-                            var latlng = results[0].geometry.location;
-                            map.setCenter(latlng.lat(), latlng.lng());
-                            map.addMarker({
-                                lat: latlng.lat(),
-                                lng: latlng.lng()
-                            });
-                        }
-                    }
+
+  if(lat != null && lat != '' && lng != null && lng != ''){
+    map.addMarker({
+  lat: lat,
+  lng: lng,
+
+});
+  }else{
+    GMaps.geocode({
+        address: address.trim(),
+        callback: function(results, status) {
+            if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                map.setCenter(latlng.lat(), latlng.lng());
+                map.addMarker({
+                    lat: latlng.lat(),
+                    lng: latlng.lng()
                 });
+            }
+        }
+    });
+  }
+    
 }
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$('.quantity').editable({
+    url: '/update_production_order_detail/quantity',
+});
+$('.start_date').editable({
+    url: '/update_production_order_detail/start_date_est',
+    type: 'datetime',
+    format: 'yyyy-mm-dd hh:ii:ss',
+    viewformat: 'dd/mm/yyyy hh:ii:ss',
+    datetimepicker: {
+        rtl: App.isRTL(),
+        todayBtn: 'linked',
+        weekStart: 1
+    }
+});
+$('.end_date').editable({
+    url: '/update_production_order_detail/end_date_est',
+    type: 'datetime',
+    format: 'yyyy-mm-dd hh:ii:ss',
+    viewformat: 'dd/mm/yyyy hh:ii:ss',
+    datetimepicker: {
+        rtl: App.isRTL(),
+        todayBtn: 'linked',
+        weekStart: 1
+    }
+});

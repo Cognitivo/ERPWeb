@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('all_contacts', function () {
         $query    = Request::get('query');
         $contacts = \App\Contact::AllContacts($query)->get();
+        //dd($contacts);
         return response()->json($contacts);
     });
     Route::get('get_plan', function () {
@@ -93,8 +94,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_order', 'Production\ProductionOrderController');
     Route::resource('production_order_detail', 'Production\ProductionOrderDetailController');
 
-    Route::post('update_production_order_detail','Production\ProductionOrderDetailController@updateProductionOrderDetail');
-
+    Route::post('update_production_order_detail/{name_field}','Production\ProductionOrderDetailController@updateProductionOrderDetail');
+   
+    
     Route::resource('production_line', 'Production\ProductionLineController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');

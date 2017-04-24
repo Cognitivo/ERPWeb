@@ -37,7 +37,7 @@
       </div>
       <div class="portlet-body">
         <div class="form-group">
-          {!! Form::textarea('address', isset($production_order->project)? $production_order->project->contact->address:null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
+          {!! Form::textarea('address', isset($production_order->project)? \App\Contact::addressContact($production_order->project->contact->id_contact) :null, ['class'=>'form-control', 'placeholder'=>'Address Contact','rows'=>'3','id'=>'address_contact']) !!}
           @if (isset($production_order->project))
           {!! Form::hidden('geo_lat',$production_order->project->contact->geo_lat,['id'=>'geo_lat']) !!}
           {!! Form::hidden('geo_long',$production_order->project->contact->geo_long,['id'=>'geo_long']) !!}
@@ -73,7 +73,7 @@
               <div class="input-icon">
                 <i class="fa fa-bell-o">
                 </i>
-                {!! Form::text('contact', isset($production_order->project)?$production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact','required']) !!}
+                {!! Form::text('contact', isset($production_order->project)? $production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact','required']) !!}
                 {!! Form::hidden('id_contact',isset($production_order->project)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!}
                 {!! Form::hidden('parent_name_contact',isset($production_order->project)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!}
               </div>
@@ -123,51 +123,58 @@
             </label>
             <div class="col-md-9">
               <select name="id_project_template" class="form-control" required>
-                @foreach ($templates as $key => $element)             
-                  <option value="{{$key}}" {{isset($production_order)? $production_order->project->id_project_template == $key ? 'selected' : '' :''}}> 
-                  {{$element}}
-                  </option>
-                  @endforeach
-                  
-                </select>
                 @foreach ($templates as $key => $element)
-                <input type="hidden" name="name_project_template[{{$key}}]" value="{{$element}}" />
+                <option value="{{$key}}" {{isset($production_order)? $production_order->project->id_project_template == $key ? 'selected' : '' :''}}>
+                  {{$element}}
+                </option>
                 @endforeach
-              </div>
+                
+              </select>
+              @foreach ($templates as $key => $element)
+              <input type="hidden" name="name_project_template[{{$key}}]" value="{{$element}}" />
+              @endforeach
             </div>
           </div>
-          <div class="form-actions">
-            <div class="row">
-              <div class="col-md-offset-3 col-md-9">
-                <button class="btn green" type="submit" id="send_production_order">
-                Submit
-                </button>
-                <a href="{{route('production_order.index')}}" class="btn default"> CANCELAR</a>
-              </div>
+        </div>
+        <div class="form-actions">
+          <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+              <button class="btn green" type="submit" id="send_production_order">
+              Submit
+              </button>
+              <a href="{{route('production_order.index')}}" class="btn default"> CANCELAR</a>
             </div>
           </div>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Estado</th>
-                <th>Cantidad</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($production_order_detail as $element)
-              <tr>
-                <td>{{ $element->name }}</td>
-                <td>
-                  @if ($element->status == 2)
-                  Aprobado
-                  @elseif($element->status == 4)
-                  Terminado
-                  @else
-                  Pendiente
-                  @endif
-                </td>
-                <td><a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Fin</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($production_order_detail as $element)
+            <tr>
+              <td>{{ $element->name }}</td>
+              <td>
+                @if (\App\Items::typeItem($element->id_item) == 5)
+                <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}"> {{$element->start_date_est}}</a>
+                @endif
+                
+                
+              </td>
+              <td>
+                @if (\App\Items::typeItem($element->id_item) == 5)
+                <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
+                @endif
+                
+                
+              </td>
+              <td>
+                <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
                 {{--  <td>
                   <a href="#" data-id = "{{$element->id}}"  class="btn btn-icon-only blue" data-toggle="modal" data-target="#modal_edit_detail">
                     <i class="glyphicon glyphicon-pencil"> </i>
@@ -278,16 +285,6 @@
     $('#tree_save').val(fulltree)
     })*/
     </script>
-    <script>
-    $.ajaxSetup({
-    headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-    });
-    $('.quantity').editable({
-    url: '/update_production_order_detail',
     
-    });
-    </script>
     
     @stop

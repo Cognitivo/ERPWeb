@@ -15,6 +15,20 @@
       width: 100%;
       height: 300px;
     }
+    div.vis-editable,
+    div.vis-editable.vis-selected {
+     background-color: rgb(83, 201, 68);
+      border-color: green;
+      color: white;
+    }
+
+    div.vis-readonly,
+    div.vis-readonly.vis-selected {
+      /* custom styling for readonly items... */
+      background-color: #ff4500;
+      border-color: red;
+      color: white;
+    }
     
     .vis-item.openwheel  { background-color: #B0E2FF; }
     .vis-item.rally      { background-color: #EAEAEA; }

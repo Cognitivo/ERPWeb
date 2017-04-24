@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Production;
 
 use App\Contact;
 use App\Http\Controllers\Controller;
+use App\ProductionExecutionDetail;
 use App\ProductionLine;
 use App\ProductionOrder;
 use App\ProductionOrderDetail;
@@ -11,11 +12,11 @@ use App\Project;
 use App\ProjectTag;
 use App\ProjectTask;
 use App\ProjectTemplate;
-use App\ProjectTemplateDetail;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\Datatables\Facades\Datatables;
 
 class ProductionOrderController extends Controller
 {
@@ -26,10 +27,54 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
-
+        if (\Request::ajax()) {
+            return $this->indexData();
+        }
         $order = ProductionOrder::all();
 
         return view('Production/list_production_order', compact('order'));
+    }
+
+    public function indexData()
+    {
+
+        $orders = ProductionOrder::
+
+            select(['id_production_order', 'work_number', 'name', 'status'])->get();
+
+        return Datatables::of($orders)
+
+            ->addColumn('actions', function ($order) {
+                $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-primary" >
+                <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                <form action="/production_order/'.$order->id_production_order.'"  method= "post" style =" display : inline;">
+                <input type="hidden" name="_token" value="'.csrf_token().'">
+                <input type="hidden" name="_method" value="DELETE">
+                     <button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
+                </form>';
+               
+
+                if ($order->status == 1) {
+                    $result = $result . '
+                             <a href="{{ url("approved_production_order",' . $order->id_production_order . ') }}" class="btn purple">
+                            <i class="fa fa-file-o"></i> Aprobar </a>
+                     ';
+                }
+
+                return $result;
+
+            })->editColumn('status', '
+            @if ($status == 2)
+                Aprobado
+            @elseif($status == 4)
+            Terminado
+            @else
+            Pendiente
+            @endif')
+
+            ->removeColumn('id_production_order')
+            ->make();
     }
 
     /**
@@ -343,7 +388,7 @@ class ProductionOrderController extends Controller
         $id_project = null;
         //get relation project the contact
         $project = Project::where('id_contact', $request->id_contact)->where('id_project_template', $request->id_project_template)->first();
-        if ($project) { 
+        if ($project) {
             $id_project = $project->getKey();
         } else {
             //save project
@@ -436,7 +481,7 @@ class ProductionOrderController extends Controller
                 $cont            = 0;
                 $array_parent    = collect();
                 $id_project_task = $this->insertTask(0, null, $value->id_item, $id_project);
-                $id_real         = $this->insertProductionOrderDetail($value->item_description, 0, null, $production_order->getKey(), $value->id_item, $id_project_task);
+                $id_real         = $this->insertProductionOrderDetail($value->item_description, 0, null, $production_order, $value->id_item, $id_project_task);
                 $array_parent->push(['id' => $value->id_template_detail, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
 
             } else {
@@ -448,7 +493,7 @@ class ProductionOrderController extends Controller
                     $parent_real      = $parent['id_real'];
                     $parent_real_task = $parent['id_real_task'];
                     $id_project_task  = $this->insertTask(0, $parent_real_task, $value->id_item, $id_project);
-                    $id_real          = $this->insertProductionOrderDetail($value->item_description, 0, $parent_real, $production_order->getKey(), $value->id_item, $id_project_task);
+                    $id_real          = $this->insertProductionOrderDetail($value->item_description, 0, $parent_real, $production_order, $value->id_item, $id_project_task);
                     $array_parent->push(['id' => $value->id_template_detail, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
                     $cont++;
 
@@ -471,8 +516,8 @@ class ProductionOrderController extends Controller
             if ($value->parent_id_order_detail == null) {
                 $cont            = 0;
                 $array_parent    = collect();
-                 $id_project_task  = $production_order_detail->id_project_task;             
-                $id_real         = $this->insertProductionExecutionDetailDetail($value->name, $value->quantity, null, $production_order_detail->getKey(), $value->id_item, $id_project_task);
+                $id_project_task = $value->id_project_task;
+                $id_real         = $this->insertProductionExecutionDetail($value->name, $value->quantity, null, $value, $value->id_item, $id_project_task);
                 $array_parent->push(['id' => $value->id_order_detail, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
 
             } else {
@@ -483,8 +528,8 @@ class ProductionOrderController extends Controller
 
                     $parent_real      = $parent['id_real'];
                     $parent_real_task = $parent['id_real_task'];
-                   $id_project_task  = $production_order_detail->id_project_task;
-                    $id_real          = $this->insertProductionExecutionDetailDetail($value->name, $value->quantity, $parent_real, $production_order_detail->getKey(), $value->id_item, $id_project_task);
+                    $id_project_task  = $value->id_project_task;
+                    $id_real          = $this->insertProductionExecutionDetail($value->name, $value->quantity, $parent_real, $value, $value->id_item, $id_project_task);
                     $array_parent->push(['id' => $value->id_order_detail, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
                     $cont++;
 
@@ -531,11 +576,11 @@ class ProductionOrderController extends Controller
 
     }
 
-    public function insertProductionOrderDetail($name, $quantity, $parent, $id_production_order, $item, $id_project_task)
+    public function insertProductionOrderDetail($name, $quantity, $parent, $production_order, $item, $id_project_task)
     {
         //$array_aux                                       = explode("\t", $name);
         $production_order_detail                         = new ProductionOrderDetail;
-        $production_order_detail->id_production_order    = $id_production_order;
+        $production_order_detail->id_production_order    = $production_order->getKey();
         $production_order_detail->name                   = $name;
         $production_order_detail->quantity               = $quantity;
         $production_order_detail->id_project_task        = $id_project_task;
@@ -547,32 +592,37 @@ class ProductionOrderController extends Controller
         $production_order_detail->is_read                = 1;
         $production_order_detail->timestamp              = Carbon::now();
         $production_order_detail->trans_date             = Carbon::now();
+        $production_order_detail->start_date_est         = $production_order->start_date_est;
+        $production_order_detail->end_date_est           = $production_order->end_date_est;
         $production_order_detail->parent_id_order_detail = $parent;
         $production_order_detail->save();
 
         return $production_order_detail->getKey();
     }
 
-    public function insertProductionExecutionDetail($name, $quantity, $parent, $id_order_detail, $item, $id_project_task)
+    public function insertProductionExecutionDetail($name, $quantity, $parent, $production_order_detail, $item, $id_project_task)
     {
-        //$array_aux                                       = explode("\t", $name);
-        $production_order_detail                         = new ProductionExecutionDetail;
-        $production_order_detail->id_order_detail    = $id_order_detail;
-        $production_order_detail->name                   = $name;
-        $production_order_detail->quantity               = $quantity;
-        $production_order_detail->id_project_task        = $id_project_task;
-        $production_order_detail->id_item                = $item;
-        $production_order_detail->id_company             = 1;
-        $production_order_detail->id_user                = 1;
-        $production_order_detail->is_input               = 1;
-        $production_order_detail->is_head                = 1;
-        $production_order_detail->is_read                = 1;
-        $production_order_detail->timestamp              = Carbon::now();
-        $production_order_detail->trans_date             = Carbon::now();
-        $production_order_detail->parent_id_order_detail = $parent;
-        $production_order_detail->save();
 
-        return $production_order_detail->getKey();
+        //$array_aux                                       = explode("\t", $name);
+        $production_order_execution                             = new ProductionExecutionDetail;
+        $production_order_execution->id_order_detail            = $production_order_detail->id_order_detail;
+        $production_order_execution->name                       = $name;
+        $production_order_execution->quantity                   = $quantity;
+        $production_order_execution->id_project_task            = $id_project_task;
+        $production_order_execution->id_item                    = $item;
+        $production_order_execution->id_company                 = 1;
+        $production_order_execution->id_user                    = 1;
+        $production_order_execution->is_input                   = 1;
+        $production_order_execution->is_head                    = 1;
+        $production_order_execution->is_read                    = 1;
+        $production_order_execution->timestamp                  = Carbon::now();
+        $production_order_execution->trans_date                 = Carbon::now();
+        $production_order_execution->start_date                 = $production_order_detail->start_date_est;
+        $production_order_execution->end_date                   = $production_order_detail->end_date_est;
+        $production_order_execution->parent_id_execution_detail = $parent;
+        $production_order_execution->save();
+
+        return $production_order_execution->getKey();
     }
 
     public function updateProductionOrderDetail($name, $production_order_detail)
@@ -612,9 +662,9 @@ class ProductionOrderController extends Controller
 
         $production_order = ProductionOrder::findOrFail($id);
 
-        $production_order_detail = $production_order->productionOrderDetail()->get();
+        $production_order_detail = $production_order->productionOrderDetail();
 
-        foreach ($production_order_detail as $key => $value) {
+        foreach ($production_order_detail->get() as $key => $value) {
             $value->status = 2;
             $value->save();
             //$value->update(['status' => 2]);
@@ -628,113 +678,112 @@ class ProductionOrderController extends Controller
         //insert in production excecution
         $this->insertDetailExecution($production_order_detail);
 
-
         return redirect()->back();
 
     }
-  /*  public function storeTemplate(Request $request)
-    {
+    /*  public function storeTemplate(Request $request)
+{
 
-        if (isset($request)) {
-            if (isset($request->id_project_template)) {
-                $id_project = session()->get('id_project');
-                $project    = null;
-                if (isset($id_project)) {
-                    $project                      = Project::where('id_project', '=', $id_project)->first();
-                    $project->id_project_template = $request->id_project_template;
-                }
-                $id_production_order = session()->get('id_production_order');
-                $parent              = ProjectTemplateDetail::where('parent_id_template_detail', '=', null)->get();
-                foreach ($parent as $detail) {
-                    $child = ProjectTemplateDetail::where('parent_id_template_detail', '=', $detail->id_template_detail)->get();
-                    if (isset($project)) {
-                        $project_task                         = new ProjectTask;
-                        $project_task->id_project             = $id_project;
-                        $project_task->id_company             = 1;
-                        $project_task->id_user                = 1;
-                        $project_task->is_active              = 1;
-                        $project_task->is_head                = 1;
-                        $project_task->is_read                = 1;
-                        $project_task->timestamp              = Carbon::now();
-                        $project_task->trans_date             = Carbon::now();
-                        $project_task->id_item                = $detail->id_item;
-                        $project_task->code                   = $detail->code;
-                        $project_task->item_description       = $detail->item_description;
-                        $project_task->quantity_est           = 0;
-                        $project_task->parent_id_project_task = null;
-                        $project_task->save();
-                    }
+if (isset($request)) {
+if (isset($request->id_project_template)) {
+$id_project = session()->get('id_project');
+$project    = null;
+if (isset($id_project)) {
+$project                      = Project::where('id_project', '=', $id_project)->first();
+$project->id_project_template = $request->id_project_template;
+}
+$id_production_order = session()->get('id_production_order');
+$parent              = ProjectTemplateDetail::where('parent_id_template_detail', '=', null)->get();
+foreach ($parent as $detail) {
+$child = ProjectTemplateDetail::where('parent_id_template_detail', '=', $detail->id_template_detail)->get();
+if (isset($project)) {
+$project_task                         = new ProjectTask;
+$project_task->id_project             = $id_project;
+$project_task->id_company             = 1;
+$project_task->id_user                = 1;
+$project_task->is_active              = 1;
+$project_task->is_head                = 1;
+$project_task->is_read                = 1;
+$project_task->timestamp              = Carbon::now();
+$project_task->trans_date             = Carbon::now();
+$project_task->id_item                = $detail->id_item;
+$project_task->code                   = $detail->code;
+$project_task->item_description       = $detail->item_description;
+$project_task->quantity_est           = 0;
+$project_task->parent_id_project_task = null;
+$project_task->save();
+}
 
-                    if (isset($id_production_order)) {
-                        $production_order_detail                      = new ProductionOrderDetail;
-                        $production_order_detail->id_production_order = $id_production_order;
-                        $production_order_detail->name                = $detail->item_description;
-                        $production_order_detail->quantity            = 0;
-                        if (isset($project_task)) {
-                            $production_order_detail->id_project_task = $project_task->$id_project_task;
-                        }
+if (isset($id_production_order)) {
+$production_order_detail                      = new ProductionOrderDetail;
+$production_order_detail->id_production_order = $id_production_order;
+$production_order_detail->name                = $detail->item_description;
+$production_order_detail->quantity            = 0;
+if (isset($project_task)) {
+$production_order_detail->id_project_task = $project_task->$id_project_task;
+}
 
-                        $production_order_detail->id_item                = $detail->id_item;
-                        $production_order_detail->id_company             = 1;
-                        $production_order_detail->id_user                = 1;
-                        $production_order_detail->is_input               = 1;
-                        $production_order_detail->is_head                = 1;
-                        $production_order_detail->is_read                = 1;
-                        $production_order_detail->timestamp              = Carbon::now();
-                        $production_order_detail->trans_date             = Carbon::now();
-                        $production_order_detail->parent_id_order_detail = null;
-                        $production_order_detail->save();
+$production_order_detail->id_item                = $detail->id_item;
+$production_order_detail->id_company             = 1;
+$production_order_detail->id_user                = 1;
+$production_order_detail->is_input               = 1;
+$production_order_detail->is_head                = 1;
+$production_order_detail->is_read                = 1;
+$production_order_detail->timestamp              = Carbon::now();
+$production_order_detail->trans_date             = Carbon::now();
+$production_order_detail->parent_id_order_detail = null;
+$production_order_detail->save();
 
-                    }
-                    foreach ($child as $detailchild) {
-                        if (isset($project)) {
-                            $project_taskchild                         = new ProjectTask;
-                            $project_taskchild->id_project             = $id_project;
-                            $project_taskchild->id_company             = 1;
-                            $project_taskchild->id_user                = 1;
-                            $project_taskchild->is_active              = 1;
-                            $project_taskchild->is_head                = 1;
-                            $project_taskchild->is_read                = 1;
-                            $project_taskchild->timestamp              = Carbon::now();
-                            $project_taskchild->trans_date             = Carbon::now();
-                            $project_taskchild->id_item                = $detail->id_item;
-                            $project_taskchild->code                   = $detail->code;
-                            $project_taskchild->item_description       = $detail->item_description;
-                            $project_taskchild->quantity_est           = 0;
-                            $project_taskchild->parent_id_project_task = $project_task->id_project_task;
-                            $project_taskchild->save();
-                        }
+}
+foreach ($child as $detailchild) {
+if (isset($project)) {
+$project_taskchild                         = new ProjectTask;
+$project_taskchild->id_project             = $id_project;
+$project_taskchild->id_company             = 1;
+$project_taskchild->id_user                = 1;
+$project_taskchild->is_active              = 1;
+$project_taskchild->is_head                = 1;
+$project_taskchild->is_read                = 1;
+$project_taskchild->timestamp              = Carbon::now();
+$project_taskchild->trans_date             = Carbon::now();
+$project_taskchild->id_item                = $detail->id_item;
+$project_taskchild->code                   = $detail->code;
+$project_taskchild->item_description       = $detail->item_description;
+$project_taskchild->quantity_est           = 0;
+$project_taskchild->parent_id_project_task = $project_task->id_project_task;
+$project_taskchild->save();
+}
 
-                        if (isset($id_production_order)) {
-                            $production_order_detailchild                      = new ProductionOrderDetail;
-                            $production_order_detailchild->id_production_order = $id_production_order;
-                            $production_order_detailchild->name                = $detail->item_description;
-                            $production_order_detailchild->quantity            = 0;
-                            if (isset($project_taskchild)) {
-                                $production_order_detailchild->id_project_task = $project_taskchild->$id_project_task;
-                            }
+if (isset($id_production_order)) {
+$production_order_detailchild                      = new ProductionOrderDetail;
+$production_order_detailchild->id_production_order = $id_production_order;
+$production_order_detailchild->name                = $detail->item_description;
+$production_order_detailchild->quantity            = 0;
+if (isset($project_taskchild)) {
+$production_order_detailchild->id_project_task = $project_taskchild->$id_project_task;
+}
 
-                            $production_order_detailchild->id_item                = $detail->id_item;
-                            $production_order_detailchild->id_company             = 1;
-                            $production_order_detailchild->id_user                = 1;
-                            $production_order_detailchild->is_input               = 1;
-                            $production_order_detailchild->is_head                = 1;
-                            $production_order_detailchild->is_read                = 1;
-                            $production_order_detailchild->timestamp              = Carbon::now();
-                            $production_order_detailchild->trans_date             = Carbon::now();
-                            $production_order_detailchild->parent_id_order_detail = $production_order_detail->id_project_task;
-                            $production_order_detailchild->save();
-                        }
-                    }
-                }
-            }
-        }
-        $contacts                = Contact::all()->lists('name', 'id_contact');
-        $templates               = ProjectTemplate::all()->lists('name', 'id_project_template');
-        $project_tags            = ProjectTag::all()->lists('name', 'id_tag');
-        $production_line         = ProductionLine::all()->lists('name', 'id_production_line');
-        $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id_production_order)->get();
-        return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order', 'production_order_detail']));
-    }*/
+$production_order_detailchild->id_item                = $detail->id_item;
+$production_order_detailchild->id_company             = 1;
+$production_order_detailchild->id_user                = 1;
+$production_order_detailchild->is_input               = 1;
+$production_order_detailchild->is_head                = 1;
+$production_order_detailchild->is_read                = 1;
+$production_order_detailchild->timestamp              = Carbon::now();
+$production_order_detailchild->trans_date             = Carbon::now();
+$production_order_detailchild->parent_id_order_detail = $production_order_detail->id_project_task;
+$production_order_detailchild->save();
+}
+}
+}
+}
+}
+$contacts                = Contact::all()->lists('name', 'id_contact');
+$templates               = ProjectTemplate::all()->lists('name', 'id_project_template');
+$project_tags            = ProjectTag::all()->lists('name', 'id_tag');
+$production_line         = ProductionLine::all()->lists('name', 'id_production_line');
+$production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id_production_order)->get();
+return view('Production/form_production_order', compact(['contacts', 'templates', 'project_tags', 'production_line', 'production_order', 'production_order_detail']));
+}*/
 
 }

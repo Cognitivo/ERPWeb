@@ -8,12 +8,18 @@
 
  @include('flash::message')
 
-<div class="input-group">
-	<a href="{{ route('production_order.create') }}" title="" class="btn btn-primary">Crear Orden Trabajo</a>
-	<a href="" title="" class="btn btn-primary" data-toggle="modal" data-target="#gridSystemModal">Cargar Archivo Excel</a>
-</div>
 
-<table class="table table-hover">
+<div class="portlet light ">
+      <div class="portlet-title">
+        <div class="caption font-dark">
+         
+          <a href="{{ route('production_order.create') }}" title="" class="btn btn-primary">Crear Orden Trabajo</a>
+	<a href="" title="" class="btn btn-primary" data-toggle="modal" data-target="#gridSystemModal">Cargar Archivo Excel</a>
+        </div>
+        <div class="tools"> </div>
+      </div>
+      <div class="portlet-body">
+        <table class="table table-condensed" id="table-production-order">
 	<thead>
 		<tr>
 			<th>Nº de O.T.</th>
@@ -23,43 +29,15 @@
 		</tr>
 	</thead>
 	<tbody>
-	@foreach ($order as $element)
-
-		<tr>
-			<td>{{ $element->work_number }}</td>
-      	<td>{{ $element->name }}</td>
-			<td>
-			@if ($element->status == 2)
-				Aprobado
-			@elseif($element->status == 4)
-			Terminado
-			@else
-			Pendiente
-			@endif
-			</td>
-			<td>
-				<a href="{{route('production_order.edit',$element->id_production_order )}}" class="btn btn-icon-only blue">
-                	<i class="glyphicon glyphicon-pencil"> </i>
-                </a>
-								{!! Form::open(array('route' => array('production_order.destroy', $element->id_production_order), 'method' => 'delete','style'=>'display: inline;')) !!}
-								<button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
-						{!! Form::close() !!}
-
-
-						@if ($element->status == 1)
-							 <a href="{{ url('approved_production_order',$element->id_production_order) }}" class="btn purple">
-                <i class="fa fa-file-o"></i> Aprobar </a>
-						@endif
-
-
-            </td>
-
-
-		</tr>
-	@endforeach
+	
 
 	</tbody>
 </table>
+       
+      </div>
+    </div>
+  </div>
+
 
 
 
@@ -100,7 +78,32 @@
 @stop
 
 @section('scripts')
+<script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
+ <script src="/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script> 
+<script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+
+		$(document).ready(function(){
+			 var table = loadTable($('#table-production-order'), '/production_order')
+		})
+		function loadTable(table_id, url) {
+    //dataTable or DataTable
+    //var test = "01/01/2017"
+    //console.log(moment(test).format('MM/DD/YYYY'));
+    var table = table_id.DataTable({
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        "pagingType": "bootstrap_full_number",
+        "pageLength": 50,
+        ajax: {
+            url: url,
+            "type": "get",
+        },
+        "order": []
+    })
+    return table
+}
 	</script>
 @stop

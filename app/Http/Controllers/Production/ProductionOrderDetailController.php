@@ -133,7 +133,7 @@ class ProductionOrderDetailController extends Controller
         return response()->json($ProductionOrderDetail);
     }
 
-    public function updateProductionOrderDetail(Request $request)
+  /*  public function updateProductionOrderDetail(Request $request)
     {
        
             $production_order_detail = ProductionOrderDetail::find($request->pk);
@@ -141,6 +141,18 @@ class ProductionOrderDetailController extends Controller
             if($production_order_detail){
 
                 $production_order_detail->quantity = $request->value;
+                $production_order_detail->save();
+            }
+    }*/
+
+    public function updateProductionOrderDetail(Request $request, $name_field)
+    {
+        
+        //type 1 start date and 2 end date
+       $production_order_detail = ProductionOrderDetail::find($request->pk);
+
+            if($production_order_detail){
+                $production_order_detail->$name_field = $request->value;
                 $production_order_detail->save();
             }
     }
