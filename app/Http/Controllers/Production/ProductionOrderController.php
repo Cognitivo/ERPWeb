@@ -334,6 +334,14 @@ class ProductionOrderController extends Controller
         $production_order->status             = 1;
         $production_order->work_number        = $request->solicitud;
         $production_order->save();
+
+        //insert task and order detail
+        $project = Project::find($id_project);
+            $template_detail = ProjectTemplate::find($project->id_project_template);
+            //insertTask($name, $parent, $item, $id_project)
+            if ($template_detail->get()->count()) {
+                $this->insertDetail($template_detail, $production_order, $id_project);
+            }
     }
 
     /**
