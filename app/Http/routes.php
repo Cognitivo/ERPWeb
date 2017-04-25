@@ -93,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
       Route::post('store_template_production_order','Production\ProductionOrderController@storeTemplate');
     Route::resource('production_order', 'Production\ProductionOrderController');
     Route::resource('production_order_detail', 'Production\ProductionOrderDetailController');
-
+    Route::post('add_order_detail','Production\ProductionOrderDetailController@addOrderDetail');
     Route::post('update_production_order_detail/{name_field}','Production\ProductionOrderDetailController@updateProductionOrderDetail');
    
     

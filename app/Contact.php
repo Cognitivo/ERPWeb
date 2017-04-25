@@ -64,7 +64,7 @@ class Contact extends Model
 
         if (trim($name) != "") {
             return $query->leftJoin('contacts as cont','contacts.parent_id_contact','=','cont.id_contact')->where('contacts.name', 'LIKE', "%$name%")->join('contact_role','contacts.id_contact_role','=','contact_role.id_contact_role')
-            ->select('cont.name as parent_name','contacts.name','contacts.id_contact','contacts.geo_lat','contacts.geo_long','contacts.address','cont.address as address_parent','contacts.parent_id_contact','contact_role.is_principal');
+            ->select('cont.name as parent_name','contacts.name','contacts.id_contact','contacts.geo_lat','contacts.geo_long','contacts.address','cont.address as address_parent','contacts.parent_id_contact','contact_role.is_principal','contacts.geo_longlat');
         }
         return null;
     }

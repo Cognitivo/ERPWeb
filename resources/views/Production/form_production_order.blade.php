@@ -41,6 +41,7 @@
           @if (isset($production_order->project))
           {!! Form::hidden('geo_lat',$production_order->project->contact->geo_lat,['id'=>'geo_lat']) !!}
           {!! Form::hidden('geo_long',$production_order->project->contact->geo_long,['id'=>'geo_long']) !!}
+          {!! Form::hidden('geo_longlat',$production_order->project->contact->geo_longlat,['id'=>'geo_longlat']) !!}
           @endif
         </div>
         <div class="label label-danger visible-ie8"> Not supported in Internet Explorer 8 </div>
@@ -146,106 +147,161 @@
             </div>
           </div>
         </div>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Fecha Inicio</th>
-              <th>Fecha Fin</th>
-              <th>Cantidad</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($production_order_detail as $element)
-            <tr>
-              <td>{{ $element->name }}</td>
-              <td>
-                @if (\App\Items::typeItem($element->id_item) == 5)
-                <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}"> {{$element->start_date_est}}</a>
-                @endif
-                
-                
-              </td>
-              <td>
-                @if (\App\Items::typeItem($element->id_item) == 5)
-                <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
-                @endif
-                
-                
-              </td>
-              <td>
-                <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
-                {{--  <td>
-                  <a href="#" data-id = "{{$element->id}}"  class="btn btn-icon-only blue" data-toggle="modal" data-target="#modal_edit_detail">
-                    <i class="glyphicon glyphicon-pencil"> </i>
-                  </a>
-                </td> --}}
+        @if (isset($production_order))
+          <div class="row">
+          <!-- Button trigger modal -->
+          <div class="form-group">
+          <label class="col-md-1 control-label"></label>
+          <div class="col-md-9">
+             <a href="javascript:;" class="btn btn-icon-only green" data-toggle="modal" data-target="#myModal" title="Adicionar Tarea">
+            <i class="glyphicon glyphicon-plus"></i>
+          </a>
+          </div>
+             
+          </div>
+        
+        </div>
+        @endif
+        
+        <div class="row">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Cantidad</th>
               </tr>
-              @endforeach
-            </tbody>
-          </table>
+            </thead>
+            <tbody>
+              @foreach ($production_order_detail as $element)
+              <tr>
+                <td>{{ $element->name }}</td>
+                <td>
+                  @if (\App\Items::typeItem($element->id_item) == 5)
+                  <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}"> {{$element->start_date_est}}</a>
+                  @endif
+                  
+                  
+                </td>
+                <td>
+                  @if (\App\Items::typeItem($element->id_item) == 5)
+                  <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
+                  @endif
+                  
+                  
+                </td>
+                <td>
+                  <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
+                  {{--  <td>
+                    <a href="#" data-id = "{{$element->id}}"  class="btn btn-icon-only blue" data-toggle="modal" data-target="#modal_edit_detail">
+                      <i class="glyphicon glyphicon-pencil"> </i>
+                    </a>
+                  </td> --}}
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          
           <input type="hidden" name="tree_save" id="tree_save">
           {!! Form::close() !!}
-          {{-- <div class="form-group">
-            <label class="col-md-3 control-label">
-              Tipo Trabajo
-            </label>
-            <div class="col-md-9">
-              <div class="input-group">
-                <form action="{{url('store_template_production_order')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
-                  {!! csrf_field() !!}
-                  {!!  Form::select('id_project_template',$templates,null,['class'=> 'form-control' ,'id'=>'id_project_template']) !!}
-                  <button type="submit" class="btn btn-primary">Generate Template</button>
-                </form>
-                <!--    <span class="input-group-addon">
-                  <a  data-target="#load_template" data-toggle="modal" id="link_template" title="asignar cantidades">
-                    Asignar Cantidades
-                  </a>
-                </span>-->
-              </div>
-            </div>
-            <input type="hidden" name="name" id="name_production_order">
-          </div> --}}
+          
         </div>
       </div>
     </div>
-    <!--DOC: Aplly "modal-cached" class after "modal" class to enable ajax content caching-->
-    <div class="modal fade" id="load_template" role="basic" aria-hidden="true" tabindex="-1">
-      <div class="modal-dialog modal-full">
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h4 class="modal-title">Asignar Cantidades</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Adicionar Tarea</h4>
           </div>
-          <div class="modal-body" id="modal_template">
-            <div class="actions pull-right">
-              <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;"  id="add_task_production_order" title="Añadir">
-                <i class="icon-cloud-upload"></i>
-              </a>
-              <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="update_task_production_order" data-token="{{ csrf_token() }}" title="Editar">
-                <i class="fa fa-edit"></i>
-              </a>
-              <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;" id="remove_task" data-token="{{ csrf_token() }}" title="Eliminar">
-                <i class="icon-trash"></i>
-              </a>
-            </div>
-            <div class="scroller" style="height:500px" data-always-visible="1" data-rail-visible1="1">
-              <div class="row">
-                <div class="col-md-4">
-                  <h4>Tareas</h4>
+          <div class="modal-body">
+            @if (isset($production_order))
+             <form action="/add_order_detail" method="POST" class="form-horizontal" role="form">
+             {!! csrf_field() !!}
+              <input type="hidden" name="id_production_order" value="{{$production_order->id_production_order}}">             
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Padre</label>
+                  <div class="col-md-9">
+
+                    <select name="parent_id_order_detail" class="form-control" >
+                      <option value=""> Seleccione </option>
+                      @if($production_order_detail->count())
+                      @foreach ($production_order_detail as $key => $element)
+                          @if ($element->item->id_item_type == 5)
+                            <option value="{{$element->id_order_detail}}"> {{$element->name}} </option>
+                          @endif
+                         
+                      @endforeach
+                      @endif
+                    </select>
+                  </div>
                 </div>
-                <div class="col-md-8">
-                  <div id='jstree' class='tree-demo' ></div>
+                
+                <div class="form-group">
+                      <label class="col-md-3 control-label">
+                          Nombre Tarea
+                      </label>
+                      <div class="col-md-9">
+                        {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
+                          {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-md-3 control-label">
+                          Tipo de Artículo
+                      </label>
+                      <div class="col-md-9">
+                       {!!  Form::select('type_item',['5'=>'Tarea','1'=>'Producto','2'=>'Materia Prima','3'=>'Servicio','4'=>'Activo Fijo','6'=>'Insumo','7'=>'Contrato Servicio'],null,['class'=> 'form-control' ,'id'=>'type_item']) !!}
+
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="col-md-3 control-label">
+                          Artículo
+                      </label>
+                      <div class="col-md-9">
+                          <div class="input-icon">
+                              <i class="fa fa-bell-o">
+                              </i>
+                              <input class="form-control" placeholder="Left icon" type="text" id="item" name="item" />
+                              <input type="hidden" name="id_item" id="id_item" value="">
+                          </div>
+                      </div>
+                  </div>
+                 <div class="form-group">
+                      <label class="col-md-3 control-label">
+                          Cantidad
+                      </label>
+                      <div class="col-md-9">
+                        {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
+                          {!! Form::text('quantity', null, ['class'=>'form-control', 'placeholder'=>'Cantidad']) !!}
+                      </div>
+                  </div>
+            
+                <div class="form-group">
+                  <div class="col-sm-10 col-sm-offset-2">
+                  
+                  </div>
                 </div>
-              </div>
-            </div>
+           
+            
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn dark btn-outline" data-dismiss="modal">Guardar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Adicionar</button>
           </div>
+          </form>
+            @endif
         </div>
       </div>
     </div>
+
     @stop
     @section('scripts')
     <!-- BEGIN PAGE LEVEL PLUGINS -->

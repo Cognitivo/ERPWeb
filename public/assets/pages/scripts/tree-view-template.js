@@ -83,10 +83,16 @@ $(function() {
     var parent = $('#parent_name_contact').val()
     var son = $('#contact').val()
     draw_tree_contact(parent, son)
-    var lat = $('#geo_lat').val()
-    var lng = $('#geo_long').val()
+    var longlat = $('#geo_longlat').val()
+    var lat = null
+    var lng = null
     var address = $('#address_contact').val()
-    if (lat != undefined && lng != undefined) {
+    if (longlat != undefined && longlat != '' ) {      
+        var array = longlat.split(',')
+        var lat = array[0]
+        var lng = array[1]
+        load_gmap_contact(lat, lng, address)
+    }else{
         load_gmap_contact(lat, lng, address)
     }
 });
@@ -309,8 +315,17 @@ function contacts() {
                 var value = $("#contact").getSelectedItemData().id_contact;
                 var name_contact = $("#contact").getSelectedItemData().name;
                 var name_parent = $('#contact').getSelectedItemData().parent_name;
-                var lat = $("#contact").getSelectedItemData().geo_lat;
-                var lng = $("#contact").getSelectedItemData().geo_long;
+                var longlat = $("#contact").getSelectedItemData().geo_longlat;
+                if(longlat != null){
+                   longlat = longlat.split(",")
+                    var lat =longlat[0];
+                var lng = longlat[1];
+                }else{
+                     var lat = null;
+                    var lng  = null;
+                }
+               
+
                 if (contact.parent_id_contact == null) {
                     var address = $("#contact").getSelectedItemData().address;
                 } else {
@@ -384,7 +399,7 @@ function get_name_project(name) {
 }
 
 function load_gmap_contact(lat, lng, address) {
-    
+    console.log("lat:"+ parseFloat(lat) + "long:" + parseFloat(lng))
     $('#address_contact').val(address).trigger('change')
     var map;
     map = new GMaps({
@@ -418,16 +433,19 @@ function load_gmap_contact(lat, lng, address) {
 
   if(lat != null && lat != '' && lng != null && lng != ''){
     map.addMarker({
-  lat: lat,
-  lng: lng,
+  lat: parseFloat(lat),
+  lng: parseFloat(lng),
 
 });
   }else{
+    //adreess = 'Codas thompson c/ jose falcon'
     GMaps.geocode({
         address: address.trim(),
         callback: function(results, status) {
             if (status == 'OK') {
                 var latlng = results[0].geometry.location;
+                console.log(latlng.lat())
+                console.log(latlng.lng())
                 map.setCenter(latlng.lat(), latlng.lng());
                 map.addMarker({
                     lat: latlng.lat(),

@@ -27,12 +27,13 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
+       
         if (\Request::ajax()) {
             return $this->indexData();
         }
-        $order = ProductionOrder::all();
+        //$order = ProductionOrder::all();
 
-        return view('Production/list_production_order', compact('order'));
+        return view('Production/list_production_order');
     }
 
     public function indexData()
@@ -45,6 +46,8 @@ class ProductionOrderController extends Controller
         return Datatables::of($orders)
 
             ->addColumn('actions', function ($order) {
+                $result = '';
+                   if ($order->status == 1) {
                 $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-primary" >
                 <i class="glyphicon glyphicon-edit"></i>
                 </a>
@@ -55,9 +58,9 @@ class ProductionOrderController extends Controller
                 </form>';
                
 
-                if ($order->status == 1) {
+             
                     $result = $result . '
-                             <a href="{{ url("approved_production_order",' . $order->id_production_order . ') }}" class="btn purple">
+                             <a href="/approved_production_order/'.$order->id_production_order .'" class="btn purple">
                             <i class="fa fa-file-o"></i> Aprobar </a>
                      ';
                 }
@@ -413,7 +416,7 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $request->id_production_line;
         $production_order->work_number        = $request->work_number;
         $production_order->name               = $request->name;
-
+        $production_order->id_project = $id_project;
         $production_order->work_number = $request->work_number;
 
         $production_order->timestamp = Carbon::now();
@@ -427,7 +430,7 @@ class ProductionOrderController extends Controller
         //if change template delete project template current an insert new
 
         if ($production_order->project->id_project_template != $request->id_project_template) {
-            $production_order->details()->delete();
+            $production_order->productionOrderDetail()->delete();
             //insert task and order detail
             $template_detail = ProjectTemplate::find($request->id_project_template);
             //insertTask($name, $parent, $item, $id_project)
@@ -659,7 +662,7 @@ class ProductionOrderController extends Controller
 
     public function changeStatusApproved($id)
     {
-
+      
         $production_order = ProductionOrder::findOrFail($id);
 
         $production_order_detail = $production_order->productionOrderDetail();

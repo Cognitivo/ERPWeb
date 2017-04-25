@@ -82,28 +82,24 @@
  <script src="/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script> 
 <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+		//$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
 
-		$(document).ready(function(){
-			 var table = loadTable($('#table-production-order'), '/production_order')
-		})
-		function loadTable(table_id, url) {
-    //dataTable or DataTable
-    //var test = "01/01/2017"
-    //console.log(moment(test).format('MM/DD/YYYY'));
-    var table = table_id.DataTable({
+		$(document).ready(function(e){
+      //e.preventDedault()			 
+      $('#table-production-order').DataTable({
         processing: true,
         serverSide: true,
         responsive: true,
         "pagingType": "bootstrap_full_number",
         "pageLength": 50,
         ajax: {
-            url: url,
-            "type": "get",
+            url: '/production_order',
+          type: "get",
+          async : true
         },
         "order": []
     })
-    return table
-}
+		})
+	
 	</script>
 @stop
