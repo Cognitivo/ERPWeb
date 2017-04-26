@@ -103,11 +103,12 @@ class ProductionOrderDetailController extends Controller
      */
     public function editquantity(Request $request)
     {
+      
         $ProductionOrderDetail = ProductionOrderDetail::findOrFail($request->id_order_detail);
       if (isset($ProductionOrderDetail)) {
       $ProductionOrderDetail->quantity=$request->quantity;
       $ProductionOrderDetail->save();
-          return response()->json($ProductionOrderDetail);
+      return response()->json($ProductionOrderDetail);
       }
 
 
