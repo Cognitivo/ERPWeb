@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\ProductionLine;
 use App\ProductionOrder;
 use App\ProductionOrderDetail;
+use App\Items;
 use App\Project;
 use App\ProjectTag;
 use App\ProjectTask;
@@ -198,7 +199,7 @@ class ProductionOrderDetailController extends Controller
         $id_project_task = $this->insertTask($request->quantity, $parent_task, $request->id_item, $production_order->id_project);
         $production_order_detail = new ProductionOrderDetail;
          $production_order_detail->id_production_order    = $request->id_production_order;
-        $production_order_detail->name                   = $request->name;
+        $production_order_detail->name                   = Items::find($request->id_item)->name;
         $production_order_detail->quantity               = $request->quantity;
         $production_order_detail->id_project_task        = $id_project_task;
         $production_order_detail->id_item                = $request->id_item;

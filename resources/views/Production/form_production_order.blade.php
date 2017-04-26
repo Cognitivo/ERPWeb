@@ -242,15 +242,7 @@
                   </div>
                 </div>
                 
-                <div class="form-group">
-                      <label class="col-md-3 control-label">
-                          Nombre Tarea
-                      </label>
-                      <div class="col-md-9">
-                        {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
-                          {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
-                      </div>
-                  </div>
+              
                   <div class="form-group">
                       <label class="col-md-3 control-label">
                           Tipo de Artículo
