@@ -424,28 +424,27 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $request->id_production_line;
         $production_order->work_number        = $request->work_number;
         $production_order->name               = $request->name;
-        $production_order->id_project = $id_project;
+       
         $production_order->work_number = $request->work_number;
-
         $production_order->timestamp = Carbon::now();
-
         $production_order->start_date_est = Controller::convertDate($range_date[0]);
-
         $production_order->end_date_est = Controller::convertDate($range_date[1]);
-
-        $production_order->save();
+        
 
         //if change template delete project template current an insert new
 
         if ($production_order->project->id_project_template != $request->id_project_template) {
+             $production_order->id_project = $id_project;
             $production_order->productionOrderDetail()->delete();
             //insert task and order detail
             $template_detail = ProjectTemplate::find($request->id_project_template);
+            //dd($template_detail);
             //insertTask($name, $parent, $item, $id_project)
             if ($template_detail->get()->count()) {
                 $this->insertDetail($template_detail, $production_order, $id_project);
             }
         }
+        $production_order->save();
 
         return redirect()->route('production_order.index');
 
