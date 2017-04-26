@@ -209,8 +209,8 @@ class ProductionOrderDetailController extends Controller
         $production_order_detail->is_read                = 1;
         $production_order_detail->timestamp              = Carbon::now();
         $production_order_detail->trans_date             = Carbon::now();        
-        $production_order_detail->start_date_est         = $production_order->start_date_est;
-        $production_order_detail->end_date_est           = $production_order->end_date_est;
+        $production_order_detail->start_date_est         = Carbon::now();
+        $production_order_detail->end_date_est           = Carbon::now()->addDay();  
         $production_order_detail->parent_id_order_detail = $request->parent_id_order_detail;
         $production_order_detail->save();
         return redirect()->back();
