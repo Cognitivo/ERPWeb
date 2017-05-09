@@ -104,11 +104,25 @@ class ProductionOrderDetailController extends Controller
      */
     public function editquantity(Request $request)
     {
-      
+
         $ProductionOrderDetail = ProductionOrderDetail::findOrFail($request->id_order_detail);
       if (isset($ProductionOrderDetail)) {
-      $ProductionOrderDetail->quantity=$request->quantity;
-      $ProductionOrderDetail->save();
+        $production_order_execution                             = new ProductionExecutionDetail;
+        $production_order_execution->id_order_detail            = $production_order_detail->id_order_detail;
+        $production_order_execution->name                       = $production_order_detail->name;
+        $production_order_execution->quantity                   = $production_order_detail->quantity;
+        $production_order_execution->id_project_task            = $production_order_detail->id_project_task;
+        $production_order_execution->id_item                    = $production_order_detail->item;
+        $production_order_execution->id_company                 = 1;
+        $production_order_execution->id_user                    = 1;
+        $production_order_execution->is_input                   = 1;
+        $production_order_execution->is_head                    = 1;
+        $production_order_execution->is_read                    = 1;
+        $production_order_execution->timestamp                  = Carbon::now();
+        $production_order_execution->trans_date                 = Carbon::now();
+        $production_order_execution->start_date                 = $production_order_detail->start_date_est;
+        $production_order_execution->end_date                   = $production_order_detail->end_date_est;
+        $production_order_execution->save();
       return response()->json($ProductionOrderDetail);
       }
 
@@ -137,7 +151,7 @@ class ProductionOrderDetailController extends Controller
 
   /*  public function updateProductionOrderDetail(Request $request)
     {
-       
+
             $production_order_detail = ProductionOrderDetail::find($request->pk);
 
             if($production_order_detail){
@@ -149,7 +163,7 @@ class ProductionOrderDetailController extends Controller
 
     public function updateProductionOrderDetail(Request $request, $name_field)
     {
-        
+
         //type 1 start date and 2 end date
        $production_order_detail = ProductionOrderDetail::find($request->pk);
 
@@ -195,7 +209,7 @@ class ProductionOrderDetailController extends Controller
        }else{
         $parent_task = null;
        }
-        
+
         $id_project_task = $this->insertTask($request->quantity, $parent_task, $request->id_item, $production_order->id_project);
         $production_order_detail = new ProductionOrderDetail;
          $production_order_detail->id_production_order    = $request->id_production_order;
@@ -209,9 +223,9 @@ class ProductionOrderDetailController extends Controller
         $production_order_detail->is_head                = 1;
         $production_order_detail->is_read                = 1;
         $production_order_detail->timestamp              = Carbon::now();
-        $production_order_detail->trans_date             = Carbon::now();        
+        $production_order_detail->trans_date             = Carbon::now();
         $production_order_detail->start_date_est         = Carbon::now();
-        $production_order_detail->end_date_est           = Carbon::now()->addDay();  
+        $production_order_detail->end_date_est           = Carbon::now()->addDay();
         $production_order_detail->parent_id_order_detail = $request->parent_id_order_detail;
         $production_order_detail->save();
         return redirect()->back();

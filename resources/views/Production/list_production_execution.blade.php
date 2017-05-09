@@ -58,16 +58,17 @@
 						<div class="row">
 							<div class="col-md-6"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
 							<div class="col-md-3"><h5>{{  intval($element->quantity)  }}</h5></div>
-							<div class="col-md-3"><h5>
+							<div class="col-md-3">
+								<h5>
 								@if(isset($element->ProductionExecutionDetail))
 								<a href="#" class="quantity_execution" data-pk="{{$element->ProductionExecutionDetail->id_execution_detail}}">
 									{{ isset($element->ProductionExecutionDetail->quantity) ? intval($element->ProductionExecutionDetail->quantity) : '0'  }}
 								</a>
 								@else
-								0
+								 0
 								@endif
-								
-							</h5></div>
+							</h5>
+						</div>
 							@if ( isset($element->ProductionExecutionDetail))
 							<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}">edit</a></h5></div>
 							@endif
@@ -89,7 +90,7 @@
 	@endsection
 	@section('scripts')
 	<script type="text/javascript">
-		
+
 		$.ajaxSetup({
 	headers: {
 	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -97,7 +98,7 @@
 	});
 	$('.quantity_execution').editable({
 	url: '/update_production_execution_detail',
-	
+
 	});
 	</script>>
 	@stop

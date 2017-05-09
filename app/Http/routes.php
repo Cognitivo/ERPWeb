@@ -95,8 +95,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_order_detail', 'Production\ProductionOrderDetailController');
     Route::post('add_order_detail','Production\ProductionOrderDetailController@addOrderDetail');
     Route::post('update_production_order_detail/{name_field}','Production\ProductionOrderDetailController@updateProductionOrderDetail');
-   
-    
+
+
     Route::resource('production_line', 'Production\ProductionLineController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');
@@ -143,6 +143,7 @@ Route::get('api/production_order_detail/{id_production_order}', 'Production\Prod
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
 
+Route::get('api/production_execution/{id_order_detail}', 'Production\ProductionExecutionController@ProductionExecutionDetail');
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
 
 Route::get('api/approved_production_execution/{id}','Production\ProductionExecutionController@approveExcecution');

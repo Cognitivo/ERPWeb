@@ -27,7 +27,7 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
-       
+
         if (\Request::ajax()) {
             return $this->indexData();
         }
@@ -56,9 +56,9 @@ class ProductionOrderController extends Controller
                 <input type="hidden" name="_method" value="DELETE">
                      <button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
                 </form>';
-               
 
-             
+
+
                     $result = $result . '
                              <a href="/approved_production_order/'.$order->id_production_order .'" class="btn purple">
                             <i class="fa fa-file-o"></i> Aprobar </a>
@@ -424,12 +424,12 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $request->id_production_line;
         $production_order->work_number        = $request->work_number;
         $production_order->name               = $request->name;
-       
+
         $production_order->work_number = $request->work_number;
         $production_order->timestamp = Carbon::now();
         $production_order->start_date_est = Controller::convertDate($range_date[0]);
         $production_order->end_date_est = Controller::convertDate($range_date[1]);
-        
+
 
         //if change template delete project template current an insert new
 
@@ -669,7 +669,7 @@ class ProductionOrderController extends Controller
 
     public function changeStatusApproved($id)
     {
-      
+
         $production_order = ProductionOrder::findOrFail($id);
 
         $production_order_detail = $production_order->productionOrderDetail();

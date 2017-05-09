@@ -99,7 +99,14 @@ class ProductionExecutionController extends Controller
     }
 
     //Api Methods
+    public function ProductionExecutionDetail($id_order_detail)
+    {
 
+        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail','=',$id_order_detail)->get();
+
+        return response()->json($ProductionExecutionDetail);
+
+    }
     public function saveUpdate(Request $request)
     {
 
@@ -417,7 +424,7 @@ class ProductionExecutionController extends Controller
 
      public function updateProductionExecutionDetail(Request $request)
     {
-       
+
             $production_order_detail = ProductionExecutionDetail::find($request->pk);
 
             if($production_order_detail){
