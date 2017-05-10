@@ -139,12 +139,15 @@
         </div>
         <div class="form-actions">
           <div class="row">
+          @if ($production_order->productionOrderDetail()->first()->status != 2)
             <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
-              Submit
+              Guardar
               </button>
-              <a href="{{route('production_order.index')}}" class="btn default"> CANCELAR</a>
+              <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
             </div>
+          @endif
+            
           </div>
         </div>
         @if (isset($production_order))
@@ -153,9 +156,11 @@
           <div class="form-group">
           <label class="col-md-1 control-label"></label>
           <div class="col-md-9">
+          @if ($production_order->status != 2)
              <a href="javascript:;" class="btn btn-icon-only green" data-toggle="modal" data-target="#myModal" title="Adicionar Tarea">
             <i class="glyphicon glyphicon-plus"></i>
           </a>
+          @endif
           </div>
              
           </div>
@@ -171,6 +176,7 @@
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
                 <th>Cantidad</th>
+                <th> Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -179,26 +185,46 @@
                 <td>{{ $element->name }}</td>
                 <td>
                   @if (\App\Items::typeItem($element->id_item) == 5)
-                  <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}"> {{$element->start_date_est}}</a>
+                  @if ($element->status != 2)
+                   <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}" > {{$element->start_date_est}}</a>
+                  @else
+                   <a > {{$element->start_date_est}}</a>
+                  @endif
+                 
                   @endif
                   
                   
                 </td>
                 <td>
                   @if (\App\Items::typeItem($element->id_item) == 5)
-                  <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
+                    @if ($element->status != 2)
+                     <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
+                    @else
+                     <a> {{$element->end_date_est}}</a>
+                    @endif
+                 
                   @endif
                   
                   
                 </td>
                 <td>
-                  <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
-                  {{--  <td>
-                    <a href="#" data-id = "{{$element->id}}"  class="btn btn-icon-only blue" data-toggle="modal" data-target="#modal_edit_detail">
-                      <i class="glyphicon glyphicon-pencil"> </i>
-                    </a>
-                  </td> --}}
+                @if ($element->status != 2)
+                 <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
+                    @else
+                     <a>{{ intval($element->quantity) }}</a></td>
+                    @endif
+                 
+                  <td>
+                     @if ($element->status != 2)
+                    <form action="/production_order_detail/{{$element->id_order_detail}}"  method= "post" style =" display : inline;">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="_method" value="DELETE">
+                     <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
+                </form>
+                 @endif
+                  </td>
                 </tr>
+
                 @endforeach
               </tbody>
             </table>

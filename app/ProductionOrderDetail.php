@@ -116,7 +116,7 @@ class ProductionOrderDetail extends Model
 
             ->leftJoin('production_execution_detail', 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
 
-            ->where('production_order_detail.id_production_order', $id_order)
+            ->where('production_order_detail.id_production_order', $id_order)->orderBy('parent_id_order_detail')
 
 
 

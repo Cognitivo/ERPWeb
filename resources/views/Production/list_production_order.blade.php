@@ -24,6 +24,7 @@
 		<tr>
 			<th>Nº de O.T.</th>
 			<th>Nombre</th>
+      <th>Linea Produccion</th>
 			<th>Estado</th>
 			<th>Acciones</th>
 		</tr>

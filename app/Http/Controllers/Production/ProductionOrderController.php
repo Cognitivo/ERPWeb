@@ -39,42 +39,50 @@ class ProductionOrderController extends Controller
     public function indexData()
     {
 
-        $orders = ProductionOrder::
+        $orders = ProductionOrder::leftJoin('production_line','production_line.id_production_line','=','production_order.id_production_line')->
 
-            select(['id_production_order', 'work_number', 'name', 'status'])->get();
+            select(['id_production_order', 'work_number', 'production_order.name','production_line.name as linea', 'status'])->get();
 
         return Datatables::of($orders)
 
             ->addColumn('actions', function ($order) {
                 $result = '';
                    if ($order->status == 1) {
-                $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-primary" >
+                $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
                 <i class="glyphicon glyphicon-edit"></i>
                 </a>
                 <form action="/production_order/'.$order->id_production_order.'"  method= "post" style =" display : inline;">
                 <input type="hidden" name="_token" value="'.csrf_token().'">
                 <input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="btn btn-icon-only red glyphicon glyphicon-trash "></button>
+                     <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
                 </form>';
 
 
 
                     $result = $result . '
-                             <a href="/approved_production_order/'.$order->id_production_order .'" class="btn purple">
+                             <a href="/approved_production_order/'.$order->id_production_order .'" class="btn btn-sm purple">
                             <i class="fa fa-file-o"></i> Aprobar </a>
                      ';
+                }else{
+                      $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                <i class="glyphicon glyphicon-eye-open"></i>
+                </a>';
                 }
 
                 return $result;
 
-            })->editColumn('status', '
-            @if ($status == 2)
-                Aprobado
-            @elseif($status == 4)
-            Terminado
-            @else
-            Pendiente
-            @endif')
+            })->editColumn('status',function($order){
+
+                $status = $order->productionOrderDetail()->first()->status ?? null;
+                if($status == 2){
+                    return 'Aprobado';
+                }else if($status ==4){
+                      return 'Terminado';
+                }else{
+                    return 'Pendiente';
+                }
+            })
+           
 
             ->removeColumn('id_production_order')
             ->make();
@@ -681,7 +689,7 @@ class ProductionOrderController extends Controller
 
         }
         //dd("ok");
-        $production_order->status = 2;
+       // $production_order->status = 2;
 
         $production_order->save();
 

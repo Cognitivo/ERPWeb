@@ -230,5 +230,11 @@ class ProductionOrderDetailController extends Controller
         $production_order_detail->save();
         return redirect()->back();
     }
+    public function destroy($id)
+    {
+       $detail = ProductionOrderDetail::find($id);
+       $detail->delete();
+       return redirect()->back();
+    }
 
 }
