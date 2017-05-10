@@ -73,7 +73,7 @@ class ProductionOrderController extends Controller
 
             })->editColumn('status',function($order){
 
-                $status = $order->productionOrderDetail()->first()->status ?? null;
+                $status = $order->productionOrderDetail()->first() != null ?  $order->productionOrderDetail()->first()->status:  null;
                 if($status == 2){
                     return 'Aprobado';
                 }else if($status ==4){
