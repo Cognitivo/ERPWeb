@@ -58,15 +58,20 @@ class ProductionOrderController extends Controller
                 </form>';
 
 
-
-                    $result = $result . '
+                      $status = $order->productionOrderDetail()->first() != null ?  $order->productionOrderDetail()->first()->status:  null;
+                      if($status != 2){
+                         $result = $result . '
                              <a href="/approved_production_order/'.$order->id_production_order .'" class="btn btn-sm purple">
                             <i class="fa fa-file-o"></i> Aprobar </a>
                      ';
-                }else{
-                      $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
-                <i class="glyphicon glyphicon-eye-open"></i>
-                </a>';
+
+                      }else{
+                        $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                        </a>';
+                      }
+                        
+             
                 }
 
                 return $result;
@@ -180,8 +185,9 @@ class ProductionOrderController extends Controller
         })->get();
 
         foreach ($results as $key => $value) {
+         
             //verificar si el estado es asignado para insertar
-            if (strpos(strtolower(trim($value->estado)), 'asig')) {
+            if (strpos(strtolower(trim($value->estado)), 'asig') !== false) {
                 //buscar linea de produccion, si no existe crear
                 $production_line = ProductionLine::where('name', $value->linea_trabajo)->first();
 
@@ -283,6 +289,7 @@ class ProductionOrderController extends Controller
 
         } else {
             $client->name = $request->contacto;
+            $client->telephone = $request->telefono_contacto;
             //verificar direccion de cliente si no existe crear en una nueva direccion para el contacto
         }
 
@@ -330,7 +337,7 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $id_production_line;
         $production_order->id_project         = $id_project;
         $production_order->name               = $request->tipotrabajo;
-        $production_order->trans_date         = Carbon::now();
+        $production_order->trans_date         = $request->fecha_de_asignacion;
         $production_order->id_company         = 1;
         $production_order->id_branch          = 1;
         $production_order->id_terminal        = 1;
@@ -629,7 +636,7 @@ class ProductionOrderController extends Controller
         $production_order_execution->quantity                   = $quantity;
         $production_order_execution->id_project_task            = $id_project_task;
         $production_order_execution->id_item                    = $item;
-        $production_execution->status = 1;
+        $production_order_execution->status = 1;
         $production_order_execution->id_company                 = 1;
         $production_order_execution->id_user                    = 1;
         $production_order_execution->is_input                   = 1;

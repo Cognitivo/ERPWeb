@@ -139,15 +139,34 @@
         </div>
         <div class="form-actions">
           <div class="row">
-
-          @if ( isset($production_order) && count($production_order->productionOrderDetail()->first()) && $production_order->productionOrderDetail()->first()->status != 2)
-            <div class="col-md-offset-3 col-md-9">
+          @if (isset($production_order))
+         
+             @if ( count($production_order->productionOrderDetail()->first()) && $production_order->productionOrderDetail()->first()->status != 2)
+              
+               <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
               Guardar
               </button>
               <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
-            </div>
+            </div>      
+            @elseif(count($production_order->productionOrderDetail()->first()) == 0)
+             <div class="col-md-offset-3 col-md-9">
+              <button class="btn green" type="submit" id="send_production_order">
+              Guardar
+              </button>
+              <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
+            </div> 
           @endif
+          @else
+             <div class="col-md-offset-3 col-md-9">
+              <button class="btn green" type="submit" id="send_production_order">
+              Guardar
+              </button>
+              <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
+            </div> 
+          @endif
+
+         
             
           </div>
         </div>
