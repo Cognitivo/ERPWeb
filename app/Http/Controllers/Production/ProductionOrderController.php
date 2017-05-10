@@ -432,7 +432,7 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $request->id_production_line;
         $production_order->work_number        = $request->work_number;
         $production_order->name               = $request->name;
-
+        $production_order->status = 1;
         $production_order->work_number = $request->work_number;
         $production_order->timestamp = Carbon::now();
         $production_order->start_date_est = Controller::convertDate($range_date[0]);
@@ -608,6 +608,7 @@ class ProductionOrderController extends Controller
         $production_order_detail->is_input               = 1;
         $production_order_detail->is_head                = 1;
         $production_order_detail->is_read                = 1;
+        $production_order_detail->status = 1;
         $production_order_detail->timestamp              = Carbon::now();
         $production_order_detail->trans_date             = Carbon::now();
         $production_order_detail->start_date_est         = Carbon::now();
@@ -628,6 +629,7 @@ class ProductionOrderController extends Controller
         $production_order_execution->quantity                   = $quantity;
         $production_order_execution->id_project_task            = $id_project_task;
         $production_order_execution->id_item                    = $item;
+        $production_execution->status = 1;
         $production_order_execution->id_company                 = 1;
         $production_order_execution->id_user                    = 1;
         $production_order_execution->is_input                   = 1;

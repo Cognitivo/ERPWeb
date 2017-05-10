@@ -139,7 +139,8 @@
         </div>
         <div class="form-actions">
           <div class="row">
-          @if ($production_order->productionOrderDetail()->first()->status != 2)
+
+          @if ( isset($production_order) && count($production_order->productionOrderDetail()->first()) && $production_order->productionOrderDetail()->first()->status != 2)
             <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
               Guardar
@@ -209,19 +210,19 @@
                 </td>
                 <td>
                 @if ($element->status != 2)
-                 <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a></td>
+                 <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a>
                     @else
-                     <a>{{ intval($element->quantity) }}</a></td>
+                     <a>{{ intval($element->quantity) }}</a>
                     @endif
-                 
+                 </td>
                   <td>
                      @if ($element->status != 2)
-                    <form action="/production_order_detail/{{$element->id_order_detail}}"  method= "post" style =" display : inline;">
-                <input type="hidden" name="_token" value="{{csrf_token()}}">
-                <input type="hidden" name="_method" value="DELETE">
-                     <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
-                </form>
-                 @endif
+                        <form action="/production_order_detail/{{$element->id_order_detail}}"  method= "post" style =" display : inline;">
+                          <input type="hidden" name="_token" value="{{csrf_token()}}">
+                          <input type="hidden" name="_method" value="DELETE">
+                         <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
+                        </form>
+                    @endif
                   </td>
                 </tr>
 
