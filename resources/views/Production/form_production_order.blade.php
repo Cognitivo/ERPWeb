@@ -85,18 +85,11 @@
               Reclamo
             </label>
             <div class="col-md-9">
-              {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
+              
               {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Full Name']) !!}
             </div>
           </div>
-          {{--  <div class="form-group">
-            <label class="col-md-3 control-label">
-              Area
-            </label>
-            <div class="col-md-9">
-              {!!  Form::select('type_item',$project_tags,null,['class'=> 'form-control' ,'id'=>'type_item']) !!}
-            </div>
-          </div> --}}
+          
           <div class="form-group">
             <label class="control-label col-md-3">Rango de Fecha</label>
             <div class="col-md-9">
@@ -139,52 +132,52 @@
         </div>
         <div class="form-actions">
           <div class="row">
-          @if (isset($production_order))
-         
-             @if ( count($production_order->productionOrderDetail()->first()) && $production_order->productionOrderDetail()->first()->status != 2)
-              
-               <div class="col-md-offset-3 col-md-9">
+            @if (isset($production_order))
+            
+            @if ( count($production_order->productionOrderDetail()->first()) && $production_order->productionOrderDetail()->first()->status != 2)
+            
+            <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
               Guardar
               </button>
               <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
-            </div>      
+            </div>
             @elseif(count($production_order->productionOrderDetail()->first()) == 0)
-             <div class="col-md-offset-3 col-md-9">
+            <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
               Guardar
               </button>
               <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
-            </div> 
-          @endif
-          @else
-             <div class="col-md-offset-3 col-md-9">
+            </div>
+            @endif
+            @else
+            <div class="col-md-offset-3 col-md-9">
               <button class="btn green" type="submit" id="send_production_order">
               Guardar
               </button>
               <a href="{{route('production_order.index')}}" class="btn default"> Cancelar</a>
-            </div> 
-          @endif
-
-         
+            </div>
+            @endif
+            
             
           </div>
         </div>
+          {!! Form::close() !!}
         @if (isset($production_order))
-          <div class="row">
+        <div class="row">
           <!-- Button trigger modal -->
           <div class="form-group">
-          <label class="col-md-1 control-label"></label>
-          <div class="col-md-9">
-          @if ($production_order->status != 2)
-             <a href="javascript:;" class="btn btn-icon-only green" data-toggle="modal" data-target="#myModal" title="Adicionar Tarea">
-            <i class="glyphicon glyphicon-plus"></i>
-          </a>
-          @endif
+            <label class="col-md-1 control-label"></label>
+            <div class="col-md-9">
+              @if ($production_order->status != 2)
+              <a href="javascript:;" class="btn btn-icon-only green" data-toggle="modal" data-target="#myModal" title="Adicionar Tarea">
+                <i class="glyphicon glyphicon-plus"></i>
+              </a>
+              @endif
+            </div>
+            
           </div>
-             
-          </div>
-        
+          
         </div>
         @endif
         
@@ -206,179 +199,169 @@
                 <td>
                   @if (\App\Items::typeItem($element->id_item) == 5)
                   @if ($element->status != 2)
-                   <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}" > {{$element->start_date_est}}</a>
+                  <a href="#" class="start_date"  data-pk="{{$element->id_order_detail}}" > {{$element->start_date_est}}</a>
                   @else
-                   <a > {{$element->start_date_est}}</a>
+                  <a > {{$element->start_date_est}}</a>
                   @endif
-                 
+                  
                   @endif
                   
                   
                 </td>
                 <td>
                   @if (\App\Items::typeItem($element->id_item) == 5)
-                    @if ($element->status != 2)
-                     <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
-                    @else
-                     <a> {{$element->end_date_est}}</a>
-                    @endif
-                 
+                  @if ($element->status != 2)
+                  <a href="#" class="end_date" data-pk="{{$element->id_order_detail}}"> {{$element->end_date_est}}</a>
+                  @else
+                  <a> {{$element->end_date_est}}</a>
+                  @endif
+                  
                   @endif
                   
                   
                 </td>
                 <td>
-                @if ($element->status != 2)
-                 <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a>
-                    @else
-                     <a>{{ intval($element->quantity) }}</a>
-                    @endif
-                 </td>
-                  <td>
-                     @if ($element->status != 2)
-                        <form action="/production_order_detail/{{$element->id_order_detail}}"  method= "post" style =" display : inline;">
-                          <input type="hidden" name="_token" value="{{csrf_token()}}">
-                          <input type="hidden" name="_method" value="DELETE">
-                         <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
-                        </form>
-                    @endif
-                  </td>
-                </tr>
-
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-          
-          <input type="hidden" name="tree_save" id="tree_save">
-          {!! Form::close() !!}
-          
+                  @if ($element->status != 2)
+                  <a href="#" class="quantity" data-pk="{{$element->id_order_detail}}">{{ intval($element->quantity) }}</a>
+                  @else
+                  <a>{{ intval($element->quantity) }}</a>
+                  @endif
+                </td>
+                <td>
+                  @if ($element->status != 2)
+                  <form action="/production_order_detail/{{$element->id_order_detail}}"  method= "post" style =" display : inline;">
+                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
+                  </form>
+                  @endif
+                </td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
+        
+        <input type="hidden" name="tree_save" id="tree_save">
+      
+        
       </div>
     </div>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Adicionar Tarea</h4>
-          </div>
-          <div class="modal-body">
-            @if (isset($production_order))
-             <form action="/add_order_detail" method="POST" class="form-horizontal" role="form">
-             {!! csrf_field() !!}
-              <input type="hidden" name="id_production_order" value="{{$production_order->id_production_order}}">             
-                <div class="form-group">
-                  <label class="col-md-3 control-label">Padre</label>
-                  <div class="col-md-9">
-
-                    <select name="parent_id_order_detail" class="form-control" >
-                      <option value=""> Seleccione </option>
-                      @if($production_order_detail->count())
-                      @foreach ($production_order_detail as $key => $element)
-                          @if ($element->item->id_item_type == 5)
-                            <option value="{{$element->id_order_detail}}"> {{$element->name}} </option>
-                          @endif
-                         
-                      @endforeach
-                      @endif
-                    </select>
-                  </div>
-                </div>
-                
-              
-                  <div class="form-group">
-                      <label class="col-md-3 control-label">
-                          Tipo de Artículo
-                      </label>
-                      <div class="col-md-9">
-                       {!!  Form::select('type_item',['5'=>'Tarea','1'=>'Producto','2'=>'Materia Prima','3'=>'Servicio','4'=>'Activo Fijo','6'=>'Insumo','7'=>'Contrato Servicio'],null,['class'=> 'form-control' ,'id'=>'type_item']) !!}
-
-                      </div>
-                  </div>
-
-                  <div class="form-group">
-                      <label class="col-md-3 control-label">
-                          Artículo
-                      </label>
-                      <div class="col-md-9">
-                          <div class="input-icon">
-                              <i class="fa fa-bell-o">
-                              </i>
-                              <input class="form-control" placeholder="Left icon" type="text" id="item" name="item" />
-                              <input type="hidden" name="id_item" id="id_item" value="">
-                          </div>
-                      </div>
-                  </div>
-                 <div class="form-group">
-                      <label class="col-md-3 control-label">
-                          Cantidad
-                      </label>
-                      <div class="col-md-9">
-                        {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
-                          {!! Form::text('quantity', null, ['class'=>'form-control', 'placeholder'=>'Cantidad']) !!}
-                      </div>
-                  </div>
-            
-                <div class="form-group">
-                  <div class="col-sm-10 col-sm-offset-2">
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Adicionar Tarea</h4>
+        </div>
+         <form action="/add_order_detail" method="POST" class="form-horizontal" role="form">
+        <div class="modal-body">
+          @if (isset($production_order))
+         
+            {!! csrf_field() !!}
+            <input type="hidden" name="id_production_order" value="{{$production_order->id_production_order}}">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Padre</label>
+              <div class="col-md-9">
+                <select name="parent_id_order_detail" class="form-control" >
+                  <option value=""> Seleccione </option>
+                  @if($production_order_detail->count())
+                  @foreach ($production_order_detail as $key => $element)
+                  @if ($element->item->id_item_type == 5)
+                  <option value="{{$element->id_order_detail}}"> {{$element->name}} </option>
+                  @endif
                   
-                  </div>
+                  @endforeach
+                  @endif
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                Tipo de Artículo
+              </label>
+              <div class="col-md-9">
+                {!!  Form::select('type_item',['5'=>'Tarea','1'=>'Producto','2'=>'Materia Prima','3'=>'Servicio','4'=>'Activo Fijo','6'=>'Insumo','7'=>'Contrato Servicio'],null,['class'=> 'form-control' ,'id'=>'type_item']) !!}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                Artículo
+              </label>
+              <div class="col-md-9">
+                <div class="input-icon">
+                  <i class="fa fa-bell-o">
+                  </i>
+                  <input class="form-control" placeholder="Left icon" type="text" id="item" name="item" />
+                  <input type="hidden" name="id_item" id="id_item" value="">
                 </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-3 control-label">
+                Cantidad
+              </label>
+              <div class="col-md-9">
+                {{--   <input class="form-control" placeholder="Enter text" type="text" name="name"  />     --}}
+                {!! Form::text('quantity', null, ['class'=>'form-control', 'placeholder'=>'Cantidad']) !!}
+              </div>
+            </div>
            
+            
             
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-primary">Adicionar</button>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
           </div>
-          </form>
-            @endif
-        </div>
+        </form>
+        @endif
       </div>
     </div>
-
-    @stop
-    @section('scripts')
-    <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="{{ url() }}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL PLUGINS -->
-    {{--        <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU&callback=initMap">
-    </script> --}}
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU" type="text/javascript"></script>
-    <script src="{{ url() }}/assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
-    <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    /*
-    var id_project_id_project_template = $('#id_project option:selected').val()
-    var id_project = id_project_id_project_template.split("-")[0]
-    var id_project_template= id_project_id_project_template.split("-")[1]*/
-    //$('#link_template').click(function(){
-    //console.log($('#jstree1').jstree())
-    /*var id_project_id_project_template = $('#id_project option:selected').val()
-    var id_project = id_project_id_project_template.split("-")[0]
-    var id_project_template= id_project_id_project_template.split("-")[1]
-    load_tree_project_order(id_project_template,id_project)
-    })
-    $(document).ready(function(){
-    var name_project= $('#id_project option:selected').text()
-    get_name_project(name_project)
-    if($('#id_production_order').val()!=undefined){
-    load_tree_project_order(id_project_template,id_project)
-    }
-    })
-    $('#send_production_order').click(function(){
-    var objtree = $('#jstree').jstree(true).get_json('#', {
-    flat: true
-    })
-    var fulltree = JSON.stringify(objtree);
-    console.log(fulltree)
-    $('#tree_save').val(fulltree)
-    })*/
-    </script>
-    
-    
-    @stop
+  </div>
+  @stop
+  @section('scripts')
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="{{ url() }}/assets/global/plugins/jstree/dist/jstree.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  {{--        <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU&callback=initMap">
+  </script> --}}
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyAJ_Pf9r3W4LqU71Br79LK8pFDD6nrfXRU" type="text/javascript"></script>
+  <script src="{{ url() }}/assets/global/plugins/gmaps/gmaps.min.js" type="text/javascript"></script>
+  <script src="{{ url() }}/assets/pages/scripts/tree-view-template.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  /*
+  var id_project_id_project_template = $('#id_project option:selected').val()
+  var id_project = id_project_id_project_template.split("-")[0]
+  var id_project_template= id_project_id_project_template.split("-")[1]*/
+  //$('#link_template').click(function(){
+  //console.log($('#jstree1').jstree())
+  /*var id_project_id_project_template = $('#id_project option:selected').val()
+  var id_project = id_project_id_project_template.split("-")[0]
+  var id_project_template= id_project_id_project_template.split("-")[1]
+  load_tree_project_order(id_project_template,id_project)
+  })
+  $(document).ready(function(){
+  var name_project= $('#id_project option:selected').text()
+  get_name_project(name_project)
+  if($('#id_production_order').val()!=undefined){
+  load_tree_project_order(id_project_template,id_project)
+  }
+  })
+  $('#send_production_order').click(function(){
+  var objtree = $('#jstree').jstree(true).get_json('#', {
+  flat: true
+  })
+  var fulltree = JSON.stringify(objtree);
+  console.log(fulltree)
+  $('#tree_save').val(fulltree)
+  })*/
+  </script>
+  
+  
+  @stop

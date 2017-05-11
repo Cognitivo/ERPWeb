@@ -37,7 +37,7 @@ class ProductionOrderController extends Controller
     }
 
     public function indexData()
-    {
+    {       
 
         $orders = ProductionOrder::leftJoin('production_line','production_line.id_production_line','=','production_order.id_production_line')->
 
@@ -406,7 +406,7 @@ class ProductionOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //dd($request->all());
         $range_date = explode("-", $request->range_date);
 
         $production_order = ProductionOrder::findOrFail($id);
@@ -450,7 +450,11 @@ class ProductionOrderController extends Controller
 
         if ($production_order->project->id_project_template != $request->id_project_template) {
              $production_order->id_project = $id_project;
-            $production_order->productionOrderDetail()->delete();
+             if($production_order->productionOrderDetail()->get()->count()){
+                
+                 $production_order->productionOrderDetail()->delete();
+             }
+           
             //insert task and order detail
             $template_detail = ProjectTemplate::find($request->id_project_template);
             //dd($template_detail);
@@ -473,7 +477,7 @@ class ProductionOrderController extends Controller
      */
     public function destroy($id)
     {
-
+        dd($id);
         $production_order = ProductionOrder::findOrFail($id);
 
         try {
