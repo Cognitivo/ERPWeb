@@ -70,8 +70,8 @@ class ProductionOrderController extends Controller
                         <i class="glyphicon glyphicon-eye-open"></i>
                         </a>';
                       }
-                        
-             
+
+
                 }
 
                 return $result;
@@ -87,7 +87,7 @@ class ProductionOrderController extends Controller
                     return 'Pendiente';
                 }
             })
-           
+
 
             ->removeColumn('id_production_order')
             ->make();
@@ -185,7 +185,7 @@ class ProductionOrderController extends Controller
         })->get();
 
         foreach ($results as $key => $value) {
-         
+
             //verificar si el estado es asignado para insertar
             if (strpos(strtolower(trim($value->estado)), 'asig') !== false) {
                 //buscar linea de produccion, si no existe crear
@@ -648,8 +648,19 @@ class ProductionOrderController extends Controller
         $production_order_execution->is_read                    = 1;
         $production_order_execution->timestamp                  = Carbon::now();
         $production_order_execution->trans_date                 = Carbon::now();
-        $production_order_execution->start_date                 = $production_order_detail->start_date_est;
+        if ($production_order_detail->start_date_est !=null) {
+            $production_order_execution->start_date                 = $production_order_detail->start_date_est;
+        }
+      else {
+      $production_order_execution->start_date                 = Carbon::now();
+      }
+      if ($production_order_detail->end_date_est !=null) {
         $production_order_execution->end_date                   = $production_order_detail->end_date_est;
+      }
+    else {
+    $production_order_execution->end_date               = Carbon::now();
+    }
+                      
         $production_order_execution->parent_id_execution_detail = $parent;
         $production_order_execution->save();
 
