@@ -201,7 +201,8 @@ class ProductionOrderController extends Controller
 
                 }
                 //insertar cliente y contacto cliente es padre de contacto
-
+                //insertar contacto solo si no existe
+                //validar por nombre
                 $client = Contact::where('code', $value->codcliente)->first();
 
                 if (!$client) {
@@ -211,7 +212,9 @@ class ProductionOrderController extends Controller
                     $id_contact = $this->storeContact($value, $id_parent);
 
                 } else {
+                    $contact = Contact::where('parent_id_contact',$client->id_contact)->where('name',trim($value->contacto))->first();
 
+                    if(!$contact)
                     $id_contact = $this->storeContact($value, $client->id_contact);
                 }
                 //buscar plantilla si no existe insertar platilla y proyecto
@@ -477,7 +480,7 @@ class ProductionOrderController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        //dd($id);
         $production_order = ProductionOrder::findOrFail($id);
 
         try {
