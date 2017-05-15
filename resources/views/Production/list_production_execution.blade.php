@@ -49,14 +49,15 @@
 				</div>
 				<div class="portlet-body" style="display: none;">
 					<div class="row">
-						<div class="col-md-6">Nombre</div>
+						<div class="col-md-3">Nombre</div>
 						<div class="col-md-3">Cantidad Estimada</div>
 						<div class="col-md-3">Cantidad Executed</div>
+						<div class="col-md-3">Cost</div>
 					</div>
 					<form action="{{url('api/approve_execustion')}}" method="POST" role="form" class="form-horizontal" accept-charset="UTF-8", enctype="multipart/form-data">
 						@foreach ($item->productionOrderDetail()->get() as $element)
 						<div class="row">
-							<div class="col-md-6"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
+							<div class="col-md-3"><h5>{{  isset($element->item->name)?$element->item->name:""  }}</h5></div>
 							<div class="col-md-3"><h5>{{  intval($element->quantity)  }}</h5></div>
 							<div class="col-md-3">
 								<h5>
@@ -69,6 +70,17 @@
 								@endif
 							</h5>
 						</div>
+						<div class="col-md-3">
+							<h5>
+							@if(isset($element->ProductionExecutionDetail))
+							<a href="#" class="quantity_execution" data-pk="{{$element->ProductionExecutionDetail->id_execution_detail}}">
+								{{ isset($element->ProductionExecutionDetail->unit_cost) ? intval($element->ProductionExecutionDetail->unit_cost) : '0'  }}
+							</a>
+							@else
+							 0
+							@endif
+						</h5>
+					</div>
 							@if ( isset($element->ProductionExecutionDetail))
 							<div class="col-md-3"><h5>  <a href="{{route('production_execution.edit',$element->ProductionExecutionDetail)  }}">edit</a></h5></div>
 							@endif
