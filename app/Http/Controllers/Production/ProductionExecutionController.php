@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Production;
 
 use App\Http\Controllers\Controller;
+use App\Item;
+use App\Item_Product;
 use App\ProductionExecution;
 use App\ProductionExecutionDetail;
 use App\ProductionOrder;
 use App\ProductionOrderDetail;
-use App\Item;
-use App\Item_Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -21,8 +21,7 @@ class ProductionExecutionController extends Controller
      */
     public function index()
     {
-        $execution = ProductionOrder::whereIn('status',[2])->get();
-
+        $execution = ProductionOrder::whereIn('status', [2])->get();
 
         return view('Production/list_production_execution', compact('execution'));
     }
@@ -67,7 +66,7 @@ class ProductionExecutionController extends Controller
      */
     public function edit($id)
     {
-      $production_execution_detail=ProductionExecutionDetail::where('id_execution_detail','=',$id)->first();
+        $production_execution_detail = ProductionExecutionDetail::where('id_execution_detail', '=', $id)->first();
         return view('Production/form_production_execustion_detail', compact('production_execution_detail'));
     }
 
@@ -80,11 +79,11 @@ class ProductionExecutionController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $production_execution_detail              = ProductionExecutionDetail::find($id);
-      $production_execution_detail->quantity        = $request->quantity;
-      $production_execution_detail->save();
-      $execution = ProductionOrder::whereIn('status',[2])->get();
-      return view('Production/list_production_execution', compact('execution'));
+        $production_execution_detail           = ProductionExecutionDetail::find($id);
+        $production_execution_detail->quantity = $request->quantity;
+        $production_execution_detail->save();
+        $execution = ProductionOrder::whereIn('status', [2])->get();
+        return view('Production/list_production_execution', compact('execution'));
     }
 
     /**
@@ -102,20 +101,43 @@ class ProductionExecutionController extends Controller
     public function ProductionExecutionDetail($id_order_detail)
     {
 
-        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail','=',$id_order_detail)->get();
+        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail', '=', $id_order_detail)->get();
 
         return response()->json($ProductionExecutionDetail);
 
     }
+
+    public function updateExecutionDetail(Request $request, $id)
+    {
+        $execution_detail = ProductionExecutionDetail::find($id);
+        if ($execution_detail) {
+            //$execution_detail->update(['quantity' => $request->quantity]);
+            $production_execution_detail             = new ProductionExecutionDetail;
+            $production_execution_detail->parent_id_execution_detail = $id;
+            $production_execution_detail->quantity   = $request->quantity;
+            $production_execution_detail->start_date = $execution_detail->start_date;
+            $production_execution_detail->end_date   = $execution_detail->end_date;
+            $production_execution_detail->unit_cost  = 0;
+            $production_execution_detail->is_input   = 1;
+            $production_execution_detail->trans_date = Carbon::now();
+            $production_execution_detail->timestamp  = Carbon::now();
+            $production_execution_detail->id_company = 1;
+            $production_execution_detail->id_user    = 1;
+            $production_execution_detail->is_head    = 1;
+            $production_execution_detail->is_read    = 1;
+            $production_execution_detail->save();
+
+            return response()->json(['message' => true]);
+        }
+
+    }
+
     public function saveUpdate(Request $request)
     {
 
-
         $production_order = ProductionOrder::find($request->id_production_order);
 
-
-            //return response()->json($request->all());
-
+        //return response()->json($request->all());
 
         if ($request->id_production_execution != null) {
 
@@ -136,11 +158,9 @@ class ProductionExecutionController extends Controller
 
                         'timestamp' => Carbon::now()]);
 
-
-
             } else {
 
-                 $production_execution_detail = new ProductionExecutionDetail;
+                $production_execution_detail = new ProductionExecutionDetail;
 
                 $production_execution_detail->id_production_execution = $production_execution->getKey();
 
@@ -182,8 +202,6 @@ class ProductionExecutionController extends Controller
 
             $production_execution = new ProductionExecution;
 
-
-
             $production_execution->id_production_order = $request->id_production_order;
 
             $production_execution->id_production_line = $production_order->productionLine->id_production_line;
@@ -204,7 +222,7 @@ class ProductionExecutionController extends Controller
 
             $production_execution->save();
 
-           $production_execution_detail = new ProductionExecutionDetail;
+            $production_execution_detail                          = new ProductionExecutionDetail;
             $production_execution_detail->id_production_execution = $production_execution->getKey();
 
             $production_execution_detail->id_order_detail = $request->id_order_detail;
@@ -235,12 +253,11 @@ class ProductionExecutionController extends Controller
 
             $production_execution_detail->save();
 
-              /*$production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($production_order->id_production_order)->get();*/
+            /*$production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($production_order->id_production_order)->get();*/
 
             return response()->json($production_execution->getKey());
 
         }
-
 
     }
 
@@ -249,7 +266,7 @@ class ProductionExecutionController extends Controller
 
         $production_execution = ProductionExecution::find($id);
 
-        if($production_execution != null){
+        if ($production_execution != null) {
 
             $production_execution->status = 2;
 
@@ -261,75 +278,71 @@ class ProductionExecutionController extends Controller
 
             $production_order->save();
 
-             return response()->json("ok");
+            return response()->json("ok");
         }
 
-       return response()->json("no");
+        return response()->json("no");
     }
     public function api_approve(Request $request)
     {
 
+        $transactions = [];
 
-          $transactions = [];
+        $collect = collect();
 
-          $collect = collect();
+        if ($request->Transactions != []) {
 
-          if ($request->Transactions != []) {
+            $transactions = $request->Transactions;
 
-              $transactions = $request->Transactions;
+            $collect = collect($transactions);
 
-              $collect = collect($transactions);
+            Log::info($collect->toJson());
 
-              Log::info($collect->toJson());
+        }
 
-          }
+        $array_transactions = json_decode($collect->toJson());
 
-          $array_transactions = json_decode($collect->toJson());
+        $production_execution_detail = new ProductionExecutionDetail;
 
+        $production_execution_detail->id_order_detail = $array_transactions->id_order_detail;
 
-                $production_execution_detail = new ProductionExecutionDetail;
+        $production_execution_detail->quantity = $array_transactions->quantity_excution;
 
+        $production_execution_detail->start_date = $array_transactions->start_date_est;
 
-                 $production_execution_detail->id_order_detail = $array_transactions->id_order_detail;
+        $production_execution_detail->end_date = $array_transactions->end_date_est;
 
-                 $production_execution_detail->quantity = $array_transactions->quantity_excution;
+        $production_execution_detail->unit_cost = 0;
 
-                 $production_execution_detail->start_date = $array_transactions->start_date_est;
+        $production_execution_detail->is_input = $array_transactions->is_input;
 
-                 $production_execution_detail->end_date = $array_transactions->end_date_est;
+        $production_execution_detail->trans_date = Carbon::now();
 
-                 $production_execution_detail->unit_cost = 0;
+        $production_execution_detail->timestamp = Carbon::now();
 
-                 $production_execution_detail->is_input = $array_transactions->is_input;
+        $production_execution_detail->id_company = 1;
 
-                 $production_execution_detail->trans_date = Carbon::now();
+        $production_execution_detail->id_user = 1;
 
-                 $production_execution_detail->timestamp = Carbon::now();
+        $production_execution_detail->is_head = 1;
 
-                 $production_execution_detail->id_company = 1;
+        $production_execution_detail->is_read = 1;
 
-                 $production_execution_detail->id_user = 1;
+        $production_execution_detail->id_item = $array_transactions->id_item;
 
-                 $production_execution_detail->is_head = 1;
+        $production_execution_detail->save();
 
-                 $production_execution_detail->is_read = 1;
-
-                 $production_execution_detail->id_item = $array_transactions->id_item;
-
-                 $production_execution_detail->save();
-
-                $item=Item::where('id_item','=',$array_transactions->id_item)->first();
-                if (isset($item)) {
-                    if ($item->id_item_type==1 || $item->id_item_type==2 ||  $item->id_item_type==6 )
-                    {
-                          $item_product=Item_Product::where('id_item','=',$array_transactions->id_item)->first();
-                          $orderdetail=ProductionOrderDetail::where('id_order_detail','=',$array_transactions->id_order_detail)->first();
-                          $order=ProductionOrder::where('id_production_order','=',$orderdetail->id_order_detail)->first();
-                          $line=productionLine::where('id_production_line','=',$order->id_production_line)->first();
-                          if (isset($item_product)) {
-                            if ($array_transactions->is_input) {
-                              if ($array_transactions->quantity_excution>0) {
-                                $sql ='select
+        $item = Item::where('id_item', '=', $array_transactions->id_item)->first();
+        if (isset($item)) {
+            if ($item->id_item_type == 1 || $item->id_item_type == 2 || $item->id_item_type == 6) {
+                $item_product = Item_Product::where('id_item', '=', $array_transactions->id_item)->first();
+                $orderdetail  = ProductionOrderDetail::where('id_order_detail', '=', $array_transactions->id_order_detail)->first();
+                $order        = ProductionOrder::where('id_production_order', '=', $orderdetail->id_order_detail)->first();
+                $line         = productionLine::where('id_production_line', '=', $order->id_production_line)->first();
+                if (isset($item_product)) {
+                    if ($array_transactions->is_input) {
+                        if ($array_transactions->quantity_excution > 0) {
+                            $sql = 'select
                                   loc.id_location as LocationID,
                                   loc.name as Location,
                                   parent.id_movement as MovementID,
@@ -341,47 +354,45 @@ class ProductionExecutionController extends Controller
                                   inner join app_location as loc on parent.id_location = loc.id_location
                                   left join item_movement as child on child.parent_id_movement = parent.id_movement
 
-                                  where parent.id_location='.strval($line->id_location).' and parent.id_item_product = '.strval($item_product->id_item_product).' and parent.status = 2 and parent.debit = 0
+                                  where parent.id_location=' . strval($line->id_location) . ' and parent.id_item_product = ' . strval($item_product->id_item_product) . ' and parent.status = 2 and parent.debit = 0
                                   group by parent.id_movement
                                   order by parent.trans_date';
-                                // $instocklist=  DB::select($sql);
-                                $item_movement = new ItemMovement;
-                                $item_movement->comment = Comment;
-                                $item_movement->id_item_product = $item_product->id_item_product;
-                                $item_movement->debit = $array_transactions->quantity_excution;
-                                $item_movement->credit = 0;
-                                $item_movement->status = 3;
-                                //Check for Better Code.
-                                $item_movement->id_location = $line->id_location;
-                                $item_movement->save();
-                              }
-                            }
-
-                          }
+                            // $instocklist=  DB::select($sql);
+                            $item_movement                  = new ItemMovement;
+                            $item_movement->comment         = Comment;
+                            $item_movement->id_item_product = $item_product->id_item_product;
+                            $item_movement->debit           = $array_transactions->quantity_excution;
+                            $item_movement->credit          = 0;
+                            $item_movement->status          = 3;
+                            //Check for Better Code.
+                            $item_movement->id_location = $line->id_location;
+                            $item_movement->save();
+                        }
                     }
+
                 }
+            }
+        }
 
-
-              return response()->json(['message' => 'transactions ok']);
+        return response()->json(['message' => 'transactions ok']);
 
     }
     public function approve_execustion(Request $request)
     {
 
-                   $array_transactions=$request->production;
-                    if (isset($array_transactions)) {
-                      $item=Item::where('id_item','=',$array_transactions->id_item)->first();
-                      if (isset($item)) {
-                          if ($item->id_item_type==1 || $item->id_item_type==2 ||  $item->id_item_type==6 )
-                          {
-                                $item_product=Item_Product::where('id_item','=',$array_transactions->id_item)->first();
-                                $orderdetail=ProductionOrderDetail::where('id_order_detail','=',$array_transactions->id_order_detail)->first();
-                                $order=ProductionOrder::where('id_production_order','=',$orderdetail->id_order_detail)->first();
-                                $line=productionLine::where('id_production_line','=',$order->id_production_line)->first();
-                                if (isset($item_product)) {
-                                  if ($array_transactions->is_input) {
-                                    if ($array_transactions->quantity_excution>0) {
-                                      $sql ='select
+        $array_transactions = $request->production;
+        if (isset($array_transactions)) {
+            $item = Item::where('id_item', '=', $array_transactions->id_item)->first();
+            if (isset($item)) {
+                if ($item->id_item_type == 1 || $item->id_item_type == 2 || $item->id_item_type == 6) {
+                    $item_product = Item_Product::where('id_item', '=', $array_transactions->id_item)->first();
+                    $orderdetail  = ProductionOrderDetail::where('id_order_detail', '=', $array_transactions->id_order_detail)->first();
+                    $order        = ProductionOrder::where('id_production_order', '=', $orderdetail->id_order_detail)->first();
+                    $line         = productionLine::where('id_production_line', '=', $order->id_production_line)->first();
+                    if (isset($item_product)) {
+                        if ($array_transactions->is_input) {
+                            if ($array_transactions->quantity_excution > 0) {
+                                $sql = 'select
                                         loc.id_location as LocationID,
                                         loc.name as Location,
                                         parent.id_movement as MovementID,
@@ -393,44 +404,41 @@ class ProductionExecutionController extends Controller
                                         inner join app_location as loc on parent.id_location = loc.id_location
                                         left join item_movement as child on child.parent_id_movement = parent.id_movement
 
-                                        where parent.id_location='.strval($line->id_location).' and parent.id_item_product = '.strval($item_product->id_item_product).' and parent.status = 2 and parent.debit = 0
+                                        where parent.id_location=' . strval($line->id_location) . ' and parent.id_item_product = ' . strval($item_product->id_item_product) . ' and parent.status = 2 and parent.debit = 0
                                         group by parent.id_movement
                                         order by parent.trans_date';
-                                      // $instocklist=  DB::select($sql);
-                                      $item_movement = new ItemMovement;
-                                      $item_movement->comment = Comment;
-                                      $item_movement->id_item_product = $item_product->id_item_product;
-                                      $item_movement->debit = $array_transactions->quantity_excution;
-                                      $item_movement->credit = 0;
-                                      $item_movement->status = 3;
-                                      //Check for Better Code.
-                                      $item_movement->id_location = $line->id_location;
-                                      $item_movement->save();
-                                    }
-                                  }
-
-                                }
-                          }
-                      }
-
+                                // $instocklist=  DB::select($sql);
+                                $item_movement                  = new ItemMovement;
+                                $item_movement->comment         = Comment;
+                                $item_movement->id_item_product = $item_product->id_item_product;
+                                $item_movement->debit           = $array_transactions->quantity_excution;
+                                $item_movement->credit          = 0;
+                                $item_movement->status          = 3;
+                                //Check for Better Code.
+                                $item_movement->id_location = $line->id_location;
+                                $item_movement->save();
+                            }
+                        }
 
                     }
+                }
+            }
 
+        }
 
-              return response()->json(['message' => 'transactions ok']);
+        return response()->json(['message' => 'transactions ok']);
 
     }
 
-
-     public function updateProductionExecutionDetail(Request $request)
+    public function updateProductionExecutionDetail(Request $request)
     {
 
-            $production_order_detail = ProductionExecutionDetail::find($request->pk);
+        $production_order_detail = ProductionExecutionDetail::find($request->pk);
 
-            if($production_order_detail){
+        if ($production_order_detail) {
 
-                $production_order_detail->quantity = $request->value;
-                $production_order_detail->save();
-            }
+            $production_order_detail->quantity = $request->value;
+            $production_order_detail->save();
+        }
     }
 }

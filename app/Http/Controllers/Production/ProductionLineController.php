@@ -29,11 +29,11 @@ class ProductionLineController extends Controller
         return view('Production/list_production_line', compact('line'));
     }
 
-    public function getproductionline()
+    public function getproductionline(Request $request)
     {
-        $line = ProductionLine::all();
-
-
+        
+        $line = ProductionLine::where('id_user',$request->id_user)->select('id_production_line as id','name','id_user')->get();
+      
             return response()->json($line);
 
     }

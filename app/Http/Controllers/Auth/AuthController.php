@@ -66,36 +66,32 @@ class AuthController extends Controller
         ]);
     }
 
+    //Api
+    public function apiLogin(Request $request){
+
+         \Log::info('entro');
+            if (($user = Security_User::where(['name' => $request->get('user'), 'password' => $request->get('password')])->first()) instanceof Security_User) {
+
+                Auth::login($user);
+                 \Log::info('salio');
+                return response()->json(['message' => true, 'id' => Auth::user()->id_user,'name' => Auth::user()->name]);
+
+            } else {
+               \Log::info('error');         
+                return response()->json(['message' => 'Error al iniciar sesión']);
+
+            }
+    }
+
     public function postLogin(Request $request)
     {
 
         //Api
-        if ($request->ajax) {
-
-            if (($user = Security_User::where(['name' => $request->get('name'), 'password' => $request->get('password')])->first()) instanceof Security_User) {
-
-                Auth::login($user);
-
-                return response()->json(['message' => true, 'user' => Auth::user()]);
-
-            } else {
-
-                $rules = [
-                    'email'    => 'required|email',
-                    'password' => 'required',
-                ];
-
-                $messages = [
-                    'email.required'    => 'El campo email es requerido',
-                    'email.email'       => 'El formato de email es incorrecto',
-                    'password.required' => 'El campo password es requerido',
-                ];
-
-                $validator = Validator::make($request->all(), $rules, $messages);
-
-                return response()->json(['validator' => $validator->errors()->all(), 'message' => 'Error al iniciar sesión']);
-
-            }
+        
+         \Log::info($request->ajax());
+       
+        if ($request->ajax()) {
+          
 
         }
 

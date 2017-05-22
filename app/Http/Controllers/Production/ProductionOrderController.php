@@ -686,17 +686,17 @@ class ProductionOrderController extends Controller
 
     public function productionOrderByLine($id_line)
     {
-
-        $production_orders = ProductionOrder::where('id_production_line', $id_line)->get();
+        \Log::info('entro' + $id_line);
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->select('id_production_order as id','name','id_production_line')->get();
 
         return response()->json($production_orders);
 
     }
-
+    
     public function productionOrderDetail($id_order)
     {
 
-        $production_order_detail = ProductionOrderDetail::GetProductionOrderDetail($id_order)->get();
+        $production_order_detail = ProductionOrderDetail::ApiGetProductionOrderDetail($id_order)->get();
 
         return response()->json($production_order_detail);
 

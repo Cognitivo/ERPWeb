@@ -116,7 +116,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Api Apps
 
-Route::post('api/auth/login', 'Auth\AuthController@postLogin');
+Route::post('api/auth/login', 'Auth\AuthController@apiLogin');
 
 Route::get('api/auth/logout', 'Auth\AuthController@getLogout');
 
@@ -134,11 +134,16 @@ Route::get('api', function () {
 
 
 
-Route::get('api/production_line', 'Production\ProductionLineController@getproductionline');
+Route::post('api/production_line', 'Production\ProductionLineController@getproductionline');
 
 Route::get('api/production_order/{id_production_line}', 'Production\ProductionOrderController@productionOrderByLine');
 
 Route::get('api/production_order_detail/{id_production_order}', 'Production\ProductionOrderController@productionOrderDetail');
+
+Route::post('api/update_execution/{id}','Production\ProductionExecutionController@updateExecutionDetail');
+
+
+
 
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
