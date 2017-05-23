@@ -649,7 +649,7 @@ class ProductionOrderController extends Controller
         $production_order_execution->quantity                   = $quantity;
         $production_order_execution->id_project_task            = $id_project_task;
         $production_order_execution->id_item                    = $item;
-        $production_order_execution->status = 1;
+        $production_order_execution->status = 2;
         $production_order_execution->id_company                 = 1;
         $production_order_execution->id_user                    = 1;
         $production_order_execution->is_input                   = 1;
@@ -722,7 +722,7 @@ class ProductionOrderController extends Controller
 
         }
         //dd("ok");
-       // $production_order->status = 2;
+       $production_order->status = 2;
 
         $production_order->save();
 
