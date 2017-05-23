@@ -214,8 +214,14 @@ class ProductionOrderController extends Controller
                 } else {
                     $contact = Contact::where('parent_id_contact',$client->id_contact)->where('name',trim($value->contacto))->first();
 
-                    if(!$contact)
-                    $id_contact = $this->storeContact($value, $client->id_contact);
+                    if(!$contact){
+                        $id_contact = $this->storeContact($value, $client->id_contact);
+                    }else{
+                        $id_contact = $contact->id_contact;
+                    }
+
+
+                    
                 }
                 //buscar plantilla si no existe insertar platilla y proyecto
                 $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
@@ -687,7 +693,7 @@ class ProductionOrderController extends Controller
     public function productionOrderByLine($id_line)
     {
         \Log::info('entro' + $id_line);
-        $production_orders = ProductionOrder::where('id_production_line', $id_line)->select('id_production_order as id','name','id_production_line')->get();
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status',2)->select('id_production_order as id','name','id_production_line')->get();
 
         return response()->json($production_orders);
 

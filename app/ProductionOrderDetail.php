@@ -143,7 +143,7 @@ class ProductionOrderDetail extends Model
                                         where t1.parent_id_execution_detail is null) as production_execution_detail"),
                 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
 
-            ->where('production_order_detail.id_production_order', $id_order)
+            ->where('production_order_detail.id_production_order', $id_order)->where('production_order_detail.status',2)
 
             ->select('production_execution_detail.id_execution_detail as id', 'production_order_detail.id_production_order', 'production_order_detail.name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), \DB::raw('ifnull(cast(production_execution_detail.quantity_real as unsigned),0) as quantity_real'));
     }
