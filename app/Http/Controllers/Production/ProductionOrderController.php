@@ -658,19 +658,20 @@ class ProductionOrderController extends Controller
         $production_order_execution->timestamp                  = Carbon::now();
         $production_order_execution->trans_date                 = Carbon::now();
         if ($production_order_detail->start_date_est !=null) {
-            $production_order_execution->start_date                 = $production_order_detail->start_date_est;
+            $production_order_execution->start_date                 = Carbon::createFromFormat('d/m/Y H:i:s',$production_order_detail->start_date_est);
         }
       else {
       $production_order_execution->start_date                 = Carbon::now();
       }
       if ($production_order_detail->end_date_est !=null) {
-        $production_order_execution->end_date                   = $production_order_detail->end_date_est;
+        $production_order_execution->end_date                   = Carbon::createFromFormat('d/m/Y H:i:s',$production_order_detail->end_date_est);
       }
     else {
     $production_order_execution->end_date               = Carbon::now();
     }
                       
         $production_order_execution->parent_id_execution_detail = $parent;
+
         $production_order_execution->save();
 
         return $production_order_execution->getKey();
