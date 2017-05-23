@@ -138,7 +138,7 @@ class ProductionOrderDetail extends Model
                                         where
                                         t2.parent_id_execution_detail is not null
                                         and t1.id_execution_detail = t2.parent_id_execution_detail),0) as quantity_real
-                                        FROM astillero.production_execution_detail as t1
+                                        FROM production_execution_detail as t1
 
                                         where t1.parent_id_execution_detail is null) as production_execution_detail"),
                 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
