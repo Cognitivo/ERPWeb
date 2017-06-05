@@ -116,7 +116,7 @@ class ProductionOrderDetail extends Model
     {
         return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
             ->leftJoin('production_execution_detail', 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
-            ->where('production_order_detail.id_production_order', $id_order)->orderBy('parent_id_order_detail')
+            ->where('production_order_detail.id_production_order', $id_order)
             ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'));
 
     }
@@ -129,8 +129,15 @@ class ProductionOrderDetail extends Model
      */
     public function scopeApiGetProductionOrderDetail($query, $id_order)
     {
-
-        return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
+        return $query->where('id_production_order',$id_order)
+        ->select('id_production_order','production_order_detail.id_order_detail as id','production_order_detail.id_project_task',
+            'production_order_detail.name',
+            \DB::raw('ifnull(cast(production_order_detail.quantity as unsigned),0) as quantity'),
+            \DB::raw("ifnull(cast((select sum(t2.quantity) as q_real
+                    from production_execution_detail as t2 where t2.id_order_detail is not null and
+                    t2.id_order_detail = production_order_detail.id_order_detail) as unsigned),0) as quantity_real")
+            );
+        /*return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
 
             ->Join(\DB::raw("(SELECT  t1.id_execution_detail,t1.quantity,id_order_detail,
                                         ifnull((select sum(t2.quantity) as q_real
@@ -145,6 +152,6 @@ class ProductionOrderDetail extends Model
 
             ->where('production_order_detail.id_production_order', $id_order)->where('production_order_detail.status',2)
 
-            ->select('production_execution_detail.id_execution_detail as id', 'production_order_detail.id_production_order', 'production_order_detail.name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), \DB::raw('ifnull(cast(production_execution_detail.quantity_real as unsigned),0) as quantity_real'));
+            ->select('production_execution_detail.id_execution_detail as id', 'production_order_detail.id_production_order', 'production_order_detail.name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), \DB::raw('ifnull(cast(production_execution_detail.quantity_real as unsigned),0) as quantity_real'));*/
     }
 }

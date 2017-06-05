@@ -27,7 +27,7 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
-
+        dd(ProductionOrderDetail::ApiGetProductionOrderDetail(1)->get());
         if (\Request::ajax()) {
             return $this->indexData();
         }
@@ -37,57 +37,57 @@ class ProductionOrderController extends Controller
     }
 
     public function indexData()
-    {       
+    {
 
-        $orders = ProductionOrder::leftJoin('production_line','production_line.id_production_line','=','production_order.id_production_line')->
+        $orders = ProductionOrder::leftJoin('production_line', 'production_line.id_production_line', '=', 'production_order.id_production_line')->
 
-            select(['id_production_order', 'work_number', 'production_order.name','production_line.name as linea', 'status'])->get();
+            select(['id_production_order', 'work_number', 'production_order.name', 'production_line.name as linea', 'status'])->get();
 
         return Datatables::of($orders)
 
             ->addColumn('actions', function ($order) {
                 $result = '';
-                   if ($order->status == 1) {
-                $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                if ($order->status == 1) {
+                    $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
                 <i class="glyphicon glyphicon-edit"></i>
                 </a>
-                <form action="/production_order/'.$order->id_production_order.'"  method= "post" style =" display : inline;">
-                <input type="hidden" name="_token" value="'.csrf_token().'">
+                <form action="/production_order/' . $order->id_production_order . '"  method= "post" style =" display : inline;">
+                <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                      <button type="submit" class="btn btn-sm btn-icon-only red glyphicon glyphicon-trash " style="height : 30px !important;"></button>
                 </form>';
 
-
-                      $status = $order->productionOrderDetail()->first() != null ?  $order->productionOrderDetail()->first()->status:  null;
-                      if($status != 2){
-                         $result = $result . '
-                             <a href="/approved_production_order/'.$order->id_production_order .'" class="btn btn-sm purple">
+                    $status = $order->productionOrderDetail()->first() != null ? $order->productionOrderDetail()->first()->status : null;
+                    if ($status != 2) {
+                        $result = $result . '
+                             <a href="/approved_production_order/' . $order->id_production_order . '" class="btn btn-sm purple">
                             <i class="fa fa-file-o"></i> Aprobar </a>
                      ';
 
-                      }else{
+                    } else {
                         $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
                         <i class="glyphicon glyphicon-eye-open"></i>
                         </a>';
-                      }
-
-
+                    }
+                }else{
+                     $result = '<a href="/production_order/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                        <i class="glyphicon glyphicon-eye-open"></i>
+                        </a>';
                 }
 
                 return $result;
 
-            })->editColumn('status',function($order){
+            })->editColumn('status', function ($order) {
 
-                $status = $order->productionOrderDetail()->first() != null ?  $order->productionOrderDetail()->first()->status:  null;
-                if($status == 2){
-                    return 'Aprobado';
-                }else if($status ==4){
-                      return 'Terminado';
-                }else{
-                    return 'Pendiente';
-                }
-            })
-
+            $status = $order->productionOrderDetail()->first() != null ? $order->productionOrderDetail()->first()->status : null;
+            if ($status == 2) {
+                return 'Aprobado';
+            } else if ($status == 4) {
+                return 'Terminado';
+            } else {
+                return 'Pendiente';
+            }
+        })
 
             ->removeColumn('id_production_order')
             ->make();
@@ -212,27 +212,26 @@ class ProductionOrderController extends Controller
                     $id_contact = $this->storeContact($value, $id_parent);
 
                 } else {
-                    $contact = Contact::where('parent_id_contact',$client->id_contact)->where('name',trim($value->contacto))->first();
+                    $contact = Contact::where('parent_id_contact', $client->id_contact)->where('name', trim($value->contacto))->first();
 
-                    if(!$contact){
+                    if (!$contact) {
                         $id_contact = $this->storeContact($value, $client->id_contact);
-                    }else{
+                    } else {
                         $id_contact = $contact->id_contact;
                     }
 
-
-                    
                 }
                 //buscar plantilla si no existe insertar platilla y proyecto
-                $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
+                //sustituir tipo de trabajo por template
+                $template = ProjectTemplate::where('name', trim($value->template))->first();
 
                 if ($template != null) {
 
-                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact, $template->id_project_template);
+                    $id_project = $this->storeTemplateProject($value->template, $id_contact, $template->id_project_template);
 
                 } else {
 
-                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact);
+                    $id_project = $this->storeTemplateProject($value->template, $id_contact);
 
                 }
 
@@ -297,7 +296,7 @@ class ProductionOrderController extends Controller
             $client->address = $request->direccion;
 
         } else {
-            $client->name = $request->contacto;
+            $client->name      = $request->contacto;
             $client->telephone = $request->telefono_contacto;
             //verificar direccion de cliente si no existe crear en una nueva direccion para el contacto
         }
@@ -345,7 +344,7 @@ class ProductionOrderController extends Controller
         $production_order                     = new ProductionOrder;
         $production_order->id_production_line = $id_production_line;
         $production_order->id_project         = $id_project;
-        $production_order->name               = $request->tipotrabajo;
+        $production_order->name               = $request->template;
         $production_order->trans_date         = $request->fecha_de_asignacion;
         $production_order->id_company         = 1;
         $production_order->id_branch          = 1;
@@ -360,12 +359,12 @@ class ProductionOrderController extends Controller
         $production_order->save();
 
         //insert task and order detail
-        $project = Project::find($id_project);
-            $template_detail = ProjectTemplate::find($project->id_project_template);
-            //insertTask($name, $parent, $item, $id_project)
-            if ($template_detail->get()->count()) {
-                $this->insertDetail($template_detail, $production_order, $id_project);
-            }
+        $project         = Project::find($id_project);
+        $template_detail = ProjectTemplate::find($project->id_project_template);
+        //insertTask($name, $parent, $item, $id_project)
+        if ($template_detail->get()->count()) {
+            $this->insertDetail($template_detail, $production_order, $id_project);
+        }
     }
 
     /**
@@ -448,22 +447,21 @@ class ProductionOrderController extends Controller
         $production_order->id_production_line = $request->id_production_line;
         $production_order->work_number        = $request->work_number;
         $production_order->name               = $request->name;
-        $production_order->status = 1;
-        $production_order->work_number = $request->work_number;
-        $production_order->timestamp = Carbon::now();
-        $production_order->start_date_est = Controller::convertDate($range_date[0]);
-        $production_order->end_date_est = Controller::convertDate($range_date[1]);
-
+        $production_order->status             = 1;
+        $production_order->work_number        = $request->work_number;
+        $production_order->timestamp          = Carbon::now();
+        $production_order->start_date_est     = Controller::convertDate($range_date[0]);
+        $production_order->end_date_est       = Controller::convertDate($range_date[1]);
 
         //if change template delete project template current an insert new
 
         if ($production_order->project->id_project_template != $request->id_project_template) {
-             $production_order->id_project = $id_project;
-             if($production_order->productionOrderDetail()->get()->count()){
-                
-                 $production_order->productionOrderDetail()->delete();
-             }
-           
+            $production_order->id_project = $id_project;
+            if ($production_order->productionOrderDetail()->get()->count()) {
+
+                $production_order->productionOrderDetail()->delete();
+            }
+
             //insert task and order detail
             $template_detail = ProjectTemplate::find($request->id_project_template);
             //dd($template_detail);
@@ -628,7 +626,7 @@ class ProductionOrderController extends Controller
         $production_order_detail->is_input               = 1;
         $production_order_detail->is_head                = 1;
         $production_order_detail->is_read                = 1;
-        $production_order_detail->status = 1;
+        $production_order_detail->status                 = 1;
         $production_order_detail->timestamp              = Carbon::now();
         $production_order_detail->trans_date             = Carbon::now();
         $production_order_detail->start_date_est         = Carbon::now();
@@ -643,33 +641,31 @@ class ProductionOrderController extends Controller
     {
 
         //$array_aux                                       = explode("\t", $name);
-        $production_order_execution                             = new ProductionExecutionDetail;
-        $production_order_execution->id_order_detail            = $production_order_detail->id_order_detail;
-        $production_order_execution->name                       = $name;
-        $production_order_execution->quantity                   = $quantity;
-        $production_order_execution->id_project_task            = $id_project_task;
-        $production_order_execution->id_item                    = $item;
-        $production_order_execution->status = 2;
-        $production_order_execution->id_company                 = 1;
-        $production_order_execution->id_user                    = 1;
-        $production_order_execution->is_input                   = 1;
-        $production_order_execution->is_head                    = 1;
-        $production_order_execution->is_read                    = 1;
-        $production_order_execution->timestamp                  = Carbon::now();
-        $production_order_execution->trans_date                 = Carbon::now();
-        if ($production_order_detail->start_date_est !=null) {
-            $production_order_execution->start_date                 = Carbon::createFromFormat('d/m/Y H:i:s',$production_order_detail->start_date_est);
+        $production_order_execution                  = new ProductionExecutionDetail;
+        $production_order_execution->id_order_detail = $production_order_detail->id_order_detail;
+        $production_order_execution->name            = $name;
+        $production_order_execution->quantity        = $quantity;
+        $production_order_execution->id_project_task = $id_project_task;
+        $production_order_execution->id_item         = $item;
+        $production_order_execution->status          = 2;
+        $production_order_execution->id_company      = 1;
+        $production_order_execution->id_user         = 1;
+        $production_order_execution->is_input        = 1;
+        $production_order_execution->is_head         = 1;
+        $production_order_execution->is_read         = 1;
+        $production_order_execution->timestamp       = Carbon::now();
+        $production_order_execution->trans_date      = Carbon::now();
+        if ($production_order_detail->start_date_est != null) {
+            $production_order_execution->start_date = Carbon::createFromFormat('d/m/Y H:i:s', $production_order_detail->start_date_est);
+        } else {
+            $production_order_execution->start_date = Carbon::now();
         }
-      else {
-      $production_order_execution->start_date                 = Carbon::now();
-      }
-      if ($production_order_detail->end_date_est !=null) {
-        $production_order_execution->end_date                   = Carbon::createFromFormat('d/m/Y H:i:s',$production_order_detail->end_date_est);
-      }
-    else {
-    $production_order_execution->end_date               = Carbon::now();
-    }
-                      
+        if ($production_order_detail->end_date_est != null) {
+            $production_order_execution->end_date = Carbon::createFromFormat('d/m/Y H:i:s', $production_order_detail->end_date_est);
+        } else {
+            $production_order_execution->end_date = Carbon::now();
+        }
+
         $production_order_execution->parent_id_execution_detail = $parent;
 
         $production_order_execution->save();
@@ -693,13 +689,13 @@ class ProductionOrderController extends Controller
 
     public function productionOrderByLine($id_line)
     {
-        \Log::info('entro' + $id_line);
-        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status',2)->select('id_production_order as id','name','id_production_line')->get();
+        \Log::info('entro'.$id_line);
+        $production_orders = ProductionOrder::where('id_production_line', $id_line)->where('status', 2)->select('id_production_order as id', 'name', 'id_production_line')->get();
 
         return response()->json($production_orders);
 
     }
-    
+
     public function productionOrderDetail($id_order)
     {
 
@@ -723,12 +719,12 @@ class ProductionOrderController extends Controller
 
         }
         //dd("ok");
-       $production_order->status = 2;
+        $production_order->status = 2;
 
         $production_order->save();
 
         //insert in production excecution
-        $this->insertDetailExecution($production_order_detail);
+        //$this->insertDetailExecution($production_order_detail);
 
         return redirect()->back();
 

@@ -61,7 +61,7 @@
         {!! csrf_field() !!}
         <div class="form-body">
           <div class="form-group">
-            <label class="control-label col-md-3">Número OT</label>
+            <label class="control-label col-md-3">Cod. Cliente</label>
             <div class="col-md-9">
               {!! Form::text('work_number', null, ['class'=>'form-control']) !!}
             </div>
@@ -82,7 +82,7 @@
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">
-              Reclamo
+              Nombre Trabajo
             </label>
             <div class="col-md-9">
               
@@ -113,7 +113,7 @@
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">
-              Tipo Trabajo
+             Template
             </label>
             <div class="col-md-9">
               <select name="id_project_template" class="form-control" required>

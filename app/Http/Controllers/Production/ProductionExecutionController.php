@@ -107,16 +107,17 @@ class ProductionExecutionController extends Controller
 
     }
 
-    public function updateExecutionDetail(Request $request, $id)
+    public function updateExecutionDetail(Request $request, $id_order_detail)
     {
-        $execution_detail = ProductionExecutionDetail::find($id);
-        if ($execution_detail) {
+       // $execution_detail = ProductionExecutionDetail::find($id);
+        //$execution_detail = ProductionExecutionDetail::where('id_order_detail',$id)
+        $order_detail = ProductionOrderDetail::find($id_order_detail);
             //$execution_detail->update(['quantity' => $request->quantity]);
             $production_execution_detail             = new ProductionExecutionDetail;
-            $production_execution_detail->parent_id_execution_detail = $id;
+            //$production_execution_detail->parent_id_execution_detail = $id;
             $production_execution_detail->quantity   = $request->quantity;
-            $production_execution_detail->start_date = $execution_detail->start_date;
-            $production_execution_detail->end_date   = $execution_detail->end_date;
+            $production_execution_detail->start_date = Carbon::now();
+            $production_execution_detail->end_date   = Carbon::now();
             $production_execution_detail->unit_cost  = 0;
             $production_execution_detail->is_input   = 1;
             $production_execution_detail->trans_date = Carbon::now();
@@ -125,10 +126,13 @@ class ProductionExecutionController extends Controller
             $production_execution_detail->id_user    = 1;
             $production_execution_detail->is_head    = 1;
             $production_execution_detail->is_read    = 1;
+            $production_execution_detail->id_order_detail = $id_order_detail;
+            $production_execution_detail->id_project_task = $order_detail->id_project_task;
+            $production_execution_detail->id_item = $order_detail->id_item;
             $production_execution_detail->save();
 
             return response()->json(['message' => true]);
-        }
+       
 
     }
 
