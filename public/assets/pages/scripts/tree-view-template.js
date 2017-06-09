@@ -307,7 +307,7 @@ function contacts() {
             return "/all_contacts/?query=" + frase;
         },
         getValue: function(element) {
-            return element.name
+            return element.name + "\t" + element.code
         },
         list: {
             onSelectItemEvent: function() {

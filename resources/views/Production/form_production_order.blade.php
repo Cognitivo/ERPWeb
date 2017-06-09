@@ -61,7 +61,7 @@
         {!! csrf_field() !!}
         <div class="form-body">
           <div class="form-group">
-            <label class="control-label col-md-3">Cod. Cliente</label>
+            <label class="control-label col-md-3">Nro. Solicitud</label>
             <div class="col-md-9">
               {!! Form::text('work_number', null, ['class'=>'form-control']) !!}
             </div>
@@ -74,7 +74,7 @@
               <div class="input-icon">
                 <i class="fa fa-bell-o">
                 </i>
-                {!! Form::text('contact', isset($production_order->project)? $production_order->project->contact->name:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact','required']) !!}
+                {!! Form::text('contact', isset($production_order->project)? $production_order->project->contact->name."\t".$production_order->project->contact->code:null, ['class'=>'form-control', 'placeholder'=>'Full Name','id'=>'contact','required']) !!}
                 {!! Form::hidden('id_contact',isset($production_order->project)?$production_order->project->contact->id_contact:null,['id'=>'id_contact']) !!}
                 {!! Form::hidden('parent_name_contact',isset($production_order->project)?!is_null($production_order->project->contact->parentContact)?$production_order->project->contact->parentContact->name:null:null,['id'=>'parent_name_contact']) !!}
               </div>

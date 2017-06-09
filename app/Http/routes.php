@@ -143,8 +143,6 @@ Route::get('api/production_order_detail/{id_production_order}', 'Production\Prod
 Route::post('api/update_execution/{id}','Production\ProductionExecutionController@updateExecutionDetail');
 
 
-
-
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
 

@@ -27,7 +27,7 @@ class ProductionOrderController extends Controller
      */
     public function index()
     {
-        dd(ProductionOrderDetail::ApiGetProductionOrderDetail(1)->get());
+        //dd(ProductionOrderDetail::ApiGetProductionOrderDetail(1)->get());
         if (\Request::ajax()) {
             return $this->indexData();
         }
