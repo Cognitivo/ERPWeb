@@ -101,10 +101,16 @@ class ProductionExecutionController extends Controller
     public function ProductionExecutionDetail($id_order_detail)
     {
 
-        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail', '=', $id_order_detail)->get();
+        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail',$id_order_detail)->select('id_execution_detail as id','name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'))->get();
 
         return response()->json($ProductionExecutionDetail);
 
+    }
+    public function deleteExecutionDetail($id)
+    {
+        $execution_detail = ProductionExecutionDetail::find($id);
+        $execution_detail->delete();
+        return response()->json('ok');
     }
 
     public function updateExecutionDetail(Request $request, $id_order_detail)
@@ -116,6 +122,7 @@ class ProductionExecutionController extends Controller
             $production_execution_detail             = new ProductionExecutionDetail;
             //$production_execution_detail->parent_id_execution_detail = $id;
             $production_execution_detail->quantity   = $request->quantity;
+            $production_execution_detail->name = $order_detail->name;
             $production_execution_detail->start_date = Carbon::now();
             $production_execution_detail->end_date   = Carbon::now();
             $production_execution_detail->unit_cost  = 0;

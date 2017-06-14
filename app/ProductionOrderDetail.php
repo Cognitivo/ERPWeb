@@ -122,6 +122,19 @@ class ProductionOrderDetail extends Model
     }
 
     /**
+     * Query scope GetOrderDetail.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGetOrderDetail($query,$id_order)
+    {
+        return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')           
+            ->where('production_order_detail.id_production_order', $id_order)
+            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_order_detail.quantity,0) as quantity_excution'));
+    }
+
+    /**
      * Query scope getProductionOrderDetail.
      *
      * @param  \Illuminate\Database\Eloquent\Builder

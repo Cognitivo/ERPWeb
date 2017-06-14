@@ -141,12 +141,13 @@ Route::get('api/production_order/{id_production_line}', 'Production\ProductionOr
 Route::get('api/production_order_detail/{id_production_order}', 'Production\ProductionOrderController@productionOrderDetail');
 
 Route::post('api/update_execution/{id}','Production\ProductionExecutionController@updateExecutionDetail');
-
+Route::get('api/execution_detail/{id_order_detail}', 'Production\ProductionExecutionController@ProductionExecutionDetail');
+Route::get('api/execution_detail_delete/{id}', 'Production\ProductionExecutionController@deleteExecutionDetail');
 
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
 
-Route::get('api/production_execution/{id_order_detail}', 'Production\ProductionExecutionController@ProductionExecutionDetail');
+
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
 
 Route::get('api/approved_production_execution/{id}','Production\ProductionExecutionController@approveExcecution');
