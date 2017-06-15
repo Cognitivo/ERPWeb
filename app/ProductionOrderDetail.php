@@ -114,10 +114,18 @@ class ProductionOrderDetail extends Model
      */
     public function scopeGetProductionOrderDetail($query, $id_order)
     {
-        return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
+       /* return $query->join('items', 'items.id_item', '=', 'production_order_detail.id_item')
             ->leftJoin('production_execution_detail', 'production_execution_detail.id_order_detail', '=', 'production_order_detail.id_order_detail')
             ->where('production_order_detail.id_production_order', $id_order)
-            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'));
+            ->select('production_order_detail.*', 'items.id_item_type', \DB::raw('ifnull(production_execution_detail.quantity,0) as quantity_excution'));*/
+             return $query->where('id_production_order',$id_order)
+        ->select('production_order_detail.id_order_detail as id',
+            'production_order_detail.name',
+            \DB::raw('ifnull(cast(production_order_detail.quantity as unsigned),0) as quantity'),
+            \DB::raw("ifnull(cast((select sum(t2.quantity) as q_real
+                    from production_execution_detail as t2 where t2.id_order_detail is not null and
+                    t2.id_order_detail = production_order_detail.id_order_detail) as unsigned),0) as quantity_real")
+            );
 
     }
 

@@ -1,4 +1,4 @@
-@extends('../../master')
+@extends('master')
 @section('title', 'Ejecuciones | CognitivoERP')
 @section('Title', 'Ejecuciones')
 @if(Session::has('message'))
@@ -19,7 +19,23 @@
 			</div>
 		</div>
 		<div class="portlet-body">
-			@foreach ($execution as $item)
+
+		<table class="table table-condensed" id="table-production-execution">
+      <thead>
+        <tr>
+          <th>Nº de O.T.</th>
+          <th>Nombre</th>
+          <th>Linea Produccion</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+
+			{{-- @foreach ($execution as $item)
 			<div class="portlet box blue-hoki">
 				<div class="portlet-title">
 					<div class="caption">
@@ -42,9 +58,7 @@
 						<span class="label label-sm label-danger">Ejecutado</span>
 						@endif
 						<a href="javascript:;" class="expand" data-original-title="" title=""> </a>
-						{{-- <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-						<a href="javascript:;" class="reload" data-original-title="" title=""> </a> --}}
-						{{-- <a href="javascript:;" class="remove" data-original-title="" title=""> </a> --}}
+						
 					</div>
 				</div>
 				<div class="portlet-body" style="display: none;">
@@ -95,22 +109,34 @@
 						@endforeach
 					</form>
 				</div>
-				@endforeach
+				@endforeach --}}
 			</div>
 		</div>
 	</div>
 	@endsection
 	@section('scripts')
+	 <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+   
 	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#table-production-execution').DataTable({
+    processing: true,
+    serverSide: true,
+    responsive: true,
+    "pagingType": "bootstrap_full_number",
+    "pageLength": 50,
+    ajax: {
+    url: '/production_execution',
+    type: "get",
+    async : true
+    },
+    "order": []
+    })
+	})
+	
+    
 
-		$.ajaxSetup({
-	headers: {
-	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-	}
-	});
-	$('.quantity_execution').editable({
-	url: '/update_production_execution_detail',
-
-	});
-	</script>>
+	</script>
 	@stop

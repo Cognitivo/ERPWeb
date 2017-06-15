@@ -100,6 +100,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('production_line', 'Production\ProductionLineController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');
+    Route::get('production_execution_table/{id}','Production\ProductionExecutionController@productionExecutionTable');
+    //Route::get('load_execution_detail/{id}','Production\ProductionExecutionController@loadDetail');
 
     Route::post('api/transactions', 'Production\ProductionExecutionController@api_approve');
       Route::post('api/approve_execustion', 'Production\ProductionExecutionController@approve_execustion');

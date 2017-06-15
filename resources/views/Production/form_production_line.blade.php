@@ -1,4 +1,4 @@
-@extends('../../master')
+@extends('master')
 @section('title', 'work | CognitivoERP')
 @section('Title', 'Work Form')
 @section('content')
@@ -52,4 +52,4 @@
 
   
               <!-- END PAGE CONTENT INNER -->
-              @endsection
+@endsection

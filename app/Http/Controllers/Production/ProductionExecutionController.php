@@ -11,6 +11,7 @@ use App\ProductionOrder;
 use App\ProductionOrderDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Facades\Datatables;
 
 class ProductionExecutionController extends Controller
 {
@@ -21,9 +22,45 @@ class ProductionExecutionController extends Controller
      */
     public function index()
     {
-        $execution = ProductionOrder::whereIn('status', [2])->get();
+        if (\Request::ajax()) {
+            return $this->indexData();
+        }
 
-        return view('Production/list_production_execution', compact('execution'));
+        return view('Production/list_production_execution');
+    }
+
+    public function indexData()
+    {
+
+        $orders = ProductionOrder::leftJoin('production_line', 'production_line.id_production_line', '=', 'production_order.id_production_line')->
+
+            select(['id_production_order', 'work_number', 'production_order.name', 'production_line.name as linea','status'])->whereIn('production_order.status',[2,4])->get();
+
+        return Datatables::of($orders)
+
+            ->addColumn('actions', function ($order) {
+                $result = '';
+           
+                    $result = '<a href="/production_execution/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                <i class="glyphicon glyphicon-edit"></i>
+                </a>
+                    ';
+
+
+                return $result;
+
+            })->editColumn('status', function ($order) {
+
+            $status = $order->productionOrderDetail()->first() != null ? $order->productionOrderDetail()->first()->status : null;
+            if ($status == 2) {
+                return 'Aprobado';
+            } else if ($status == 4) {
+                return 'Executado';
+            } 
+        })
+
+            ->removeColumn('id_production_order')
+            ->make();
     }
 
     /**
@@ -66,10 +103,32 @@ class ProductionExecutionController extends Controller
      */
     public function edit($id)
     {
-        $production_execution_detail = ProductionExecutionDetail::where('id_execution_detail', '=', $id)->first();
-        return view('Production/form_production_execustion_detail', compact('production_execution_detail'));
+        
+        return view('Production/form_execution_detail')->with('id',$id);
     }
 
+    public function productionExecutionTable($id)
+    {
+        $order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
+
+         return Datatables::of($order_detail)
+
+            ->addColumn('actions', function ($order) {
+                $result = '<a href="#" v-on:click="loadDataExecutionDetail('.$order->id.')" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_detail_execution">
+                <i class="glyphicon glyphicon-edit"></i>
+                </a>';
+                return $result;
+            })
+            ->removeColumn('id')
+            ->make();
+   
+
+    }
+
+    public function loadDetail($id)
+    {
+        # code...
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -115,6 +174,7 @@ class ProductionExecutionController extends Controller
 
     public function updateExecutionDetail(Request $request, $id_order_detail)
     {
+
        // $execution_detail = ProductionExecutionDetail::find($id);
         //$execution_detail = ProductionExecutionDetail::where('id_order_detail',$id)
         $order_detail = ProductionOrderDetail::find($id_order_detail);
@@ -138,7 +198,8 @@ class ProductionExecutionController extends Controller
             $production_execution_detail->id_item = $order_detail->id_item;
             $production_execution_detail->save();
 
-            return response()->json(['message' => true]);
+            return response()->json(['message' => true,
+                'data'=>['id'=>$production_execution_detail->id_execution_detail,'name'=>$production_execution_detail->name,'quantity'=> $production_execution_detail->quantity]]);
        
 
     }
