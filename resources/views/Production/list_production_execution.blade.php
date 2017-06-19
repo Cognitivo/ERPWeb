@@ -118,10 +118,10 @@
 	 <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-   
+   <script src="/assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
-	$(document).ready(function(){
-		$('#table-production-execution').DataTable({
+	
+	$('#table-production-execution').DataTable({
     processing: true,
     serverSide: true,
     responsive: true,
@@ -133,10 +133,34 @@
     async : true
     },
     "order": []
-    })
+    }).on('draw.dt', function(e) {
+    confirmationButton(e)
+    $('tr td:nth-child(5)').each(function() {
+                $(this).addClass('actions')
+            })
+            $('tr td:nth-child(4)').each(function() {
+                $(this).addClass('status')
+            })
 	})
 	
+	
     
-
+ function confirmationButton(e) {
+    //e.preventDefault(e)
+    $('[data-toggle="confirmation"]').confirmation({
+        onConfirm: function() {
+        	var row = $(this).parents('tr')
+           	var id = row.data('id')
+           $.get('/finish_execution/' + id,function(result){
+           	 row.find('td.status').html("")
+            var td = row.find('td.status').append('Executado')
+            var td = row.find('td.actions .btn-delete').remove()
+           });
+        },
+        onCancel: function() {
+            console.log("ko")
+        }
+    });
+}
 	</script>
 	@stop

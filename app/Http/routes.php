@@ -145,7 +145,7 @@ Route::get('api/production_order_detail/{id_production_order}', 'Production\Prod
 Route::post('api/update_execution/{id}','Production\ProductionExecutionController@updateExecutionDetail');
 Route::get('api/execution_detail/{id_order_detail}', 'Production\ProductionExecutionController@ProductionExecutionDetail');
 Route::get('api/execution_detail_delete/{id}', 'Production\ProductionExecutionController@deleteExecutionDetail');
-
+Route::get('finish_execution/{id_order}','Production\ProductionExecutionController@finishExecution');
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
 

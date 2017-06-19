@@ -12,6 +12,7 @@
      },
      "order": []
  }).on('draw.dt', function(e) {
+    //confirmationButton(e)
      $('#table-production-execution-form_processing').css('display', 'none')
      new Vue({
          el: '#app',
@@ -31,9 +32,7 @@
              },
              deleteDetail : function(id_execution,index){
              axios.get('/api/execution_detail_delete/' + id_execution).then(response => {
-                     // JSON responses are automatically parsed.
-                     //this.detail_execution = response.data,
-                     //this.current_id_order_detail = id_order_detail
+                     // JSON responses are automatically parsed.                    
                       this.detail_execution.splice(index, 1);
                  }).catch(function(error) {
                      console.log(error);
@@ -58,3 +57,5 @@
          }
      })
  })
+
+

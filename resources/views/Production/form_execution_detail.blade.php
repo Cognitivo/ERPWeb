@@ -65,6 +65,9 @@
                   <th>
                     Cantidad
                   </th>
+                   <th>
+                    Costo
+                  </th>
                   <th>
                     Acciones
                   </th>
@@ -75,6 +78,7 @@
                 <tr v-for="(detail,index) in detail_execution">
                   <td>@{{detail.name}}</td>
                   <td>@{{detail.quantity}}</td>
+                  <td>@{{detail.unit_cost}}</td>
                   <td><a href="#" v-on:click="deleteDetail(detail.id,index)" class="btn btn-sm btn-primary">
                 <i class="glyphicon glyphicon-remove"></i>
                 </a></td>

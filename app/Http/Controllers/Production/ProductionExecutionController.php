@@ -22,6 +22,7 @@ class ProductionExecutionController extends Controller
      */
     public function index()
     {
+
         if (\Request::ajax()) {
             return $this->indexData();
         }
@@ -34,18 +35,23 @@ class ProductionExecutionController extends Controller
 
         $orders = ProductionOrder::leftJoin('production_line', 'production_line.id_production_line', '=', 'production_order.id_production_line')->
 
-            select(['id_production_order', 'work_number', 'production_order.name', 'production_line.name as linea','status'])->whereIn('production_order.status',[2,4])->get();
+            select(['id_production_order', 'work_number', 'production_order.name', 'production_line.name as linea', 'status'])->whereIn('production_order.status', [2, 4])->get();
 
         return Datatables::of($orders)
 
             ->addColumn('actions', function ($order) {
                 $result = '';
-           
-                    $result = '<a href="/production_execution/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
-                <i class="glyphicon glyphicon-edit"></i>
-                </a>
-                    ';
 
+                $result = '<a href="/production_execution/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
+                <i class="glyphicon glyphicon-edit"></i>
+                </a>/
+                
+                    ';
+                    if($order->status != 4){
+                        $result = $result . ' <a  style="display: inline;" class="btn-delete btn btn-sm btn-danger"  data-toggle="confirmation" data-original-title="Terminar Execution?" data-placement="top" >
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </a>';
+                    }
 
                 return $result;
 
@@ -56,7 +62,9 @@ class ProductionExecutionController extends Controller
                 return 'Aprobado';
             } else if ($status == 4) {
                 return 'Executado';
-            } 
+            }
+        })->addRowAttr('data-id', function ($order) {
+            return $order->id_production_order;
         })
 
             ->removeColumn('id_production_order')
@@ -103,25 +111,24 @@ class ProductionExecutionController extends Controller
      */
     public function edit($id)
     {
-        
-        return view('Production/form_execution_detail')->with('id',$id);
+
+        return view('Production/form_execution_detail')->with('id', $id);
     }
 
     public function productionExecutionTable($id)
     {
         $order_detail = ProductionOrderDetail::GetProductionOrderDetail($id)->get();
 
-         return Datatables::of($order_detail)
+        return Datatables::of($order_detail)
 
             ->addColumn('actions', function ($order) {
-                $result = '<a href="#" v-on:click="loadDataExecutionDetail('.$order->id.')" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_detail_execution">
+                $result = '<a href="#" v-on:click="loadDataExecutionDetail(' . $order->id . ')" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal_detail_execution">
                 <i class="glyphicon glyphicon-edit"></i>
                 </a>';
                 return $result;
             })
             ->removeColumn('id')
             ->make();
-   
 
     }
 
@@ -160,7 +167,7 @@ class ProductionExecutionController extends Controller
     public function ProductionExecutionDetail($id_order_detail)
     {
 
-        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail',$id_order_detail)->select('id_execution_detail as id','name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'))->get();
+        $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail', $id_order_detail)->select('id_execution_detail as id', 'name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), 'unit_cost')->get();
 
         return response()->json($ProductionExecutionDetail);
 
@@ -175,32 +182,37 @@ class ProductionExecutionController extends Controller
     public function updateExecutionDetail(Request $request, $id_order_detail)
     {
 
-       // $execution_detail = ProductionExecutionDetail::find($id);
+        // $execution_detail = ProductionExecutionDetail::find($id);
         //$execution_detail = ProductionExecutionDetail::where('id_order_detail',$id)
         $order_detail = ProductionOrderDetail::find($id_order_detail);
-            //$execution_detail->update(['quantity' => $request->quantity]);
-            $production_execution_detail             = new ProductionExecutionDetail;
-            //$production_execution_detail->parent_id_execution_detail = $id;
-            $production_execution_detail->quantity   = $request->quantity;
-            $production_execution_detail->name = $order_detail->name;
-            $production_execution_detail->start_date = Carbon::now();
-            $production_execution_detail->end_date   = Carbon::now();
-            $production_execution_detail->unit_cost  = 0;
-            $production_execution_detail->is_input   = 1;
-            $production_execution_detail->trans_date = Carbon::now();
-            $production_execution_detail->timestamp  = Carbon::now();
-            $production_execution_detail->id_company = 1;
-            $production_execution_detail->id_user    = 1;
-            $production_execution_detail->is_head    = 1;
-            $production_execution_detail->is_read    = 1;
-            $production_execution_detail->id_order_detail = $id_order_detail;
-            $production_execution_detail->id_project_task = $order_detail->id_project_task;
-            $production_execution_detail->id_item = $order_detail->id_item;
-            $production_execution_detail->save();
+        $unit_cost    = \DB::table('items')->where('items.id_item', $order_detail->id_item)
+            ->join('item_product', 'item_product.id_item', '=', 'items.id_item')
+            ->join('item_movement', 'item_movement.id_item_product', '=', 'item_product.id_item_product')
+            ->join('item_movement_value', 'item_movement_value.id_movement', '=', 'item_movement.id_movement')->first();
 
-            return response()->json(['message' => true,
-                'data'=>['id'=>$production_execution_detail->id_execution_detail,'name'=>$production_execution_detail->name,'quantity'=> $production_execution_detail->quantity]]);
-       
+        //$execution_detail->update(['quantity' => $request->quantity]);
+        $production_execution_detail = new ProductionExecutionDetail;
+        //$production_execution_detail->parent_id_execution_detail = $id;
+        $production_execution_detail->quantity   = $request->quantity;
+        $production_execution_detail->name       = $order_detail->name;
+        $production_execution_detail->start_date = Carbon::now();
+        $production_execution_detail->end_date   = Carbon::now();
+        // $production_execution_detail->unit_cost  = 0;
+        $production_execution_detail->is_input        = 1;
+        $production_execution_detail->trans_date      = Carbon::now();
+        $production_execution_detail->timestamp       = Carbon::now();
+        $production_execution_detail->id_company      = 1;
+        $production_execution_detail->id_user         = 1;
+        $production_execution_detail->is_head         = 1;
+        $production_execution_detail->is_read         = 1;
+        $production_execution_detail->id_order_detail = $id_order_detail;
+        $production_execution_detail->id_project_task = $order_detail->id_project_task;
+        $production_execution_detail->id_item         = $order_detail->id_item;
+        $production_execution_detail->unit_cost       = $unit_cost->unit_cost ?? 0;
+        $production_execution_detail->save();
+
+        return response()->json(['message' => true,
+            'data'                             => ['id' => $production_execution_detail->id_execution_detail, 'name' => $production_execution_detail->name, 'quantity' => $production_execution_detail->quantity, 'unit_cost' => $production_execution_detail->unit_cost]]);
 
     }
 
@@ -512,5 +524,18 @@ class ProductionExecutionController extends Controller
             $production_order_detail->quantity = $request->value;
             $production_order_detail->save();
         }
+    }
+
+    public function finishExecution($id_order)
+    {
+        $production_order = ProductionOrder::find($id_order);
+        $production_order->status = 4;
+        $production_order->save();
+        ProductionOrderDetail::where('id_production_order',$id_order)->update(['status'=>4]);
+        $order_detail = ProductionOrderDetail::where('id_production_order',$id_order)->get();
+        foreach ($order_detail as $key => $value) {
+           ProductionExecutionDetail::where('id_order_detail',$value->id_order_detail)->update(['status'=>4]);
+        }
+        return response()->json('ok',200);
     }
 }
