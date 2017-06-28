@@ -183,7 +183,7 @@ class ProductionOrderController extends Controller
         $results = Excel::load($request->file, function ($reader) {
 
         })->get();
-
+       // dd($results);
         foreach ($results as $key => $value) {
 
             //verificar si el estado es asignado para insertar
@@ -223,15 +223,15 @@ class ProductionOrderController extends Controller
                 }
                 //buscar plantilla si no existe insertar platilla y proyecto
                 //sustituir tipo de trabajo por template
-                $template = ProjectTemplate::where('name', trim($value->template))->first();
+                $template = ProjectTemplate::where('name', trim($value->tipotrabajo))->first();
 
                 if ($template != null) {
 
-                    $id_project = $this->storeTemplateProject($value->template, $id_contact, $template->id_project_template);
+                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact, $template->id_project_template);
 
                 } else {
 
-                    $id_project = $this->storeTemplateProject($value->template, $id_contact);
+                    $id_project = $this->storeTemplateProject($value->tipotrabajo, $id_contact);
 
                 }
 
