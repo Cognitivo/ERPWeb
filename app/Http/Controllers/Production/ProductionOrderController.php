@@ -464,7 +464,7 @@ class ProductionOrderController extends Controller
 
             //insert task and order detail
             $template_detail = ProjectTemplate::find($request->id_project_template);
-            //dd($template_detail);
+            
             //insertTask($name, $parent, $item, $id_project)
             if ($template_detail->get()->count()) {
                 $this->insertDetail($template_detail, $production_order, $id_project);
@@ -510,21 +510,21 @@ class ProductionOrderController extends Controller
         $array_result = collect();
         $array_parent = collect();
         $cont         = 0;
-
+        //dd($array);
         foreach ($array as $key => $value) {
 
             if ($value->parent_id_template_detail == null) {
                 $cont            = 0;
-                $array_parent    = collect();
+                //$array_parent    = collect();
                 $id_project_task = $this->insertTask(0, null, $value->id_item, $id_project);
                 $id_real         = $this->insertProductionOrderDetail($value->item_description, 0, null, $production_order, $value->id_item, $id_project_task);
                 $array_parent->push(['id' => $value->id_template_detail, 'id_real' => $id_real, 'id_real_task' => $id_project_task]);
-
+                //\Log::info($array_parent);
             } else {
-
+                //dd($array_parent);
                 $parent = $array_parent->where('id', $value->parent_id_template_detail)->first();
 
-                if (count($parent)) {
+                if ($parent) {
 
                     $parent_real      = $parent['id_real'];
                     $parent_real_task = $parent['id_real_task'];
