@@ -14,7 +14,7 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 //Security
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth','cors'], function () {
     Route::get('component/{Key}/{StartDate}/{EndDate}', 'ComponentController@Execute_KPI');
     Route::get('component/getusercomponents', 'ComponentController@GetUserComponents');
     Route::post('savedashboard', 'dashboardController@SaveDashboard');
