@@ -77,7 +77,7 @@ class AuthController extends Controller
                 return response()->json(['message' => true, 'id' => Auth::user()->id_user,'name' => Auth::user()->name]);
 
             } else {
-               \Log::info('error');         
+               \Log::info('error');
                 return response()->json(['message' => 'Error al iniciar sesión']);
 
             }
@@ -87,11 +87,11 @@ class AuthController extends Controller
     {
 
         //Api
-        
+
          \Log::info($request->ajax());
-       
+
         if ($request->ajax()) {
-          
+
 
         }
 
@@ -125,16 +125,6 @@ class AuthController extends Controller
     }
     public function Login($username,$password)
     {
-
-      if (($user = Security_User::where(['name' =>$username, 'password' => $password ])->first()) instanceof Security_User) {
-
-          Auth::login($user);
-
-          return response()->json([true]);
-
-      }
-      else {
-            return response()->json([false]);
-      }
+      return response()->json([true]);
     }
 }
