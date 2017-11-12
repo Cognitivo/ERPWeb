@@ -30,6 +30,6 @@ class Cors {
         //     ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         //     ->header('Access-Control-Allow-Headers', 'X-Requested-With,accept, Content-Type,Authorization')
         //     ->header('Access-Control-Allow-Credentials','true');
-        return $next($request)
+        return $next($request);
     }
 }
