@@ -31,9 +31,9 @@ class ProductionLineController extends Controller
 
     public function getproductionline(Request $request)
     {
-        
-        $line = ProductionLine::where('id_user',$request->id_user)->select('id_production_line as id','name','id_user')->get();
-      
+
+        $line = ProductionLine::select('id_production_line as id','name','id_user')->get();
+
             return response()->json($line);
 
     }
