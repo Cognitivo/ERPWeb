@@ -125,6 +125,15 @@ class AuthController extends Controller
     }
     public function Login($username,$password)
     {
-      return response()->json([true]);
+      if (($user = Security_User::where(['name' =>$username, 'password' => $password ])->first()) instanceof Security_User) {
+
+           Auth::login($user);
+
+           return response()->json([true]);
+
+       }
+       else {
+             return response()->json([false]);
+       }
     }
 }
