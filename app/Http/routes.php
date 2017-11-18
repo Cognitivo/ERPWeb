@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('production_execution_table/{id}','Production\ProductionExecutionController@productionExecutionTable');
     //Route::get('load_execution_detail/{id}','Production\ProductionExecutionController@loadDetail');
 
+    Route::get('api/SaveExcustion/{id}', 'Production\ProductionExecutionController@SaveExcustion');
     Route::post('api/transactions', 'Production\ProductionExecutionController@api_approve');
       Route::post('api/approve_execustion', 'Production\ProductionExecutionController@approve_execustion');
 

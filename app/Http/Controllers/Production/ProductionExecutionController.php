@@ -45,7 +45,7 @@ class ProductionExecutionController extends Controller
                 $result = '<a href="/production_execution/' . $order->id_production_order . '/edit" class="btn btn-sm btn-primary" >
                 <i class="glyphicon glyphicon-edit"></i>
                 </a>/
-                
+
                     ';
                     if($order->status != 4){
                         $result = $result . ' <a  style="display: inline;" class="btn-delete btn btn-sm btn-danger"  data-toggle="confirmation" data-original-title="Terminar Execution?" data-placement="top" >
@@ -342,6 +342,54 @@ class ProductionExecutionController extends Controller
             return response()->json($production_execution->getKey());
 
         }
+
+    }
+
+    public function SaveExcustion($orderdetailid)
+    {
+
+        $production_order_detail = ProductionOrderDetail::find($orderdetailid);
+          $production_order = ProductionOrder::find($production_order_detail->id_production_order);
+
+        //return response()->json($request->all());
+
+
+                $production_execution_detail = new ProductionExecutionDetail;
+
+
+                $production_execution_detail->id_order_detail = $production_order_detail->id_order_detail;
+
+                $production_execution_detail->quantity = 1;
+
+                $production_execution_detail->start_date = $production_order->start_date_est;
+
+                $production_execution_detail->end_date = $production_order->end_date_est;
+
+                $production_execution_detail->unit_cost = 0;
+
+                $production_execution_detail->is_input = 1;
+
+                $production_execution_detail->trans_date = Carbon::now();
+
+                $production_execution_detail->timestamp = Carbon::now();
+
+                $production_execution_detail->id_company = $production_order->id_company;
+
+                $production_execution_detail->id_user = 1;
+
+                $production_execution_detail->is_head = 1;
+
+                $production_execution_detail->is_read = 1;
+
+                $production_execution_detail->id_item = $production_order_detail->id_item;
+
+                $production_execution_detail->save();
+
+
+                      return response()->json("Save");
+
+
+
 
     }
 
