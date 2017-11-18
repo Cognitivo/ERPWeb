@@ -392,6 +392,22 @@ class ProductionExecutionController extends Controller
 
 
     }
+    public function RemoveExcustion($orderdetailid)
+    {
+
+        $production_order_detail = ProductionOrderDetail::find($orderdetailid);
+        $execution_detail = ProductionExecutionDetail::where('id_order_detail',$orderdetailid)->orderBy('id_execution_detail', 'desc');
+        $execution_detail->delete();
+        return response()->json('ok');
+
+
+
+                  
+
+
+
+
+    }
 
     public function approveExcecution($id)
     {
