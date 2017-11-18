@@ -397,6 +397,7 @@ class ProductionExecutionController extends Controller
 
         $production_order_detail = ProductionOrderDetail::find($orderdetailid);
         $execution_detail = ProductionExecutionDetail::where('id_order_detail',$orderdetailid)->orderBy('id_execution_detail', 'desc')->first();
+    
         $execution_detail->delete();
         return response()->json('ok');
 
