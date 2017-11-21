@@ -143,7 +143,7 @@ class ProductionOrderDetailController extends Controller
     }
     public function showdetail($id)
     {
-        $ProductionOrderDetail = ProductionOrderDetail::where('id_order_detail','=',$id)->first();
+        $ProductionOrderDetail = ProductionOrderDetail::where('id_order_detail','=',$id)->get();
 
 
         return response()->json($ProductionOrderDetail);
