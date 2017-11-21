@@ -392,12 +392,59 @@ class ProductionExecutionController extends Controller
 
 
     }
+    public function SaveExcustionQuantiy($orderdetailid,$qty)
+    {
+
+        $production_order_detail = ProductionOrderDetail::find($orderdetailid);
+          $production_order = ProductionOrder::find($production_order_detail->id_production_order);
+
+        //return response()->json($request->all());
+
+
+                $production_execution_detail = new ProductionExecutionDetail;
+
+
+                $production_execution_detail->id_order_detail = $production_order_detail->id_order_detail;
+
+                $production_execution_detail->quantity = $qty;
+
+                $production_execution_detail->start_date = $production_order->start_date_est;
+
+                $production_execution_detail->end_date = $production_order->end_date_est;
+
+                $production_execution_detail->unit_cost = 0;
+
+                $production_execution_detail->is_input = 1;
+
+                $production_execution_detail->trans_date = Carbon::now();
+
+                $production_execution_detail->timestamp = Carbon::now();
+
+                $production_execution_detail->id_company = $production_order->id_company;
+
+                $production_execution_detail->id_user = 1;
+
+                $production_execution_detail->is_head = 1;
+
+                $production_execution_detail->is_read = 1;
+
+                $production_execution_detail->id_item = $production_order_detail->id_item;
+
+                $production_execution_detail->save();
+
+
+                      return response()->json("Save");
+
+
+
+
+    }
     public function RemoveExcustion($orderdetailid)
     {
 
         $production_order_detail = ProductionOrderDetail::find($orderdetailid);
         $execution_detail = ProductionExecutionDetail::where('id_order_detail',$orderdetailid)->orderBy('id_execution_detail', 'desc')->first();
-    
+
         $execution_detail->delete();
         return response()->json('ok');
 
