@@ -150,7 +150,7 @@ Route::get('finish_execution/{id_order}','Production\ProductionExecutionControll
 Route::get('api/production_order_detail/show/{id_production_order_detail}', 'Production\ProductionOrderDetailController@showdetail');
 Route::post('api/production_order_detail/edit', 'Production\ProductionOrderDetailController@editquantity');
 Route::get('api/SaveExcustion/{id}', 'Production\ProductionExecutionController@SaveExcustion');
-Route::get('api/SaveExcustionQuantiy/{id}', 'Production\ProductionExecutionController@SaveExcustionQuantiy');
+Route::get('api/SaveExcustionQuantiy/{id}/{qty}', 'Production\ProductionExecutionController@SaveExcustionQuantiy');
 Route::get('api/RemoveExcustion/{id}', 'Production\ProductionExecutionController@RemoveExcustion');
 
 Route::post('api/production_execution_save_update', 'Production\ProductionExecutionController@saveUpdate');
