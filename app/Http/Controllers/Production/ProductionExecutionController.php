@@ -169,7 +169,7 @@ class ProductionExecutionController extends Controller
 
         $ProductionExecutionDetail = ProductionExecutionDetail::where('id_order_detail', $id_order_detail)
         ->leftJoin('security_user', 'security_user.id_user', '=', 'production_execution_detail.id_user')
-        ->select('id_execution_detail as id', 'name','security_user.name as userName',
+        ->select('id_execution_detail as id', 'security_user.name as userName',
         \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), 'unit_cost as unitCost','trans_date as transDate')->get();
 
         return response()->json($ProductionExecutionDetail);
