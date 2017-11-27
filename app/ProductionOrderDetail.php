@@ -176,4 +176,19 @@ class ProductionOrderDetail extends Model
 
             ->select('production_execution_detail.id_execution_detail as id', 'production_order_detail.id_production_order', 'production_order_detail.name', \DB::raw('ifnull(cast(production_execution_detail.quantity as unsigned),0) as quantity'), \DB::raw('ifnull(cast(production_execution_detail.quantity_real as unsigned),0) as quantity_real'));*/
     }
+    public function scopeApiGetProductionOrderDetailfromId($query, $id_order_detail)
+    {
+        return $query->where('id_order_detail',$id_order_detail)
+        ->Join('security_user', 'security_user.id_user', '=', 'production_order_detail.id_user')
+        ->select('security_user.name as UserName','id_production_order','production_order_detail.id_order_detail as id','production_order_detail.id_project_task',
+            'production_order_detail.name',
+            \DB::raw('ifnull(cast(production_order_detail.quantity as unsigned),0) as quantity'),
+            \DB::raw("ifnull(cast((select sum(t2.quantity) as q_real
+                    from production_execution_detail as t2 where t2.id_order_detail is not null and
+                    t2.id_order_detail = production_order_detail.id_order_detail) as unsigned),0) as quantity_real
+                    "),
+                    \DB::raw("DATE(production_order_detail.timestamp) as timestamp")
+            );
+
+    }
 }

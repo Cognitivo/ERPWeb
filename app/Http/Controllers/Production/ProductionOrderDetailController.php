@@ -143,9 +143,7 @@ class ProductionOrderDetailController extends Controller
     }
     public function showdetail($id)
     {
-        $ProductionOrderDetail = ProductionOrderDetail::Join('security_user', 'security_user.id_user', '=', 'production_order_detail.id_user')->where('id_order_detail','=',$id)
-        ->select('security_user.name',\DB::raw("ROUND(production_order_detail.quantity,2) as quantity "),\DB::raw("DATE(production_order_detail.timestamp) as timestamp"))
-        ->get();
+        $ProductionOrderDetail = ProductionOrderDetail::ApiGetProductionOrderDetailfromId($id)->get();
 
 
         return response()->json($ProductionOrderDetail);
