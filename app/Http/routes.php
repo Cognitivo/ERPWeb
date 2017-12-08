@@ -98,6 +98,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('production_line', 'Production\ProductionLineController');
+    Route::resource('curve', 'Garments\CurveController');
+
+
+    Route::resource('garmentsproduction', 'Garments\ProductionController');
 
     Route::resource('production_execution', 'Production\ProductionExecutionController');
     Route::get('production_execution_table/{id}','Production\ProductionExecutionController@productionExecutionTable');
