@@ -7,6 +7,8 @@ use App\Items;
 use App\ProductionOrder;
 use App\ProductionOrderDetail;
 use App\ProductionLine;
+use App\ItemRecepie;
+use App\ItemRecepieDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -108,6 +110,33 @@ class ProductionController extends Controller
         $production_order->start_date_est     = Controller::convertDate($range_date[0]);
         $production_order->end_date_est       = Controller::convertDate($range_date[1]);
         $production_order_detail->save();
+        $recepie=ItemRecepie::where('item_id_item',$request->id_item)->first();
+        if (isset($recepie)) {
+              $recepiedetails=ItemRecepieDetail::where('item_recepie_id_recepie',$recepie->id_recepie)->get();
+              foreach ($recepiedetails as $recepiedetail) {
+                $detailitem=Items::where('id_item',$recepiedetail->item_id_item)->first();
+                if (isset($detailitem)) {
+                  $production_order_detailchild                         = new ProductionOrderDetail;
+                  $production_order_detailchild->id_production_order    = $production_order->getKey();
+                  $production_order_detailchild->name                   = $detailitem->name . ' ' . '[' . $request->name[$i] . ']';
+                  $production_order_detailchild->quantity               = $production_order_detail->quantity * $recepiedetail->quantity;
+                  $production_order_detailchild->id_item                = $detailitem->id_item;
+                  $production_order_detailchild->id_company             = 1;
+                  $production_order_detailchild->id_user                = 1;
+                  $production_order_detailchild->is_input               = 1;
+                  $production_order_detailchild->is_head                = 1;
+                  $production_order_detailchild->is_read                = 0;
+                  $production_order_detailchild->parent_id_order_detail  = $production_order_detail->id_order_detail;
+                  $production_order_detailchild->status                 = 1;
+                  $production_order_detailchild->timestamp              = Carbon::now();
+                  $production_order_detailchild->trans_date             = Carbon::now();
+                  $production_order_detailchild->start_date_est     = Controller::convertDate($range_date[0]);
+                  $production_order_detailchild->end_date_est       = Controller::convertDate($range_date[1]);
+                  $production_order_detailchild->save();
+                }
+
+              }
+        }
     }
     $productions=ProductionOrder::get();
 
