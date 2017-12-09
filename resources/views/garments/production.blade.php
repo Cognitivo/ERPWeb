@@ -1,55 +1,39 @@
-@extends('master')
-@section('title', 'work | CognitivoERP')
-@section('Title', 'Work Form')
+@extends('../../master')
+@section('title', 'Lines De Trabajo | CognitivoERP')
+@section('Title', 'Lines De Trabajo')
 @section('content')
 
-      <div class="profile-content">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="portlet light ">
-              <div class="portlet-title tabbable-line">
-                <div class="caption caption-md">
-                  <i class="icon-globe theme-font hide"></i>
-                  <span class="caption-subject font-blue-madison bold uppercase">Work</span>
-                </div>
-              </div>
-              <div class="portlet-body">
-                @if(isset($name))
-                {!! Form::model($name,['route' => ['curve.update',$name], 'method'=>'put','class'=>'form-horizontal']) !!}
-                @else
-                {!! Form::open(array('route'=> 'curve.store','class'=>'form-horizontal')) !!}
-                @endif
-                {!! csrf_field() !!}
-                <div class="form-group  margin-top-20">
-                  <label class="control-label col-md-2">Nombre
-                    <span class="required"> * </span>
-                  </label>
-                  <div class="col-md-4">
-                    <div class="input-icon right">
-                      <i class="fa"></i>
-                      {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Name']) !!}
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-md-2">Size
-                    <span class="required"> * </span>
-                  </label>
-                  <div class="col-md-4">
-                  {!! Form::text('size', null, ['class'=>'form-control', 'placeholder'=>'size']) !!}
-                  </div>
-                </div>
-                <div class="margiv-top-10">
-                  {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
-                  <a href="{{route('curve.index')}}" class="btn default"> CANCELAR</a>
-                </div>
-                {!! Form::close() !!}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+ @include('flash::message')
+
+<div class="input-group">
+	<a href="{{ route('garmentsproduction.create') }}" title="" class="btn btn-primary">Crear Production</a>
+</div>
+<table class="table table-hover">
+	<thead>
+		<tr>
+      <th>Nº de O.T.</th>
+      <th>Nombre</th>
+      <th>Linea Produccion</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		@foreach ($productions as $element)
+		<tr>
+			<td>{{ $element->name }}</td>
+      <td>{{ $element->work_number }}</td>
+		  <td>{{ $element->productionLine->name }}</td>
+
+		</tr>
+		@endforeach
+	</tbody>
+</table>
+@stop
 
 
-              <!-- END PAGE CONTENT INNER -->
-@endsection
+@section('scripts')
+	<script type="text/javascript">
+		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+	</script>
+@stop

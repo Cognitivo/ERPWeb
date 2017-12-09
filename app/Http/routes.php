@@ -99,6 +99,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('production_line', 'Production\ProductionLineController');
     Route::resource('curve', 'Garments\CurveController');
+    Route::post('garmentsproduction\fetch', 'Garments\ProductionController@fetch')->name("garmentsproduction.fetch");
 
 
     Route::resource('garmentsproduction', 'Garments\ProductionController');

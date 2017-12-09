@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Garments;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use File;
+
 
 class CurveController extends Controller
 {
@@ -15,8 +17,15 @@ class CurveController extends Controller
      */
     public function index()
     {
+      if (file_exists(storage_path() . "/json/"))
+      {
         $File=storage_path() . "/json/curve.json";
         $Json= json_decode(file_get_contents($File),true);
+
+      }
+      else {
+        $Json=array();
+      }
 
 
         return view('garments/curveindex',compact('Json'));
@@ -30,7 +39,7 @@ class CurveController extends Controller
     public function create()
     {
         $count=8;
-        return view('garments/curveform',compact($count));
+        return view('garments/curveform',compact('count'));
     }
 
     /**
@@ -41,19 +50,36 @@ class CurveController extends Controller
      */
     public function store(Request $request)
     {
-        $File=storage_path() . "/json/curve.json";
-        $Json = array();
+       if (!file_exists(storage_path() . "/json/"))
+       {
+        File::makeDirectory(storage_path() . "/json/");
+        File::put(storage_path() . '/json/curve.json', '');
+       }
+       $item=array();
+       foreach ($request->size as $key => $value) {
+         if ($value!="") {
+        array_push($item,$value);
+         }
 
+       }
+        $File=storage_path() . "/json/curve.json";
         $data = array(
 
              "name"=>$request->name,
-            "size"=>$request->size
+             "size"=>$item
         );
-        $Json = json_decode(file_get_contents($File),true);
-    array_push($Json,$data);
+         $Json= array();
+         if (json_decode(file_get_contents($File),true)!=null) {
+              $Json = json_decode(file_get_contents($File),true);
+         }
+
+          array_push($Json,$data);
+
+       file_put_contents($File,json_encode($Json));
 
 
-        file_put_contents($File,json_encode($Json));
+
+
         return view('garments/curveindex',compact('Json'));
 
 
@@ -81,22 +107,26 @@ class CurveController extends Controller
      */
     public function edit($name)
     {
+        $data = array();
+        $count=0;
         $File=storage_path() . "/json/curve.json";
         $Json = array();
         $Json = json_decode(file_get_contents($File),true);
         $arraycount = count($Json);
-        $data = array();
-        $count=0;
         for($i=0;$i<$arraycount;$i++){
-            $count=count($Json[$i]["name"]);
+            $count=count($Json[$i]["size"]);
+
             if ($Json[$i]["name"]==$name) {
                 $data=$Json[$i];
+
             }
 
 
         }
 
-        return view('garments/curveform',compact('data'));
+
+
+        return view('garments/curveform',compact('data','count','name'));
     }
 
     /**

@@ -19,9 +19,10 @@
 	<tbody>
 		@foreach ($Json as $element=>$value)
 		<tr>
-			<td>{{ $value['name'] }}</td>
-            <td>	<a href="/curve/{{ $value['name'] }}/edit">{{ $value['size'] }}</a></td>
-
+			<td><a href="/curve/{{ $value['name'] }}/edit">{{ $value['name'] }}</a></td>
+      @foreach ($value['size'] as $element=>$value)
+      <td>{{ $value }}</a></td>
+      @endforeach
 
 		</tr>
 		@endforeach

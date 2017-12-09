@@ -183,7 +183,7 @@
                                                     <a href="/curve" class="nav-link">Curve</a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="/garmentsproduction/create" class="nav-link">Production</a>
+                                                    <a href="/garmentsproduction" class="nav-link">Production</a>
                                                 </li>
 
                                             </ul>

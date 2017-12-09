@@ -14,8 +14,8 @@
                 </div>
               </div>
               <div class="portlet-body">
-                @if(isset($data))
-                {!! Form::model($data,['route' => ['curve.update',$data['name']], 'method'=>'put','class'=>'form-horizontal']) !!}
+                @if(isset($data) && isset($name))
+                {!! Form::model($name,['route' => ['curve.update',$name], 'method'=>'put','class'=>'form-horizontal']) !!}
                 @else
                 {!! Form::open(array('route'=> 'curve.store','class'=>'form-horizontal')) !!}
                 @endif
@@ -28,20 +28,39 @@
                   <div class="col-md-4">
                     <div class="input-icon right">
                       <i class="fa"></i>
+                        @if(isset($data))
+                    {!! Form::text('name', $data['name'], ['class'=>'form-control', 'placeholder'=>'Name']) !!}
+                    @else
                       {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Name']) !!}
+                        @endif
                     </div>
                   </div>
                 </div>
-                @for($i=0;$i<=$count;$i++)
+                  @for($i=0;$i<$count;$i++)
+                    @if(isset($data))
+                          @if(isset($data['size'][$i]))
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Size
+                          <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-4">
 
+                        {!! Form::text('size[]', $data['size'][$i], ['class'=>'form-control', 'placeholder'=>'size']) !!}
+                        </div>
+                      </div>
+                        @endif
+                @else
                 <div class="form-group">
                   <label class="control-label col-md-2">Size
                     <span class="required"> * </span>
                   </label>
                   <div class="col-md-4">
-                  {!! Form::text('size[]', null, ['class'=>'form-control', 'placeholder'=>'size']) !!}
+
+                  {!! Form::text('size[]',null, ['class'=>'form-control', 'placeholder'=>'size']) !!}
                   </div>
                 </div>
+                @endif
+
             @endfor
                 <div class="margiv-top-10">
                   {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
