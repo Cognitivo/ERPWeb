@@ -20,6 +20,7 @@
                 {!! Form::open(array('route'=> 'curve.store','class'=>'form-horizontal')) !!}
                 @endif
                 {!! csrf_field() !!}
+
                 <div class="form-group  margin-top-20">
                   <label class="control-label col-md-2">Nombre
                     <span class="required"> * </span>
@@ -31,14 +32,17 @@
                     </div>
                   </div>
                 </div>
+                @for($i=0;$i<=$count;$i++)
+
                 <div class="form-group">
                   <label class="control-label col-md-2">Size
                     <span class="required"> * </span>
                   </label>
                   <div class="col-md-4">
-                  {!! Form::text('size', null, ['class'=>'form-control', 'placeholder'=>'size']) !!}
+                  {!! Form::text('size[]', null, ['class'=>'form-control', 'placeholder'=>'size']) !!}
                   </div>
                 </div>
+            @endfor
                 <div class="margiv-top-10">
                   {!! Form::submit( 'GUARDAR CAMBIOS', ['class'=>'btn green']) !!}
                   <a href="{{route('curve.index')}}" class="btn default"> CANCELAR</a>

@@ -29,7 +29,8 @@ class CurveController extends Controller
      */
     public function create()
     {
-        return view('garments/curveform');
+        $count=8;
+        return view('garments/curveform',compact($count));
     }
 
     /**
@@ -83,10 +84,11 @@ class CurveController extends Controller
         $File=storage_path() . "/json/curve.json";
         $Json = array();
         $Json = json_decode(file_get_contents($File),true);
-        $count = count($Json);
+        $arraycount = count($Json);
         $data = array();
-        for($i=0;$i<$count;$i++){
-
+        $count=0;
+        for($i=0;$i<$arraycount;$i++){
+            $count=count($Json[$i]["name"]);
             if ($Json[$i]["name"]==$name) {
                 $data=$Json[$i];
             }
