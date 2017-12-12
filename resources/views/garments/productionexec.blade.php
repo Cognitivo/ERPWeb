@@ -6,9 +6,6 @@
 
  @include('flash::message')
 
-<div class="input-group">
-	<a href="{{ route('garmentsproduction.create') }}" title="" class="btn btn-primary">Crear Production</a>
-</div>
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -21,19 +18,12 @@
 	<tbody>
 		@foreach ($productions as $element)
 		<tr>
+			<td><a href="garmentsproductionexec/{{$element->id_production_order }}">{{ $element->name }}</a></td>
       <td>{{ $element->work_number }}</td>
-			<td>{{ $element->name }}</td>
-      <td>{{ $element->productionLine->name }}</td>
+		  <td><a href="garmentsproductionexec/{{$element->id_production_order }}">{{ $element->productionLine->name }}</a></td>
 
 		</tr>
 		@endforeach
 	</tbody>
 </table>
-@stop
-
-
-@section('scripts')
-	<script type="text/javascript">
-		$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
-	</script>
 @stop

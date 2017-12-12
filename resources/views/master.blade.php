@@ -174,6 +174,7 @@
                                                 </li>
                                             </ul>
                                         </li>
+                                        @if (env('Type') == "Garments")
                                         <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="/timeline"> Garments
                                                 <span class="arrow"></span>
@@ -191,6 +192,7 @@
 
                                             </ul>
                                         </li>
+                                      @endif
 
                                     </ul>
                                 </div>
