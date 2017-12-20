@@ -76,7 +76,7 @@ class ProductionController extends Controller
        $item=Items::where('id_item',$request->id_item)->first();
         $production_order                     = new ProductionOrder;
         $production_order->id_production_line = $request->id_production_line;
-        $production_order->id_project         = 1;
+    //    $production_order->id_project         = 1;
         $production_order->name               = 'abc';
         $production_order->trans_date         = Carbon::now();
         $production_order->id_company         = 1;
