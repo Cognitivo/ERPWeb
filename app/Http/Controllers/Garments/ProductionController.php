@@ -77,12 +77,12 @@ class ProductionController extends Controller
         $production_order                     = new ProductionOrder;
         $production_order->id_production_line = $request->id_production_line;
     //    $production_order->id_project         = 1;
-        $production_order->name               = 'abc';
+        $production_order->name               = 'Produccion del ' . Carbon::now();
         $production_order->trans_date         = Carbon::now();
-        $production_order->id_company         = 1;
+        $production_order->id_company         =  Auth::user()->id_company;
         $production_order->id_branch          = 1;
         $production_order->id_terminal        = 1;
-        $production_order->id_user            = 1;
+        $production_order->id_user            =  Auth::user()->id_user;
         $production_order->is_head            = 1;
         $production_order->timestamp          = Carbon::now();
         $production_order->start_date_est     = Controller::convertDate($range_date[0]);
