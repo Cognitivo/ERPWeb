@@ -10,6 +10,7 @@ use App\ProductionLine;
 use App\ItemRecepie;
 use App\ItemRecepieDetail;
 use Carbon\Carbon;
+use Auth;
 use Illuminate\Http\Request;
 
 class ProductionController extends Controller
