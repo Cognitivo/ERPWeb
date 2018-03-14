@@ -48,7 +48,12 @@ class ComponentController extends Controller
     foreach ($Parameters as $Parameter) {
       $Query = str_replace("@" . $Parameter,"'" . ${$Parameter} . "'", $Query);
     }
-    $Data = DB::select(DB::raw($Query));
+      $Query = str_replace("@db",DB::getDatabaseName(),$Query);
+    
+    $Data = DB::select($Query);
+
+
+
     $Response[$ComponentConfig["Value"]] = $Data[0]->{$ComponentConfig["Value"]};
     $Response["Type"] = $ComponentConfig["Type"];
     $Response["Dimensions"] = $ComponentConfig["Dimensions"];
@@ -95,7 +100,7 @@ class ComponentController extends Controller
     $Data = DB::select(DB::raw($Query));
     foreach ($Data as $Row) {
       $Response[$ComponentConfig["Label"]][] = $Row->{$ComponentConfig["Label"]};
-      foreach($ComponentConfig["Series"] as $Series){ 
+      foreach($ComponentConfig["Series"] as $Series){
         $Response[$Series["Column"]][] = $Row->{$Series["Column"]};
       }
     }
@@ -122,7 +127,7 @@ class ComponentController extends Controller
           }
         }
       }
-      
+
     }
     asort($UserComponents);
     return json_encode($UserComponents);
