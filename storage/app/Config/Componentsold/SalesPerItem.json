@@ -1,0 +1,16 @@
+{
+	"Caption":"Sales Per Item",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Sales Per Item",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"SalesPerItem.sql",
+	"Dimensions":"Medium",
+	"Label":"item",
+	"Series":[
+		{"Id":"Sales",
+		"Name":"Sales",
+		"Column":"sales",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

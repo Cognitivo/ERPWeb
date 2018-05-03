@@ -1,0 +1,16 @@
+{
+	"Caption":"Quantity Per Item",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Quantity Per Item",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"quantityperitem.sql",
+	"Dimensions":"Medium",
+	"Label":"item",
+	"Series":[
+		{"Id":"Quantity",
+		"Name":"Quantity",
+		"Column":"quantity",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

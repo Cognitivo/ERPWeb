@@ -1,0 +1,20 @@
+{
+	"Caption":"Pending Receivables",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Pending Receivables",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"PendingRecivable.sql",
+	"Dimensions":"Medium",
+	"Label":"Company",
+	"Series":[
+		{"Id":"Balance",
+		"Name":"Balance",
+		"Column":"Balance",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"},{"Id":"Contact",
+		"Name":"Contact",
+		"Column":"Contact",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

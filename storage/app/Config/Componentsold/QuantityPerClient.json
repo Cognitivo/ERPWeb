@@ -1,0 +1,16 @@
+{
+	"Caption":"Quantity Per Client",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Quantity Per Client",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"quantitypercustomer.sql",
+	"Dimensions":"Medium",
+	"Label":"contact",
+	"Series":[
+		{"Id":"Quantity",
+		"Name":"Quantity",
+		"Column":"quantity",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

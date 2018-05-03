@@ -1,0 +1,16 @@
+{
+	"Caption":"Quantity Per Brand",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Quantity Per Brand",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"quantityperbrand.sql",
+	"Dimensions":"Medium",
+	"Label":"brand",
+	"Series":[
+		{"Id":"Quantity",
+		"Name":"Quantity",
+		"Column":"quantity",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}

@@ -1,0 +1,1 @@
+{"Caption":"Average Sales Per Invoice","Type":"kpi","Unit":"Dollars","Module":"Sales","Description":"","Parameters":"StartDate,EndDate","SqlFile":"AvgSalesPerInv.sql","Dimensions":"Small","Value":"AvgSales"}

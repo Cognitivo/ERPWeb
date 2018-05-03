@@ -1,0 +1,16 @@
+{
+	"Caption":"Sales Per Company",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Sales Per Company",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"SalesPerCompany.sql",
+	"Dimensions":"Medium",
+	"Label":"company",
+	"Series":[
+		{"Id":"Sales",
+		"Name":"Sales",
+		"Column":"sales",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}
