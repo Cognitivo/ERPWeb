@@ -1,0 +1,16 @@
+{
+	"Caption":"Sales Per Customer",
+	"Type":"BarChart",
+	"Unit":"USD",
+	"Module":"Sales",
+	"Description":"Sales Per Customer",
+	"Parameters":"StartDate,EndDate",
+	"SqlFile":"SalesPerClient.sql",
+	"Dimensions":"Medium",
+	"Label":"contact",
+	"Series":[
+		{"Id":"Sales",
+		"Name":"Sales",
+		"Column":"sales",
+		"NumberPrefix": "$",
+		"Color":"#4ABDAC"}]}
