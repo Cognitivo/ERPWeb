@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="portlet-body" >
-					<table class="table table-condensed" id="table-production-execution-form">
+					<table class="table table-condensed" id="table-production-execution-form" >
 						<thead>
 							<tr>
 								<th>Contact</th>
@@ -33,7 +33,7 @@
 
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="QuantityPerCustomer">
 							@foreach ($quantitypercustomer as $key => $value)
 								<tr>
 									<td>{{ $value->contact }}</td>
@@ -59,7 +59,7 @@
 						</div>
 					</div>
 					<div class="portlet-body" >
-						<table class="table table-condensed" id="table-production-execution-form">
+						<table class="table table-condensed" id="table-production-execution-form" >
 							<thead>
 								<tr>
 									<th>Contact</th>
@@ -67,7 +67,7 @@
 
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="SalesPerCustomer">
 								@foreach ($salespercustomer as $key => $value)
 									<tr>
 										<td>{{ $value->contact }}</td>

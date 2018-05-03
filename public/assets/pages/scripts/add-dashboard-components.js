@@ -18,6 +18,8 @@ function handleComponents(startdate,enddate) {
     
     if (typeof startdate === 'undefined') { startdate = moment().startOf("year").format('YYYY-MM-DD'); }
     if (typeof enddate === 'undefined') { enddate = moment().format('YYYY-MM-DD'); }
+    
+
     $.ajax({
         type: "GET",
         url: "./component/getusercomponents",
@@ -41,8 +43,53 @@ function handleComponents(startdate,enddate) {
             // alert("Status: " + textStatus); alert("Error: " + errorThrown);
         }
     });
+    $.ajax({
+        type: "GET",
+        url: "./gettables/" + startdate + "/" + enddate,
+        cache: false,
+
+        success: function(Response) {
+            PopulateTableQuantity(Response['quantitypercustomer'],'QuantityPerCustomer');
+
+            PopulateTableSales(Response['salespercustomer'],'SalesPerCustomer');
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            // alert("Status: " + textStatus); alert("Error: " + errorThrown);
+        }
+    });
 }
 
+function PopulateTableQuantity(data,id){
+    var tableBody = $("#" + id);
+    tableBody.empty();
+    if(data == 'No hay datos'){
+        var row = "<tr><td>No hay Datos</td></tr>"
+    }
+    else{
+        $.each(data,function(key,value){
+            var row = "<tr><td>" + value['contact'] + "</td><td>" + value['quantity']+ "</td></tr>"
+            tableBody.append(row);
+        });
+    }
+    
+}
+
+function PopulateTableSales(data,id){
+    console.log(data);
+    var tableBody = $("#" + id);
+    tableBody.empty();
+    if(data == 'No hay datos'){
+        var row = "<tr><td>No hay Datos</td></tr>"
+    }
+    else{
+        $.each(data,function(key,value){
+            var row = "<tr><td>" + value['contact'] + "</td><td>" + value['sales']+ "</td></tr>"
+            tableBody.append(row);
+        });
+    }
+    
+}
 function handleKPI(Response) {
     if (!($("#" + Response.Key).length)) {
         var divKPI = '<div class="col-md-3 draggable" id="' + Response.Key + '"> <!-- BEGIN WIDGET THUMB --> <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 "> <h4 class="widget-thumb-heading">' + Response.Caption + '</h4> <div class="widget-thumb-wrap"> <i class="widget-thumb-icon bg-green icon-bulb"></i> <div class="widget-thumb-body"> <span class="widget-thumb-subtitle">' + Response.Unit + '</span> <span class="widget-thumb-body-stat" id="' + Response.Key + 'body" data-counter="counterup" data-value="' + Response[Response.Value] + '">' + Response[Response.Value] + '</span> </div> </div> </div> <!-- END WIDGET THUMB --> </div>';
