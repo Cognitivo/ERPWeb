@@ -14,6 +14,21 @@
 @endsection
 
 @section('innercontent')
+	<div class="col-md-6" id="barpieportlet" style="display:none;">
+	<div class="portlet">
+	    <div class="portlet-title">
+	        <div class="caption">
+	            <i class="fa fa-gift"></i>Portlet </div>
+	        <div class="tools">
+	            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+	            <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+	            <a href="" class="fullscreen" data-original-title="" title=""> </a>
+	            <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+	        </div>
+	    </div>
+	    <div class="portlet-body" style="display: block;">  </div>
+	</div>
+</div>
 	<div class="row">
 		<div class="col-md-6">
 			<div class="portlet">
@@ -37,7 +52,7 @@
 							</tr>
 						</thead>
 						<tbody id="QuantityPerCustomer">
-							
+
 						</tbody>
 					</table>
 				</div>
@@ -65,7 +80,7 @@
 								<th>Quantity</th>
 							</tr>
 						</thead>
-					
+
 							<tbody id="SalesPerCustomer">
 								@foreach ($salespercustomer as $key => $value)
 									<tr>
