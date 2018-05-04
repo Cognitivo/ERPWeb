@@ -49,7 +49,7 @@ class ComponentController extends Controller
       $Query = str_replace("@" . $Parameter,"'" . ${$Parameter} . "'", $Query);
     }
       $Query = str_replace("@db",DB::getDatabaseName(),$Query);
-    
+
     $Data = DB::select($Query);
 
 
@@ -133,7 +133,7 @@ class ComponentController extends Controller
     return json_encode($UserComponents);
   }
   public function ManageComponents(){
-    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/Config/Components",
                                                     \RecursiveDirectoryIterator::KEY_AS_FILENAME |
                                                     \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
     $Iterator = new \RecursiveIteratorIterator($Directory);
@@ -150,7 +150,7 @@ class ComponentController extends Controller
     return $Components;
   }
   public function ListComponents(){
-    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/config/Components",
+    $Directory = new \RecursiveDirectoryIterator(storage_path() . "/app/Config/Components",
                                                     \RecursiveDirectoryIterator::KEY_AS_FILENAME |
                                                     \RecursiveDirectoryIterator::CURRENT_AS_FILEINFO);
     $Iterator = new \RecursiveIteratorIterator($Directory);
