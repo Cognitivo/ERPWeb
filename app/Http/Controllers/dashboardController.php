@@ -54,7 +54,9 @@ class dashboardController extends Controller
         select
 
         contact.name as Contact,
-        (schedual.debit - schedual.CreditChild) as Balance,
+        round((schedual.debit - schedual.CreditChild),2) as Balance,
+        DATE_FORMAT(schedual.expire_date, "%d/%m/%Y") as ExpireDate,
+        ABS(DATEDIFF(schedual.trans_date, schedual.expire_date)) as DelayDay,
         schedual.company as Company
         from (
             select
@@ -75,6 +77,7 @@ class dashboardController extends Controller
             left join app_contract as contract on si.id_contract = contract.id_contract
             left join app_condition as cond on contract.id_condition = cond.id_condition
             where (schedual.debit - schedual.CreditChild) > 0
+            and ABS(DATEDIFF(schedual.trans_date, schedual.expire_date)) >0
             group by schedual.id_payment_schedual
             order by schedual.expire_date');
 
