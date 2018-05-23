@@ -50,35 +50,65 @@ class dashboardController extends Controller
 
         $quantitypercustomer = collect($quantitypercustomer);
 
-        return view('Dashboard.launch')
-        ->with('quantitypercustomer',$quantitypercustomer)
-        ->with('salespercustomer',$salespercustomer);
-    }
+        $pendingreceivable = DB::select('
+        select
 
-    public function SaveDashboard(Request $request)
-    {
-        $Name = Auth::user()->name;
-        if (!file_exists(Config::get("Paths.UserDashboard") . $Name . "/")) {
-            File::makeDirectory(Config::get("Paths.UserDashboard") . $Name . "/");
+        contact.name as Contact,
+        (schedual.debit - schedual.CreditChild) as Balance,
+        schedual.company as Company
+        from (
+            select
+            parent.*,company.name as company,
+            ( select if(sum(credit) is null, 0, sum(credit))
+            from payment_schedual as child where child.parent_id_payment_schedual = parent.id_payment_schedual
+            ) as CreditChild
+            from payment_schedual as parent
+            left join app_company as company
+            on company.id_company = parent.id_company
+            group by parent.id_payment_schedual
+            ) as schedual
+
+            inner join contacts as contact on schedual.id_contact = contact.id_contact
+            inner join app_currencyfx as fx on schedual.id_currencyfx = fx.id_currencyfx
+            inner join app_currency as curr on fx.id_currency = curr.id_currency
+            inner join sales_invoice as si on schedual.id_sales_invoice = si.id_sales_invoice
+            left join app_contract as contract on si.id_contract = contract.id_contract
+            left join app_condition as cond on contract.id_condition = cond.id_condition
+            where (schedual.debit - schedual.CreditChild) > 0
+            group by schedual.id_payment_schedual
+            order by schedual.expire_date');
+
+            $pendingreceivable = collect($pendingreceivable);
+            return view('Dashboard.launch')
+            ->with('quantitypercustomer',$quantitypercustomer)
+            ->with('salespercustomer',$salespercustomer)
+            ->with('pendingreceivable',$pendingreceivable);
         }
-        try
+
+        public function SaveDashboard(Request $request)
         {
-            foreach (Input::get('components') as $Comp)
-            {
-                $DashboardComponents[] = $Comp;
+            $Name = Auth::user()->name;
+            if (!file_exists(Config::get("Paths.UserDashboard") . $Name . "/")) {
+                File::makeDirectory(Config::get("Paths.UserDashboard") . $Name . "/");
             }
-            file_put_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",json_encode($DashboardComponents));
-        }
-        catch(Exception $e)
-        {
-            return $e->getMessage();
+            try
+            {
+                foreach (Input::get('components') as $Comp)
+                {
+                    $DashboardComponents[] = $Comp;
+                }
+                file_put_contents(Config::get("Paths.UserDashboard") . $Name . "/dashboard.json",json_encode($DashboardComponents));
+            }
+            catch(Exception $e)
+            {
+                return $e->getMessage();
+            }
+
+            return redirect('/');
         }
 
-        return redirect('/');
+        public function ManageDashboard(){
+            $Components = (new ComponentController)->ManageComponents();
+            return view('Dashboard.ConfigComponents')->with('Components',$Components);
+        }
     }
-
-    public function ManageDashboard(){
-        $Components = (new ComponentController)->ManageComponents();
-        return view('Dashboard.ConfigComponents')->with('Components',$Components);
-    }
-}
