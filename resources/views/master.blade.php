@@ -174,6 +174,22 @@
                                                 </li>
                                             </ul>
                                         </li>
+                                        <li class="menu-dropdown classic-menu-dropdown ">
+                                            <a href="/timeline"> Reports
+                                                <span class="arrow"></span>
+                                            </a>
+                                            <ul class="dropdown-menu pull-left">
+                                                <li class="">
+                                                <a href="{{ url('saleMargin') }}" class="nav-link">Sale Margin</a>
+                                                
+                                                </li>
+                                                <li class="">
+                                                <a href="{{ url('pendingreceivable') }}" class="nav-link">Pending Receivable</a>
+                                                
+                                                </li>
+                                               
+                                            </ul>
+                                        </li>
                                         @if (env('Type') == "Garments")
                                         <li class="menu-dropdown classic-menu-dropdown ">
                                             <a href="/timeline"> Garments

@@ -13,6 +13,8 @@
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::resource('pendingreceivable', 'dashboardController@PendingReceivable');
+Route::resource('saleMargin', 'dashboardController@SalesMargin');
 //Security
 Route::group(['middleware' => 'auth'], function () {
     Route::get('component/{Key}/{StartDate}/{EndDate}', 'ComponentController@Execute_KPI');
@@ -20,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('component/getusercomponents', 'ComponentController@GetUserComponents');
     Route::post('savedashboard', 'dashboardController@SaveDashboard');
     Route::get('managecomponents', 'dashboardController@ManageDashboard');
+    
     Route::get('listcomponents', 'dashboardController@ListComponents');
     Route::get('componentslist', 'ComponentController@ListComponents');
     Route::get('showcreate', 'ComponentController@ShowCreate');
@@ -62,6 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('relation', 'Commercial\relationController');
     Route::resource('suppliers', 'Commercial\contactsController@indexSuppliers');
     Route::resource('customers', 'Commercial\contactsController@indexCustomers');
+  
 //krunal Start
     Route::resource('work', 'Commercial\workController');
     Route::resource('workorder', 'Commercial\workorderController');
@@ -89,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('delete_item/{id}', 'Production\TimelineController@destroy');
 
    //Production Order
+   
     Route::get('approved_production_order/{id}','Production\ProductionOrderController@changeStatusApproved');
     Route::post('store_file_production_order','Production\ProductionOrderController@storeOTExcel');
       Route::post('store_template_production_order','Production\ProductionOrderController@storeTemplate');

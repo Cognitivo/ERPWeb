@@ -7,14 +7,14 @@
 	"Parameters":"StartDate,EndDate",
 	"SqlFile":"PendingRecivable.sql",
 	"Dimensions":"Medium",
-	"Label":"Company",
+	"Label":"Contact",
 	"Series":[
 		{"Id":"Balance",
 		"Name":"Balance",
 		"Column":"Balance",
 		"NumberPrefix": "$",
-		"Color":"#4ABDAC"},{"Id":"Contact",
-		"Name":"Contact",
-		"Column":"Contact",
+		"Color":"#4ABDAC"},{"Id":"Branch",
+		"Name":"Branch",
+		"Column":"Branch",
 		"NumberPrefix": "$",
-		"Color":"#4ABDAC"}]}
+		"Color":"#FF5733"}]}
