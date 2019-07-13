@@ -179,6 +179,14 @@
                                                 <span class="arrow"></span>
                                             </a>
                                             <ul class="dropdown-menu pull-left">
+                                             <li class="">
+                                                <a href="{{ url('SalesByClient') }}" class="nav-link">Sale Data</a>
+                                                
+                                                </li>
+                                                <li class="">
+                                                <a href="{{ url('salesByMonth') }}" class="nav-link">Sale By Month</a>
+                                                
+                                                </li>
                                                 <li class="">
                                                 <a href="{{ url('saleMargin') }}" class="nav-link">Sale Margin</a>
                                                 

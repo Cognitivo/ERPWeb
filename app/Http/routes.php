@@ -13,8 +13,9 @@
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
-Route::resource('pendingreceivable', 'dashboardController@PendingReceivable');
-Route::resource('saleMargin', 'dashboardController@SalesMargin');
+Route::get('pendingreceivable', 'dashboardController@PendingReceivable');
+Route::get('SalesByClient', 'dashboardController@SalesByClient');
+Route::get('salesByMonth', 'dashboardController@salesByMonth');
 //Security
 Route::group(['middleware' => 'auth'], function () {
     Route::get('component/{Key}/{StartDate}/{EndDate}', 'ComponentController@Execute_KPI');
