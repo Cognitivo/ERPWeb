@@ -180,7 +180,7 @@
                                             </a>
                                             <ul class="dropdown-menu pull-left">
                                              <li class="">
-                                                <a href="{{ url('SalesByClient') }}" class="nav-link">Sale Data</a>
+                                                <a href="{{ url('SalesByClient') }}" class="nav-link">Sales By Client</a>
                                                 
                                                 </li>
                                                 <li class="">
@@ -188,7 +188,7 @@
                                                 
                                                 </li>
                                                 <li class="">
-                                                <a href="{{ url('saleMargin') }}" class="nav-link">Sale Margin</a>
+                                                <a href="{{ url('salesByMonthQuantity') }}" class="nav-link">Sale By Month Quantity</a>
                                                 
                                                 </li>
                                                 <li class="">
