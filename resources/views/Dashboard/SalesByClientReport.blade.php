@@ -53,19 +53,16 @@
 								</tr>
 							</thead>
 							<tbody id="QuantityPerSales">
-								@foreach ($SalesByClient->groupBy('alias') as $groupedByalias)
-								 	
-								 @foreach ($groupedByalias->groupBy('company') as $groupedBycomapny)
+									@foreach ($SalesByClient as $value)
 									<tr>
-									 <td>{{ $groupedBycomapny->first()->company }}</td>
-										<td>{{  $groupedBycomapny->first()->date }}</td>
-										<td>{{  $groupedBycomapny->first()->alias }}</td>
-										<td>{{  $groupedBycomapny->first()->number }}</td>
-										<td>{{  $groupedBycomapny->sum('quantity') }}</td>
-										<td>{{  $groupedBycomapny->sum('subTotalVat') }}</td>
-										<td>{{ $groupedBycomapny->first()->currency }}</td>
+									  	<td>{{ $value->company }}</td>
+										<td>{{ $value->date }}</td>
+										<td>{{ $value->alias }}</td>
+										<td>{{ $value->number }}</td>
+										<td>{{ number_format($value->quantity, 0) }}</td>
+										<td>{{ number_format($value->subTotalVat, 0) }}</td>
+										<td>{{ $value->currency }}</td>
 									</tr>
-									@endforeach
 								@endforeach
 							</tbody>
 						</table>

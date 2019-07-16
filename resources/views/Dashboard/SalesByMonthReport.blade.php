@@ -61,9 +61,9 @@
 										<th>{{ $salesByMonth->where('company',$groupedByCompany->first()->company)
 											->where('customer',$groupedByCustomer->first()->customer)
 											->where('date',$month->date )
-											->first()!=null? $salesByMonth->where('company',$groupedByCompany->first()->company)
+											->first()!=null? number_format($salesByMonth->where('company',$groupedByCompany->first()->company)
 											->where('customer',$groupedByCustomer->first()->customer)
-											->where('date',$month->date)->first()->SubTotalVat : 0 }}</th>
+											->where('date',$month->date)->first()->SubTotalVat,0) : 0 }}</th>
 									@endforeach
 
 								</tr>

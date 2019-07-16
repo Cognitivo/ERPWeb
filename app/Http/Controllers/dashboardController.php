@@ -93,71 +93,83 @@ class dashboardController extends Controller
         }
         public function PendingReceivable(Request $request)
         {
-        
-              $pendingreceivable = DB::select('
+          $startDate='2017-1-1';
+              $endDate='2018-12-1';
+            if ($request->startDate!=null)
+            {
+            $startDate=$request->startDate;
+           
+            }
+              if ($request->endDate!=null)
+            {
+            $endDate=$request->endDate;
+           
+            }
+
+              $pendingreceivable = DB::select("
               select Contact, sum(January) as January,sum(February) as February,sum(March) as March,sum(April) as April,sum(May) as May,sum(June) as June,
 sum(July) as July,sum(August) as August,sum(September) as September,sum(Octomber) as Octomber,sum(November) as November ,sum(December) as December from (select
 schedual.company as Company,
   contact.id_contact,
    contact.name as Contact,
     (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="January" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='January' 
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0 
         END) as January,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="February" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='February'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as February,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="March" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='March'
             THEN  round((schedual.debit - schedual.CreditChild),2) 
             ELSE 0  
         END) as March,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="April" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='April'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as April,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="May" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='May'
             THEN  round((schedual.debit - schedual.CreditChild),2)
             ELSE 0  
         END) as May,
         
       (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="June" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='June'
             THEN sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as June,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="July" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='July'
             THEN sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as July,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="August" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='August'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as August,
          (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="September" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='September'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as September,
         (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="Octomber" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='Octomber'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as Octomber,
         (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="November" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='November'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as November,
         (CASE 
-            WHEN  DATE_FORMAT(schedual.expire_date, "%M")="December" 
+            WHEN  DATE_FORMAT(schedual.expire_date, '%M')='December'
             THEN  sum(round((schedual.debit - schedual.CreditChild),2) )
             ELSE 0  
         END) as December
@@ -180,10 +192,11 @@ schedual.company as Company,
               inner join sales_invoice as si on schedual.id_sales_invoice = si.id_sales_invoice
               left join app_contract as contract on si.id_contract = contract.id_contract
               left join app_condition as cond on contract.id_condition = cond.id_condition
-              where (schedual.debit - schedual.CreditChild) > 0
+              where (schedual.debit - schedual.CreditChild) > 0 
               and ABS(DATEDIFF(schedual.expire_date, CURDATE())) >0
-              group by schedual.company,contact.id_contact,DATE_FORMAT(schedual.expire_date, "%M")
-              order by contact.id_contact, schedual.company) as j group by id_contact');
+              and schedual.trans_date >= '" . $startDate . "' and schedual.trans_date <= '" . $endDate . "' 
+              group by schedual.company,contact.id_contact,DATE_FORMAT(schedual.expire_date, '%M')
+              order by contact.id_contact, schedual.company) as j group by id_contact");
     
                 $pendingreceivable = collect($pendingreceivable);
               
@@ -201,8 +214,9 @@ schedual.company as Company,
             $startDate=$request->startDate;
             }
            
-            $salesData = DB::select("SELECT  number,si.code,contacts.name,contacts.alias,
-            date(si.trans_date) as date,
+            $salesData = DB::select("select max(number) as number,max(code) as code,max(name) as name,max(alias) as alias,max(date) as date,max(currency) as currency,
+                            max(Rate) as rate,sum(quantity) as quantity,sum(subTotalVat) as subTotalVat, company from(SELECT  number,si.code,contacts.name,contacts.alias,
+                            date(si.trans_date) as date,
                             app_currency.name as currency, app_currencyfx.buy_value as rate,
                             round(sum(sid.quantity),4) as quantity,
                             round(sum(sid.quantity * sid.unit_price * vatco.coef),4) as subTotalVat,
@@ -228,7 +242,7 @@ schedual.company as Company,
                             where status=2 
                             and si.trans_date >= '". $startDate ."' 
                             and si.id_contact in (522,239,524,523,240,527,526,525,241,538,536,537,398,529,528,530)
-                            group by si.number; ");
+                            group by si.number) as i group by company,alias ");
 
                             $salesData = collect($salesData);
                               

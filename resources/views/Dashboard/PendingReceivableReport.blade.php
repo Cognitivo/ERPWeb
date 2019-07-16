@@ -32,7 +32,11 @@
 							<i class="fa fa-gift"></i>Pendiente de cobrar
 						</div>
 						<div class="tools">
-					
+					 <form action="/pendingreceivable" method="GET" class="form-horizontal" role="form">
+							<input type="date" id="startDate" name="startDate"/>
+								<input type="date" id="endDate" name="endDate"/>
+						 <button type="submit" class="btn btn-primary">Refresh</button>
+						  </form>
 						</div>
        
 					</div>
