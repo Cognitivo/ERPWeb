@@ -27,7 +27,7 @@
 							<i class="fa fa-gift"></i> Ventas por Empresa
 						</div>
 					<div class="tools">
-					 <form action="/salesByMonth" method="GET" class="form-horizontal" role="form">
+					 <form action="/salesByMonthQuantity" method="GET" class="form-horizontal" role="form">
 							<input type="date" id="startDate" name="startDate"/>
 								<input type="date" id="endDate" name="endDate"/>
 						 <button type="submit" class="btn btn-primary">Refresh</button>
