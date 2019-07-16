@@ -207,11 +207,18 @@ schedual.company as Company,
            
 
         public function SalesByClient(Request $request)
-        {
-            $startDate= Carbon::now();
+        {  
+            $startDate='2017-1-1';
+              $endDate='2018-12-1';
             if ($request->startDate!=null)
             {
             $startDate=$request->startDate;
+           
+            }
+              if ($request->endDate!=null)
+            {
+            $endDate=$request->endDate;
+           
             }
            
             $salesData = DB::select("select max(number) as number,max(code) as code,max(name) as name,max(alias) as alias,max(date) as date,max(currency) as currency,
