@@ -65,18 +65,18 @@
 								@foreach ($groupedRows as $key => $value)
 									<tr>
 										<td>{{ $value->Contact }}</td>
-										<td>{{  number_format($value->January,2) }}</td>
-										<td>{{  number_format($value->February,2) }}</td>
-										<td>{{  number_format($value->March,2) }}</td>
-										<td>{{  number_format($value->April,2) }}</td>
-										<td>{{  number_format($value->May,2) }}</td>
-										<td>{{  number_format($value->June,2) }}</td>
-										<td>{{  number_format($value->July,2) }}</td>
-										<td>{{  number_format($value->August,2) }}</td>
-										<td>{{  number_format($value->September,2) }}</td>
-										<td>{{  number_format($value->Octomber,2) }}</td>
-										<td>{{  number_format($value->November,2) }}</td>
-										<td>{{  number_format($value->December,2) }}</td>
+										<td>{{  number_format($value->January,0) }}</td>
+										<td>{{  number_format($value->February,0) }}</td>
+										<td>{{  number_format($value->March,0) }}</td>
+										<td>{{  number_format($value->April,0) }}</td>
+										<td>{{  number_format($value->May,0) }}</td>
+										<td>{{  number_format($value->June,0) }}</td>
+										<td>{{  number_format($value->July,0) }}</td>
+										<td>{{  number_format($value->August,0) }}</td>
+										<td>{{  number_format($value->September,0) }}</td>
+										<td>{{  number_format($value->Octomber,0) }}</td>
+										<td>{{  number_format($value->November,0) }}</td>
+										<td>{{  number_format($value->December,0) }}</td>
 									</tr>
 								@endforeach
 							</tbody>
