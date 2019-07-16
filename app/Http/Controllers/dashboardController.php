@@ -240,7 +240,7 @@ schedual.company as Company,
                             inner join app_currencyfx on app_currencyfx.id_currencyfx = si.id_currencyfx
                             inner join app_currency on app_currency.id_currency = app_currencyfx.id_currency
                             where status=2 
-                            and si.trans_date >= '". $startDate ."' 
+                            and si.trans_date >= '" . $startDate . "' and si.trans_date <= '" . $endDate . "' 
                             and si.id_contact in (522,239,524,523,240,527,526,525,241,538,536,537,398,529,528,530)
                             group by si.number) as i group by company,alias ");
 
