@@ -35,7 +35,7 @@
 						  <form action="/Export/salesByMonth" method="GET" class="form-horizontal" role="form">
 							<input type="date" id="startDate" name="startDate"/>
 								<input type="date" id="endDate" name="endDate"/>
-						 <button type="submit" class="btn btn-primary">Refresh</button>
+						 <button type="submit" class="btn btn-primary">Export</button>
 						  </form>
 					</div>
 					</div>
