@@ -24,8 +24,7 @@
 		<div class="row">
 	     	<div class="col-md-6">
 			
-			    @foreach ($pendingreceivable->groupBy('company') as $groupedRows)
-			
+			  
 				<div class="portlet">
 					 <div class="portlet-title">
 						<div class="caption">
@@ -37,10 +36,19 @@
 								<input type="date" id="endDate" name="endDate"/>
 						 <button type="submit" class="btn btn-primary">Refresh</button>
 						  </form>
+						  	 <form action="/Export/pendingreceivable" method="GET" class="form-horizontal" role="form">
+							<input type="date" id="startDate" name="startDate"/>
+								<input type="date" id="endDate" name="endDate"/>
+						 <button type="submit" class="btn btn-primary">Export</button>
+						  </form>
 						</div>
        
 					</div>
 					<div class="portlet-body" >
+					  @foreach ($pendingreceivable->groupBy('Company') as $groupedRows)
+						 <b>
+						 {{$groupedRows->first()->Company}}
+						 </b>	
 						<table class="table table-condensed" id="table-production-execution-form">
 							<thead>
 								<tr>
@@ -81,12 +89,12 @@
 								@endforeach
 							</tbody>
 						</table>
-
+						@endforeach
 					</div> 
 				</div>
 			</div> 
 		</div>
-		@endforeach
+	
 	
 	@endsection
 

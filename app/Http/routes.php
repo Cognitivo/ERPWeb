@@ -17,6 +17,12 @@ Route::get('pendingreceivable', 'dashboardController@PendingReceivable');
 Route::get('SalesByClient', 'dashboardController@SalesByClient');
 Route::get('salesByMonth', 'dashboardController@salesByMonth');
 Route::get('salesByMonthQuantity', 'dashboardController@salesByMonthQuantity');
+
+Route::get('Export/SalesByClient', 'dashboardController@ExportSalesClient');
+Route::get('Export/salesByMonth', 'dashboardController@ExportSalesByMonth');
+Route::get('Export/salesByMonthQuantity', 'dashboardController@ExportSalesByMonthQuantity');
+Route::get('Export/pendingreceivable', 'dashboardController@ExportPendingReceivable');
+
 //Security
 Route::group(['middleware' => 'auth'], function () {
     Route::get('component/{Key}/{StartDate}/{EndDate}', 'ComponentController@Execute_KPI');
