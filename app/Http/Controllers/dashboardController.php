@@ -617,7 +617,7 @@ schedual.company as Company,
             inner join app_currencyfx on app_currencyfx.id_currencyfx=si.id_currencyfx
             inner join app_currency on app_currency.id_currency=app_currencyfx.id_currency
             where  status = 2 and si.trans_date >= '" . $startDate . "' and si.trans_date <= '" . $endDate . "' 
-            group by contacts.name, DATE_FORMAT(si.trans_date, '%M-%Y')
+            group by contacts.name, DATE_FORMAT(si.trans_date, '%M-%Y'), company.alias
             order by si.id_company";
 
             $salesByMonth = DB::select($query);
